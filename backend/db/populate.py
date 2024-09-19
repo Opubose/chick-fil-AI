@@ -58,7 +58,7 @@ def populate_table_from_csv(csv_file):
         print(f"Error reading CSV file: {e}")
 
 # Provide the path to your CSV file
-url = 'CFA_Data.csv'
+url = 'resources/CFA_Data.csv'
 
 # Populate the DynamoDB table with data from the CSV file
 populate_table_from_csv(url)
