@@ -33,6 +33,7 @@ coverage.xml
 *.cover
 .hypothesis/
 .pytest_cache/
+.venv/
 
 # React frontend
 node_modules/
