@@ -1,14 +1,24 @@
 .App {
   text-align: center;
-  height: 100vh; 
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  justify-items: center;
+  align-items: center;
   position: relative; 
 }
 
+.MainPage{
+  max-width: 70%;
+  width: 70%;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .logo-container {
-  flex-grow: 1; 
+  flex-grow: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,86 +28,106 @@
   width: 500px;
 }
 
-/* Initial Button Style */
-.order-button {
+/* Input container to hold input and arrow */
+.input-container {
+  position: absolute; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 250px; 
+  height: 30px;
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  transition: top 1s ease-in-out, width 1s ease-in-out; 
+}
+
+.input-container.transform {
+  width: 600px; /* Expands the input animation part */
+  top: calc(100vh - 100px); /* Moves the input to the bottom animation part */
+  transform: translate(-50%, 0); /* Keep input centered */
+}
+
+.order-input {
   padding: 15px 40px;
-  font-size: 1.5rem;
+  font-size: 15px;
   background-color: #D32329;
   color: white;
   border: none;
   border-radius: 50px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  position: absolute; 
-  left: 50%;
-  transform: translate(-50%, 0);
-  top: 50%; 
-  width: 200px; 
-  height: 50px; 
-  transition: top 1s ease-in-out, width 1s ease-in-out; /* Smooth transitions for both vertical and horizontal movements */
-}
-
-/* Button text and arrow */
-.order-button .button-text {
-  display: inline-block;
-}
-
-.order-button .arrow-icon {
-  margin-left: 10px;
-  border: 2px solid white;
-  padding: 5px;
-  border-radius: 50%;
-}
-
-/* Hover effect for the button */
-.order-button:hover {
-  background-color: #B71C1C;
-  transform: translate(-50%, 0) scale(1.05);
-}
-
-/* Input field transformation style */
-.order-input {
-  padding: 15px;
-  font-size: 1.5rem;
-  width: 200px; 
-  height: 50px; 
-  max-width: 600px;
-  border-radius: 50px;
-  border: 2px solid #D32329;
+  width: 100%; 
+  height: 100%; 
   text-align: center; 
-  color: white; 
-  background-color: #D32329; 
-  outline: none;
-  transition: width 1s ease-in-out;
-}
-
-/* Match the size of the button during the transformation */
-.order-button.transform .order-input {
-  width: 600px;
-  height: 50px; 
-  transition: width 1s ease-in-out; 
-}
-
-/* Button transformation to expand horizontally */
-.order-button.transform {
-  width: 600px; 
-  height: 50px; 
-  top: calc(100vh - 120px); 
-  transform: translate(-50%, 0);
+  cursor: pointer; 
   transition: top 1s ease-in-out, width 1s ease-in-out; 
 }
 
-/* Placeholder text styling */
-.order-input::placeholder {
-  color: #FFFFFF;
-  text-align: center;
-  opacity: 1; 
+.order-input.initial {
+  font-size: 15px;
+  top: 50%; 
+  left: 50%; 
 }
 
-/* Hide text and arrow during transformation */
-.order-button.transform .button-text,
-.order-button.transform .arrow-icon {
-  display: none; 
+/* Input after transformation, expanding and allowing typing */
+.order-input.transform {
+  font-size: 15px;
+  text-align: left; /* Align text to the left after transformation */
+  cursor: text; /* Show text cursor when input becomes editable */
+  outline: none; /* Remove default outline */
+}
+
+/* Circular arrow icon styling */
+.arrow-icon {
+  position: absolute;
+  right: 15px;
+  width: 30px;
+  height: 30px;
+  border: 2px solid white; /* Circular border */
+  border-radius: 50%; /* Make the arrow container circular */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  margin-right: 2px;
+}
+
+.arrow-icon::before {
+  content: "";
+  display: block;
+  margin-left: 5px;
+  padding-right: 1px;
+  margin-right: 2px;
+  width: 12px; /* Length of the arrow shaft */
+  height: 2px; /* Thickness of the shaft */
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%); 
+}
+
+.arrow-icon::after {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  margin-right: 2px;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%) rotate(315deg); 
+}
+
+.input-container.transform .arrow-icon {
+  margin-right: 2px;
+  transform: rotate(-90deg); 
+  transition: transform 1s ease; 
+}
+
+.order-input::placeholder {
+  color: white;
+  opacity: 1;
+  text-align: left;
 }
