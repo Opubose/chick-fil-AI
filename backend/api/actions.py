@@ -1,7 +1,10 @@
 from transformers import pipeline
 from sentence_transformers import SentenceTransformer
 import spacy
+import boto3
 import numpy as np
+
+from response_generator import menu
 
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 llm_model = "meta-llama/Llama-2-7b-chat-hf"
@@ -88,12 +91,126 @@ def cancel_order():
 low level intent detection for one of the following relating to providing menu information: 
 entire menu, dietary restrictions, ingredients, nutritional information
 '''
-def menu_handler():
+def menu_handler(low_level_intent, entities):
     #for entire menu: list out every menu item (not nutrition or calorie or ingredients etc)
     #for dietary restrictions: query against a "vegan" or "vegetarian" tag (need to define intent scope for both of these (any other dietary restriction doesnt matter, dont worry about it for now)), and return all items that correspond to this tag
     #for ingredients of an item, return every single ingredient
     #for nutritional information of an item, return every single nutritional fact (calorie, saturated fat, trans fat, etc etc)
-    pass
+    if low_level_intent == "entire_menu":
+        return list_entire_menu()
+    elif low_level_intent == "dietary_restrictions":
+        return get_items_by_dietary_restriction(entities)
+    elif low_level_intent == "ingredients":
+        return get_ingredients(entities)
+    elif low_level_intent == "nutrition":
+        return get_nutritional_info(entities)
+    else:
+        return "Invalid menu intent."
+
+
+def list_entire_menu():
+    try:
+        response = menu.scan()
+        items = response.get('Items', [])
+        menu_items = [item['Item_index'] for item in items]
+        return {"menu_items": menu_items}
+    except Exception as e:
+        return {"error": str(e)}
+
+
+def get_items_by_dietary_restriction(entities): # doesnt work
+    if entities and 'modifiers' in entities:
+        restriction = entities['modifiers'][0].lower()
+    else:
+        return "Please specify a dietary restriction (e.g., vegetarian, vegan)."
+
+    try:
+        if restriction == "vegan":
+            response = menu.scan(
+                FilterExpression="Vegan_Index = :v",
+                ExpressionAttributeValues={":v": 1}
+            )
+        elif restriction == "vegetarian":
+            response = menu.scan(
+                FilterExpression="Vegetarian_Index = :v",
+                ExpressionAttributeValues={":v": 1}
+            )
+        else:
+            return "Currently, we only support 'vegan' and 'vegetarian' dietary restrictions."
+
+        items = response.get('Items', [])
+        matching_items = [item['Item_index'] for item in items]
+        
+        if not matching_items:
+            return f"No items found for dietary restriction: {restriction}."
+        
+        return {"items_matching_dietary_restriction": matching_items}
+    
+    except Exception as e:
+        return {"error": str(e)}
+
+
+def get_ingredients(entities):
+    if entities and 'food_items' in entities:
+        food_item = entities['food_items'][0]
+    else:
+        return "Please specify a food item."
+
+    try:
+        response = menu.get_item(
+            Key={'Item': food_item}
+        )
+
+        if 'Item' not in response:
+            return f"No item found with the name: {food_item}."
+
+        item = response['Item']
+        ingredients = item.get('Ingredients', "No ingredients found for this item.")
+        
+        return {"food_item": food_item, "ingredients": ingredients}
+
+    except Exception as e:
+        return {"error": str(e)}
+
+
+def get_nutritional_info(entities):
+    if entities and 'food_items' in entities:
+        food_item = entities['food_items'][0]
+    else:
+        return "Please specify a food item."
+
+    try:
+        response = menu.get_item(
+            Key={'Item': food_item}
+        )
+
+        if 'Item' not in response:
+            return f"No item found with the name: {food_item}."
+
+        item = response['Item']
+
+        nutritional_info = {
+            "Serving_size": item.get("Serving_size", "No serving size found."),
+            "Calories": item.get("Calories", "No calorie information found."),
+            "Fat": item.get("Fat", "No fat information found."),
+            "Sat_Fat": item.get("Sat_Fat", "No saturated fat information found."),
+            "Trans_Fat": item.get("Trans_Fat", "No trans fat information found."),
+            "Cholesterol": item.get("Cholesterol", "No cholesterol information found."),
+            "Sodium": item.get("Sodium", "No sodium information found."),
+            "Carbohydrates": item.get("Carbohydrates", "No carbohydrate information found."),
+            "Fiber": item.get("Fiber", "No fiber information found."),
+            "Sugar": item.get("Sugar", "No sugar information found."),
+            "Protein": item.get("Protein", "No protein information found.")
+        }
+        
+        return {"food_item": food_item, "nutritional_info": nutritional_info}
+
+    except Exception as e:
+        return {"error": str(e)}
+
+
+
+
 
 '''
 simple message that tells what the bot can answer and an example of how to use it
