@@ -1,0 +1,29 @@
+{
+    "intents": 
+    [
+    {"tag": "greeting",
+     "patterns": ["Hi", "Hey", "Hello", "Good morning!", "Hey! Good morning", "Hey there", "Hey Janet", "Very good morning", "A very good morning to you", "Greeting", "Greetings to you"],
+     "responses": ["Hello I'm Chick-Fil-AI! How can I help you?", "Hi! I'm Chick-Fil-AI. How may I assist you today?"]
+    },
+    {"tag": "goodbye",
+     "patterns": ["cya", "I will leave now","See you later", "Goodbye", "Leaving now, Bye" , "Good bye dear", "Bye dear","I am Leaving", "Have a Good day", "cya later", "I gotta go now", "I gotta rush now", "Thank you, bye", "Bye", "Ok Bye", "Okay goodnight", "Have a good day ahead", "Have a great day", "Tata", "Take care"],
+     "responses": ["My pleasure!", "Hope to see you again soon!", "Bye!"]
+    },
+    {"tag": "menu",
+     "patterns": ["Id like to order something", "whats on the menu", "could i get something to eat", "Im damn hungry", "I am hungry" ,"Show me the menu", "What food do you have", "wHat food are you offering?", "whats on the menu today?", "Let me see the menu", "menu"],
+     "responses": [""]
+    },
+    {"tag": "vegan_question",
+        "patterns": ["Can I see the vegan option?","Do you have any vegan options??", "What is vegan in your menu?", "I am vegan.", "Do you also have vegan food?", "vegan", "is this restaurant vegan", "is this place vegan"],
+        "responses": [""]
+    },
+    {"tag": "veg_question",
+        "patterns": ["Can I see the vegetarian options?","Do you have any vegetarian options??", "Please show me your best vegetarian foods", "I dont want to eat non veg", "I am vegetarian", "vegetarian", "is this place vegetarian?"],
+        "responses": [""]
+    },
+    {"tag": "ingredients_question",
+        "patterns": ["Could you tell me more about ingredients of this dish?", "What is the recipe of this dish?", "what are the ingredients of this dish?", "tell me the recipe"],
+        "responses": [""]
+    }
+    ]
+}
