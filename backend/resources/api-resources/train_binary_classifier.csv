@@ -1,0 +1,7 @@
+text,label
+"I'd like to order a burger.",in_scope
+"How many calories are in a large fries?",in_scope
+"Can I cancel my order?",in_scope
+"What's the capital of France?",out_of_scope
+"Tell me a joke.",out_of_scope
+"qwerty1234!",out_of_scope
