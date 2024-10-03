@@ -80,7 +80,6 @@ def order_handler(low_level_intent, entities):
     #for status: literally just return what the current order is
     #for cancel: just scrap the entire order and jsonify return ("Ok, I've cancelled your order")
     #for info: return the nutritional information (only main ones (calories, fat, carb, sugar, protein)) of the items currently in the order
-    pass
 
 def place_order(entities):
     pass
