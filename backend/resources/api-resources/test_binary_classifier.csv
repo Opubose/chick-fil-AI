@@ -1,0 +1,501 @@
+text,label
+What's the population of Japan?,out_of_scope
+Do you offer gluten-free buns?,in_scope
+I'd like to order a burger.,in_scope
+I'd like to order a medium fries and a water.,in_scope
+Why is the sky blue?,out_of_scope
+Who won the last football match?,out_of_scope
+Can I get extra cheese on my burger?,in_scope
+What's the distance between the Earth and the Moon?,out_of_scope
+Can I change my drink to a large Sprite?,in_scope
+Why is the sky blue?,out_of_scope
+Who won the last football match?,out_of_scope
+What's the price of a chicken sandwich?,in_scope
+What's 2 + 2?,out_of_scope
+Do you offer gluten-free buns?,in_scope
+What's the capital of France?,out_of_scope
+I'd like to cancel my order.,in_scope
+Can I get extra cheese on my burger?,in_scope
+Tell me a joke.,out_of_scope
+What's your favorite color?,out_of_scope
+Who is the president of the USA?,out_of_scope
+Who won the last football match?,out_of_scope
+How much does a large Coke cost?,in_scope
+What's the price of a chicken sandwich?,in_scope
+Can I change my drink to a large Sprite?,in_scope
+Do you know how to code?,out_of_scope
+I'd like to order a medium fries and a water.,in_scope
+Do you know how to solve calculus problems?,out_of_scope
+I'd like to order a medium fries and a water.,in_scope
+Can I change my drink to a large Sprite?,in_scope
+I'd like a coffee with no sugar.,in_scope
+Can I modify my order?,in_scope
+How's the weather today?,out_of_scope
+How much does a large Coke cost?,in_scope
+Who won the last football match?,out_of_scope
+What is the nutritional info for a cheeseburger?,in_scope
+Can I place an order for pickup?,in_scope
+I'd like a coffee with no sugar.,in_scope
+Can I place an order for pickup?,in_scope
+What are the ingredients in the salad?,in_scope
+What's 2 + 2?,out_of_scope
+What's the tallest building in the world?,out_of_scope
+What is the nutritional info for a cheeseburger?,in_scope
+I'd like to order a burger.,in_scope
+Do you know how to code?,out_of_scope
+Who invented the telephone?,out_of_scope
+Tell me a joke.,out_of_scope
+Why is the sky blue?,out_of_scope
+qwerty1234!,out_of_scope
+I'd like to cancel my order.,in_scope
+qwerty1234!,out_of_scope
+What day is it today?,out_of_scope
+What's your favorite color?,out_of_scope
+What's the meaning of life?,out_of_scope
+Why is the sky blue?,out_of_scope
+qwerty1234!,out_of_scope
+Do you have any vegetarian options?,in_scope
+Can I get extra cheese on my burger?,in_scope
+What is the nutritional info for a cheeseburger?,in_scope
+How's the weather today?,out_of_scope
+What's the square root of 144?,out_of_scope
+What drinks do you have?,in_scope
+Why is the sky blue?,out_of_scope
+What day is it today?,out_of_scope
+What's the population of Japan?,out_of_scope
+Can I modify my order?,in_scope
+I'd like to order a medium fries and a water.,in_scope
+What's the tallest building in the world?,out_of_scope
+Do you know how to solve calculus problems?,out_of_scope
+How many calories are in a small Coke?,in_scope
+What drinks do you have?,in_scope
+What's 2 + 2?,out_of_scope
+What's the square root of 144?,out_of_scope
+What's the price of a medium fries?,in_scope
+How's the weather today?,out_of_scope
+I'd like to add a salad to my order.,in_scope
+Can I get a large fries?,in_scope
+What's the population of Japan?,out_of_scope
+Can I get a large fries?,in_scope
+I'd like to add a salad to my order.,in_scope
+What's 2 + 2?,out_of_scope
+What's the price of a chicken sandwich?,in_scope
+What are the ingredients in the salad?,in_scope
+Who won the last football match?,out_of_scope
+What day is it today?,out_of_scope
+How many calories are in a small Coke?,in_scope
+Tell me a fun fact.,out_of_scope
+Who invented the telephone?,out_of_scope
+Tell me a joke.,out_of_scope
+I'd like to order a medium fries and a water.,in_scope
+Do you know how to code?,out_of_scope
+What day is it today?,out_of_scope
+What's the population of Japan?,out_of_scope
+Do you know how to solve calculus problems?,out_of_scope
+I'd like a coffee with no sugar.,in_scope
+Tell me a joke.,out_of_scope
+What is the nutritional info for a cheeseburger?,in_scope
+I'd like to order a medium fries and a water.,in_scope
+Can I get extra cheese on my burger?,in_scope
+qwerty1234!,out_of_scope
+What's the price of a medium fries?,in_scope
+How long will it take to get my food?,in_scope
+Tell me a joke.,out_of_scope
+What's your favorite color?,out_of_scope
+What are the ingredients in the salad?,in_scope
+I'd like to cancel my order.,in_scope
+What's your favorite color?,out_of_scope
+Tell me about space exploration.,out_of_scope
+What's the distance between the Earth and the Moon?,out_of_scope
+What's the distance between the Earth and the Moon?,out_of_scope
+Who is the president of the USA?,out_of_scope
+What's the price of a medium fries?,in_scope
+Do you know how to solve calculus problems?,out_of_scope
+I'd like to order a medium fries and a water.,in_scope
+Tell me a joke.,out_of_scope
+What drinks do you have?,in_scope
+Can I place an order for pickup?,in_scope
+I'd like to order a medium fries and a water.,in_scope
+How long will it take to get my food?,in_scope
+Do you know how to solve calculus problems?,out_of_scope
+How's the weather today?,out_of_scope
+What's the price of a medium fries?,in_scope
+What's the price of a chicken sandwich?,in_scope
+Can I get a large fries?,in_scope
+What's your favorite color?,out_of_scope
+Can I change my drink to a large Sprite?,in_scope
+What are the ingredients in the salad?,in_scope
+What drinks do you have?,in_scope
+qwerty1234!,out_of_scope
+Can I get a large fries?,in_scope
+Tell me a fun fact.,out_of_scope
+How's the weather today?,out_of_scope
+How many calories are in a small Coke?,in_scope
+What's the capital of France?,out_of_scope
+What's the price of a medium fries?,in_scope
+What's the price of a medium fries?,in_scope
+What's the tallest building in the world?,out_of_scope
+Do you have any vegetarian options?,in_scope
+Tell me a fun fact.,out_of_scope
+How long will it take to get my food?,in_scope
+Can I change my drink to a large Sprite?,in_scope
+Can I change my drink to a large Sprite?,in_scope
+How many calories are in a small Coke?,in_scope
+I'd like to add a salad to my order.,in_scope
+Who is the president of the USA?,out_of_scope
+Who invented the telephone?,out_of_scope
+Can I get a large fries?,in_scope
+How many calories are in a small Coke?,in_scope
+What's the distance between the Earth and the Moon?,out_of_scope
+Do you have any vegetarian options?,in_scope
+Tell me a fun fact.,out_of_scope
+I'd like a coffee with no sugar.,in_scope
+Can I get extra cheese on my burger?,in_scope
+Can I modify my order?,in_scope
+What's the square root of 144?,out_of_scope
+Do you know how to solve calculus problems?,out_of_scope
+qwerty1234!,out_of_scope
+Who is the president of the USA?,out_of_scope
+What's your favorite color?,out_of_scope
+What's 2 + 2?,out_of_scope
+Do you know how to solve calculus problems?,out_of_scope
+Tell me a joke.,out_of_scope
+Why is the sky blue?,out_of_scope
+Can I get a large fries?,in_scope
+What's the meaning of life?,out_of_scope
+What's the meaning of life?,out_of_scope
+How much does a large Coke cost?,in_scope
+What's the capital of France?,out_of_scope
+Who is the president of the USA?,out_of_scope
+Who is the president of the USA?,out_of_scope
+qwerty1234!,out_of_scope
+Do you offer gluten-free buns?,in_scope
+Who is the president of the USA?,out_of_scope
+What day is it today?,out_of_scope
+I'd like to cancel my order.,in_scope
+Do you offer gluten-free buns?,in_scope
+Tell me a joke.,out_of_scope
+What day is it today?,out_of_scope
+I'd like a coffee with no sugar.,in_scope
+What's the population of Japan?,out_of_scope
+What's the capital of France?,out_of_scope
+What's the price of a medium fries?,in_scope
+How many calories are in a small Coke?,in_scope
+Do you know how to code?,out_of_scope
+Can I place an order for pickup?,in_scope
+What drinks do you have?,in_scope
+Can I change my drink to a large Sprite?,in_scope
+Who is the president of the USA?,out_of_scope
+Who won the last football match?,out_of_scope
+What's the tallest building in the world?,out_of_scope
+Who won the last football match?,out_of_scope
+What's the population of Japan?,out_of_scope
+Who invented the telephone?,out_of_scope
+What's 2 + 2?,out_of_scope
+What's the capital of France?,out_of_scope
+What's the price of a chicken sandwich?,in_scope
+Tell me about space exploration.,out_of_scope
+What's your favorite color?,out_of_scope
+Tell me about space exploration.,out_of_scope
+What day is it today?,out_of_scope
+What's the price of a medium fries?,in_scope
+Can I place an order for pickup?,in_scope
+What are the ingredients in the salad?,in_scope
+qwerty1234!,out_of_scope
+What's the tallest building in the world?,out_of_scope
+How's the weather today?,out_of_scope
+What day is it today?,out_of_scope
+I'd like a coffee with no sugar.,in_scope
+What are the ingredients in the salad?,in_scope
+What's the distance between the Earth and the Moon?,out_of_scope
+Tell me a fun fact.,out_of_scope
+What day is it today?,out_of_scope
+Can I change my drink to a large Sprite?,in_scope
+I'd like to cancel my order.,in_scope
+Can I change my drink to a large Sprite?,in_scope
+How many calories are in a small Coke?,in_scope
+What's the tallest building in the world?,out_of_scope
+What's the tallest building in the world?,out_of_scope
+Who is the president of the USA?,out_of_scope
+What's the meaning of life?,out_of_scope
+What's your favorite color?,out_of_scope
+Can I get extra cheese on my burger?,in_scope
+What are the ingredients in the salad?,in_scope
+Tell me a fun fact.,out_of_scope
+qwerty1234!,out_of_scope
+What's the distance between the Earth and the Moon?,out_of_scope
+What's 2 + 2?,out_of_scope
+I'd like to order a medium fries and a water.,in_scope
+What's the price of a chicken sandwich?,in_scope
+I'd like a coffee with no sugar.,in_scope
+I'd like to order a medium fries and a water.,in_scope
+What's the population of Japan?,out_of_scope
+Can I modify my order?,in_scope
+Do you have any vegetarian options?,in_scope
+Who won the last football match?,out_of_scope
+What drinks do you have?,in_scope
+qwerty1234!,out_of_scope
+Can I get extra cheese on my burger?,in_scope
+What's the price of a chicken sandwich?,in_scope
+Tell me about space exploration.,out_of_scope
+qwerty1234!,out_of_scope
+Do you offer gluten-free buns?,in_scope
+Who won the last football match?,out_of_scope
+What's the price of a medium fries?,in_scope
+How much does a large Coke cost?,in_scope
+What day is it today?,out_of_scope
+What's the tallest building in the world?,out_of_scope
+Tell me about space exploration.,out_of_scope
+Can I modify my order?,in_scope
+What is the nutritional info for a cheeseburger?,in_scope
+Tell me a fun fact.,out_of_scope
+What's the tallest building in the world?,out_of_scope
+What's the meaning of life?,out_of_scope
+Can I change my drink to a large Sprite?,in_scope
+What's the price of a medium fries?,in_scope
+What's the price of a medium fries?,in_scope
+What's the price of a chicken sandwich?,in_scope
+What drinks do you have?,in_scope
+What's the tallest building in the world?,out_of_scope
+Do you know how to code?,out_of_scope
+What day is it today?,out_of_scope
+How much does a large Coke cost?,in_scope
+What's the square root of 144?,out_of_scope
+What's the price of a chicken sandwich?,in_scope
+What's the price of a medium fries?,in_scope
+Do you know how to code?,out_of_scope
+Do you have any vegetarian options?,in_scope
+How many calories are in a small Coke?,in_scope
+What's the price of a chicken sandwich?,in_scope
+I'd like a coffee with no sugar.,in_scope
+What's the square root of 144?,out_of_scope
+Can I change my drink to a large Sprite?,in_scope
+I'd like a coffee with no sugar.,in_scope
+What day is it today?,out_of_scope
+Do you offer gluten-free buns?,in_scope
+I'd like to add a salad to my order.,in_scope
+What's the capital of France?,out_of_scope
+What's the distance between the Earth and the Moon?,out_of_scope
+I'd like to order a burger.,in_scope
+Do you have any vegetarian options?,in_scope
+Can I place an order for pickup?,in_scope
+Can I modify my order?,in_scope
+I'd like to add a salad to my order.,in_scope
+I'd like to cancel my order.,in_scope
+I'd like a coffee with no sugar.,in_scope
+Can I get a large fries?,in_scope
+Can I get extra cheese on my burger?,in_scope
+I'd like to order a burger.,in_scope
+What are the ingredients in the salad?,in_scope
+Who invented the telephone?,out_of_scope
+Who invented the telephone?,out_of_scope
+Do you have any vegetarian options?,in_scope
+Do you know how to solve calculus problems?,out_of_scope
+What's the price of a medium fries?,in_scope
+Who invented the telephone?,out_of_scope
+What's the distance between the Earth and the Moon?,out_of_scope
+How many calories are in a small Coke?,in_scope
+How long will it take to get my food?,in_scope
+What's the square root of 144?,out_of_scope
+Can I modify my order?,in_scope
+What's the square root of 144?,out_of_scope
+Can I get a large fries?,in_scope
+What are the ingredients in the salad?,in_scope
+What is the nutritional info for a cheeseburger?,in_scope
+What's the price of a medium fries?,in_scope
+I'd like to add a salad to my order.,in_scope
+What day is it today?,out_of_scope
+Can I get extra cheese on my burger?,in_scope
+qwerty1234!,out_of_scope
+What's the capital of France?,out_of_scope
+I'd like to order a burger.,in_scope
+Can I modify my order?,in_scope
+Who invented the telephone?,out_of_scope
+How many calories are in a small Coke?,in_scope
+Can I get extra cheese on my burger?,in_scope
+How many calories are in a small Coke?,in_scope
+What's the price of a chicken sandwich?,in_scope
+I'd like to order a burger.,in_scope
+Who invented the telephone?,out_of_scope
+I'd like to order a medium fries and a water.,in_scope
+What's the price of a chicken sandwich?,in_scope
+I'd like to order a burger.,in_scope
+I'd like to cancel my order.,in_scope
+Who is the president of the USA?,out_of_scope
+What's the meaning of life?,out_of_scope
+Do you have any vegetarian options?,in_scope
+I'd like to cancel my order.,in_scope
+What's the population of Japan?,out_of_scope
+Do you know how to solve calculus problems?,out_of_scope
+I'd like to order a burger.,in_scope
+Can I get a large fries?,in_scope
+Can I change my drink to a large Sprite?,in_scope
+What is the nutritional info for a cheeseburger?,in_scope
+What drinks do you have?,in_scope
+What drinks do you have?,in_scope
+I'd like to cancel my order.,in_scope
+What's the meaning of life?,out_of_scope
+Can I place an order for pickup?,in_scope
+Do you know how to code?,out_of_scope
+What is the nutritional info for a cheeseburger?,in_scope
+What's your favorite color?,out_of_scope
+What's the square root of 144?,out_of_scope
+What's the price of a medium fries?,in_scope
+How much does a large Coke cost?,in_scope
+Can I change my drink to a large Sprite?,in_scope
+How many calories are in a small Coke?,in_scope
+What's the price of a medium fries?,in_scope
+Who invented the telephone?,out_of_scope
+What's the square root of 144?,out_of_scope
+Who invented the telephone?,out_of_scope
+Why is the sky blue?,out_of_scope
+I'd like to add a salad to my order.,in_scope
+Do you know how to code?,out_of_scope
+What are the ingredients in the salad?,in_scope
+I'd like to order a burger.,in_scope
+How long will it take to get my food?,in_scope
+What's your favorite color?,out_of_scope
+Can I get a large fries?,in_scope
+Can I place an order for pickup?,in_scope
+What's the capital of France?,out_of_scope
+Who invented the telephone?,out_of_scope
+Why is the sky blue?,out_of_scope
+Tell me about space exploration.,out_of_scope
+What's the price of a chicken sandwich?,in_scope
+Do you know how to code?,out_of_scope
+Who invented the telephone?,out_of_scope
+How long will it take to get my food?,in_scope
+Tell me a joke.,out_of_scope
+What are the ingredients in the salad?,in_scope
+How's the weather today?,out_of_scope
+Who won the last football match?,out_of_scope
+qwerty1234!,out_of_scope
+Can I modify my order?,in_scope
+Why is the sky blue?,out_of_scope
+How much does a large Coke cost?,in_scope
+What day is it today?,out_of_scope
+Who is the president of the USA?,out_of_scope
+How many calories are in a small Coke?,in_scope
+Tell me about space exploration.,out_of_scope
+Can I place an order for pickup?,in_scope
+Tell me about space exploration.,out_of_scope
+How many calories are in a small Coke?,in_scope
+I'd like to order a burger.,in_scope
+Can I place an order for pickup?,in_scope
+Who won the last football match?,out_of_scope
+Tell me a fun fact.,out_of_scope
+Who invented the telephone?,out_of_scope
+Do you have any vegetarian options?,in_scope
+Can I change my drink to a large Sprite?,in_scope
+What's the price of a chicken sandwich?,in_scope
+What's the square root of 144?,out_of_scope
+Can I change my drink to a large Sprite?,in_scope
+How's the weather today?,out_of_scope
+What's the square root of 144?,out_of_scope
+Do you know how to code?,out_of_scope
+What's the population of Japan?,out_of_scope
+Tell me a fun fact.,out_of_scope
+Tell me a joke.,out_of_scope
+What's the population of Japan?,out_of_scope
+What's the price of a medium fries?,in_scope
+Tell me a joke.,out_of_scope
+What are the ingredients in the salad?,in_scope
+Who invented the telephone?,out_of_scope
+What are the ingredients in the salad?,in_scope
+Can I get extra cheese on my burger?,in_scope
+What are the ingredients in the salad?,in_scope
+I'd like a coffee with no sugar.,in_scope
+qwerty1234!,out_of_scope
+I'd like to order a medium fries and a water.,in_scope
+Do you know how to solve calculus problems?,out_of_scope
+How many calories are in a small Coke?,in_scope
+Tell me about space exploration.,out_of_scope
+Do you know how to solve calculus problems?,out_of_scope
+Do you offer gluten-free buns?,in_scope
+What's the meaning of life?,out_of_scope
+What's your favorite color?,out_of_scope
+I'd like a coffee with no sugar.,in_scope
+What's the price of a chicken sandwich?,in_scope
+Tell me a joke.,out_of_scope
+Who won the last football match?,out_of_scope
+What's 2 + 2?,out_of_scope
+What's the price of a medium fries?,in_scope
+I'd like a coffee with no sugar.,in_scope
+What's 2 + 2?,out_of_scope
+What's your favorite color?,out_of_scope
+Who won the last football match?,out_of_scope
+What's the distance between the Earth and the Moon?,out_of_scope
+What's the capital of France?,out_of_scope
+What's the price of a chicken sandwich?,in_scope
+What is the nutritional info for a cheeseburger?,in_scope
+Who won the last football match?,out_of_scope
+Tell me a joke.,out_of_scope
+What's the tallest building in the world?,out_of_scope
+I'd like to order a medium fries and a water.,in_scope
+Can I modify my order?,in_scope
+Who won the last football match?,out_of_scope
+What are the ingredients in the salad?,in_scope
+Who won the last football match?,out_of_scope
+I'd like to add a salad to my order.,in_scope
+Do you know how to code?,out_of_scope
+Do you have any vegetarian options?,in_scope
+What's the meaning of life?,out_of_scope
+Who is the president of the USA?,out_of_scope
+I'd like to add a salad to my order.,in_scope
+Can I modify my order?,in_scope
+Who won the last football match?,out_of_scope
+Do you know how to code?,out_of_scope
+Do you have any vegetarian options?,in_scope
+How much does a large Coke cost?,in_scope
+qwerty1234!,out_of_scope
+Can I change my drink to a large Sprite?,in_scope
+Why is the sky blue?,out_of_scope
+Tell me a fun fact.,out_of_scope
+What's the price of a medium fries?,in_scope
+What's the square root of 144?,out_of_scope
+Who won the last football match?,out_of_scope
+I'd like to order a medium fries and a water.,in_scope
+Can I change my drink to a large Sprite?,in_scope
+Do you offer gluten-free buns?,in_scope
+What's the population of Japan?,out_of_scope
+qwerty1234!,out_of_scope
+How many calories are in a small Coke?,in_scope
+I'd like a coffee with no sugar.,in_scope
+How much does a large Coke cost?,in_scope
+Can I get a large fries?,in_scope
+Tell me about space exploration.,out_of_scope
+What's your favorite color?,out_of_scope
+Can I modify my order?,in_scope
+Who invented the telephone?,out_of_scope
+Do you have any vegetarian options?,in_scope
+What are the ingredients in the salad?,in_scope
+What's the distance between the Earth and the Moon?,out_of_scope
+What's the square root of 144?,out_of_scope
+Why is the sky blue?,out_of_scope
+What's the square root of 144?,out_of_scope
+Who won the last football match?,out_of_scope
+What's the population of Japan?,out_of_scope
+Who won the last football match?,out_of_scope
+I'd like to order a medium fries and a water.,in_scope
+What day is it today?,out_of_scope
+How many calories are in a small Coke?,in_scope
+Tell me a fun fact.,out_of_scope
+I'd like to order a medium fries and a water.,in_scope
+How long will it take to get my food?,in_scope
+Can I place an order for pickup?,in_scope
+Tell me a fun fact.,out_of_scope
+What's the capital of France?,out_of_scope
+Can I change my drink to a large Sprite?,in_scope
+I'd like a coffee with no sugar.,in_scope
+What's the meaning of life?,out_of_scope
+How much does a large Coke cost?,in_scope
+What's the price of a chicken sandwich?,in_scope
+What's the distance between the Earth and the Moon?,out_of_scope
+What's the price of a medium fries?,in_scope
+Tell me about space exploration.,out_of_scope
+I'd like to add a salad to my order.,in_scope
+What's your favorite color?,out_of_scope
+Tell me a joke.,out_of_scope
+Can I place an order for pickup?,in_scope
+Tell me a joke.,out_of_scope
+I'd like to cancel my order.,in_scope
