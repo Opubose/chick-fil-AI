@@ -2,6 +2,8 @@ from transformers import pipeline
 from sentence_transformers import SentenceTransformer
 import spacy
 import numpy as np
+import boto3 as boto
+from order import Order
 
 binary_model = "/backend/resources/api-resources/models/scope_classifier"
 binary_model_tokenizer = "/backend/resources/api-resources/models/scope_classifier"
@@ -10,6 +12,12 @@ embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 llm_model = "meta-llama/Llama-2-7b-chat-hf"
 llm_nlp = pipeline("text-classification", model=llm_model)
 entity_nlp = spacy.load("en_core_web_sm")
+dynamodb = boto.resource('dynamodb', 
+                        aws_access_key_id=os.getenv('AWS_ACCESS_KEY'),
+                        aws_secret_access_key=os.getenv('AWS_SECRET_KEY'),
+                        region_name='us-east-1')
+menu = dynamodb.Table('CFA-Data')
+order = Order()
 
 INTENTS = {
     "order": "placing an order for food or drinks",
@@ -81,16 +89,134 @@ def order_handler(low_level_intent, entities):
     #for cancel: just scrap the entire order and jsonify return ("Ok, I've cancelled your order")
     #for info: return the nutritional information (only main ones (calories, fat, carb, sugar, protein)) of the items currently in the order
 
+
 def place_order(entities):
-    pass
+    global order
+    food_items = entities['food_items']
+    if not food_items:
+        return "No food items were found in your order."
+
+    modifiers = entities['modifiers']
+    quantities = entities['quantities']
+
+    items_added = []
+
+    for i, food_item in enumerate(food_items):
+        quantity = quantities[i] if i < len(quantities) else 1
+        db_response = table.get_item(Key={'Item': food_item})
+
+        if "Item" in db_response:
+            matched_item = db_response['Item']
+            order.add_item(matched_item['Item'], quantity=quantity)
+            items_added.append(f"{quantity} {matched_item['Item']}")
+        else:
+            return f"Sorry. we don't have an item called {food_item} on the menu."
+    
+    total_price = order.get_total_price(menu)
+
+    if items_added:
+        if len(items_added) == 1:
+            order_str = items_added[0]
+        else:
+            order_str = ', '.join(items_added[:-1]) + f", and {items_added[-1]}"
+        return f"{item_string} have been added to your order. The total will be ${total_price:.2f}."
+    else:
+        return "No items were added to your order"
+
+
 def modify_order(entities):
-    pass
+    global order
+    food_items = entities['food_items']
+    quantities = entities['quantities']
+
+    if not food_items:
+        return "No food items were found to modify in your order."
+    
+    modified_items = []
+
+    for i, food_item in enumerate(food_items):
+        quantity = quantities[i] if i < len(quantities) else 1
+
+        response = table.get_item(Key={'Item': food_item})
+
+        if 'Item' in response:
+            matched_item = response['Item']
+            
+            if quantity == 0:
+                order.remove_item(matched_item['Item'])
+                modified_items.append(f"Removed {matched_item['Item']} from your order")
+            else:
+                order.modify_item(matched_item['Item'], quantity)
+                modified_items.append(f"Updated {matched_item['Item']} to {quantity} in your order")
+        else:
+            # Handle case when item is not found in the menu
+            return f"Sorry, we couldn't find '{food_item}' on the menu."
+    
+    if modified_items:
+        modified_string = ', '.join(modified_items[:-1]) + f", and {modified_items[-1]}" if len(modified_items) > 1 else modified_items[0]
+        return f"{modified_string}. Your order has been updated."
+    else:
+        return "No changes were made to your order."
+
+
 def get_order_info(entities):
-    pass
+    global order
+
+    if not order.get_total_items():
+        return "You don't have anything in your order yet."
+    
+    nutritional_info = {}
+
+    for item, quantity in order.get_total_items().items():
+        response = table.get_item(Key={'Item': item})
+
+        if 'Item' in response:
+            menu_item = response['Item']
+
+            nutritional_info[item] = {
+                'Calories': menu_item['Calories'] * quantity,
+                'Fat': menu_item['Fat'] * quantity,
+                'Carbohydrates': menu_item['Carbohydrates'] * quantity,
+                'Sugar': menu_item['Sugar'] * quantity,
+                'Protein': menu_item['Protein'] * quantity,
+            }
+        else:
+            return f"Sorry, we couldn't find nutritional information for '{item}'."
+    
+    summary_lines = []
+    for item, info in nutritional_info.items():
+        summary_lines.append(
+            f"{item}: {info['Calories']} calories, {info['Fat']}g fat, "
+            f"{info['Carbohydrates']}g carbohydrates, {info['Sugar']}g sugar, "
+            f"{info['Protein']}g protein."
+        )
+    return "\n".join(summary_lines)
+
+
 def get_order_status():
-    pass
+    global order
+
+    if not order.get_total_items():
+        return "Your order is currently empty."
+    
+    order_items = order.get_total_items()
+    order_details = []
+
+    for item, quantity in order_items.items():
+        order_details.append(f"{quantity}x {item}")
+
+    # Join all items into a single string
+    order_summary = ", ".join(order_details)
+
+    return f"Your current order is {order_summary}."
+
+
 def cancel_order():
-    pass
+    global order
+
+    order.clear_order()
+
+    return "Okay, I have canceled your order."
 
 
 '''
