@@ -1,16 +1,33 @@
 from transformers import pipeline
 from sentence_transformers import SentenceTransformer
+from huggingface_hub import login
 import spacy
 import numpy as np
 
-binary_model = "/backend/resources/api-resources/models/scope_classifier"
-binary_model_tokenizer = "/backend/resources/api-resources/models/scope_classifier"
-scope_classifier = pipeline("text-classification", model=binary_model)
+# Step 1: Login to Hugging Face using the token
+# Replace 'hf_YourGeneratedTokenHere123456789' with your actual Hugging Face token.
+login("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")
+
+# Use the absolute path to your saved model directory
+trained_model_path = "../resources/api-resources/models/scope_classifier"
+
+# Load your trained model and tokenizer using pipeline
+scope_classifier = pipeline("text-classification", model=trained_model_path, tokenizer=trained_model_path)
+
+# Load SentenceTransformer for intent detection
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
-llm_model = "meta-llama/Llama-2-7b-chat-hf"
-llm_nlp = pipeline("text-classification", model=llm_model)
+
+# Load the LLaMA model with authentication using the token
+# llm_model = "meta-llama/Llama-2-7b-chat-hf"
+llm_model = "distilbert-base-uncased"
+
+# Step 2: Pass `use_auth_token=True` for gated model access
+llm_nlp = pipeline("text-classification", model=llm_model, use_auth_token=True)
+
+# Load spaCy for entity extraction
 entity_nlp = spacy.load("en_core_web_sm")
 
+# Define intents and corresponding descriptions
 INTENTS = {
     "order": "placing an order for food or drinks",
     "menu": "asking about the available menu items",
@@ -21,6 +38,7 @@ INTENTS = {
     "nutrition": "asking about the nutritional information of items"
 }
 
+# Create embeddings for each intent description using SentenceTransformer
 intent_embeddings_map = {intent: embedding_model.encode(description) for intent, description in INTENTS.items()}
 
 def get_intent_and_entities(customer_message):

@@ -45,6 +45,7 @@ function MainPage() {
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data.bot_message);
         return data.bot_message;  
       } else {
         return "Sorry, I'm having trouble connecting to the server.";

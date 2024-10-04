@@ -1,7 +1,507 @@
 text,label
-"I'd like to order a burger.",in_scope
-"How many calories are in a large fries?",in_scope
-"Can I cancel my order?",in_scope
-"What's the capital of France?",out_of_scope
-"Tell me a joke.",out_of_scope
-"qwerty1234!",out_of_scope
+I'd like to order a burger.,in_scope
+How many calories are in a large fries?,in_scope
+Can I cancel my order?,in_scope
+What's the capital of France?,out_of_scope
+Tell me a joke.,out_of_scope
+qwerty1234!,out_of_scope
+Can I get a side salad instead of fries?,in_scope
+Do you have any seasonal menu items?,in_scope
+Can I get extra napkins?,in_scope
+I'd like to modify my order.,in_scope
+Can I have my burger without onions?,in_scope
+Is the milkshake made with real ice cream?,in_scope
+Can I get extra napkins?,in_scope
+Is the milkshake made with real ice cream?,in_scope
+Can I get a side of ranch?,in_scope
+How many nuggets come in a 10-piece meal?,in_scope
+I'd like to change the delivery address.,in_scope
+Can I get a water cup?,in_scope
+Do you serve breakfast all day?,in_scope
+Do you have a loyalty program?,in_scope
+Can I order extra sauce on the side?,in_scope
+What flavors of milkshakes do you have?,in_scope
+What time do you open?,in_scope
+Is the fish sandwich available year-round?,in_scope
+Is the chicken spicy?,in_scope
+Do you have nutritional information?,in_scope
+Can I get a combo meal with a drink?,in_scope
+Can I see the menu?,in_scope
+Is the fish sandwich available year-round?,in_scope
+Can I have my burger without onions?,in_scope
+Can I order extra sauce on the side?,in_scope
+Is the milkshake made with real ice cream?,in_scope
+How many nuggets come in a 10-piece meal?,in_scope
+What are the ingredients in the Caesar salad?,in_scope
+Can I order online?,in_scope
+What are the ingredients in the Caesar salad?,in_scope
+Can I split my order into two receipts?,in_scope
+I'd like to modify my order.,in_scope
+Is the chicken spicy?,in_scope
+Can I have my burger without onions?,in_scope
+I'd like to change the delivery address.,in_scope
+Can I order extra sauce on the side?,in_scope
+How many calories are in the grilled chicken?,in_scope
+Do you offer a student discount?,in_scope
+What flavors of milkshakes do you have?,in_scope
+Do you offer contactless delivery?,in_scope
+Can I get extra napkins?,in_scope
+How long will my order take?,in_scope
+Can I place an order for pickup?,in_scope
+Can I get a side salad instead of fries?,in_scope
+Can I get a water cup?,in_scope
+Can I pay with a gift card?,in_scope
+I'd like to place a large order for a party.,in_scope
+Can I have my burger without onions?,in_scope
+Is there a kids' menu?,in_scope
+How many calories are in the grilled chicken?,in_scope
+What is your best-selling item?,in_scope
+How much is a small soda?,in_scope
+I'd like to change the delivery address.,in_scope
+Do you have a loyalty program?,in_scope
+Can I get a receipt for my order?,in_scope
+Can I get extra napkins?,in_scope
+Can I get a water cup?,in_scope
+Is the chicken spicy?,in_scope
+Can I order online?,in_scope
+Do you offer contactless delivery?,in_scope
+Do you offer contactless delivery?,in_scope
+Do you offer contactless delivery?,in_scope
+Can I pay in cash?,in_scope
+Can I have my burger without onions?,in_scope
+Do you offer gluten-free options?,in_scope
+I'd like to modify my order.,in_scope
+Do you have any seasonal menu items?,in_scope
+Do you have any vegetarian options?,in_scope
+Do you serve breakfast all day?,in_scope
+Do you have iced coffee?,in_scope
+Can I get a combo meal with a drink?,in_scope
+Is the milkshake made with real ice cream?,in_scope
+Can I get a combo with no drink?,in_scope
+Do you have iced coffee?,in_scope
+I want a chicken sandwich.,in_scope
+Can I get a discount?,in_scope
+Can I get a receipt for my order?,in_scope
+Is this location pet-friendly?,in_scope
+Can I get a combo with no drink?,in_scope
+Do you offer a student discount?,in_scope
+Can I order catering?,in_scope
+Can I add a dessert to my order?,in_scope
+Do you have any vegetarian options?,in_scope
+How much is a small soda?,in_scope
+Can I order for a future date?,in_scope
+Is there a drive-thru?,in_scope
+Do you offer gluten-free options?,in_scope
+Is there a kids' menu?,in_scope
+Can I get a side salad instead of fries?,in_scope
+Can I pay in cash?,in_scope
+Do you serve breakfast all day?,in_scope
+Do you have nutritional information?,in_scope
+Can I pay with a gift card?,in_scope
+Do you have a loyalty program?,in_scope
+Can I order extra sauce on the side?,in_scope
+Can I get a side salad instead of fries?,in_scope
+Can I get a water cup?,in_scope
+Can I get a side of ranch?,in_scope
+Can I get a combo meal with a drink?,in_scope
+Are the fries gluten-free?,in_scope
+Are the fries gluten-free?,in_scope
+What are the ingredients in the Caesar salad?,in_scope
+Is this location pet-friendly?,in_scope
+Is the chicken spicy?,in_scope
+Do you have nutritional information?,in_scope
+How long will my order take?,in_scope
+Are the fries gluten-free?,in_scope
+Do you offer contactless delivery?,in_scope
+Do you have a loyalty program?,in_scope
+Can I get a receipt for my order?,in_scope
+What are the ingredients in the Caesar salad?,in_scope
+Do you have sweet tea?,in_scope
+Can I see the menu?,in_scope
+How long will my order take?,in_scope
+Is the fish sandwich available year-round?,in_scope
+Is the milkshake made with real ice cream?,in_scope
+What are the ingredients in the Caesar salad?,in_scope
+Do you have iced coffee?,in_scope
+Can I order online?,in_scope
+Is the chicken spicy?,in_scope
+I'd like to modify my order.,in_scope
+Is the fish sandwich available year-round?,in_scope
+Is there a kids' menu?,in_scope
+Are the fries gluten-free?,in_scope
+Can I get a water cup?,in_scope
+Do you have a loyalty program?,in_scope
+Is there a kids' menu?,in_scope
+Is there a kids' menu?,in_scope
+Is the chicken spicy?,in_scope
+Can I get a receipt for my order?,in_scope
+Is there a drive-thru?,in_scope
+What are the ingredients in the Caesar salad?,in_scope
+What are your hours on weekends?,in_scope
+Do you have sweet tea?,in_scope
+What time do you open?,in_scope
+I'd like to change the delivery address.,in_scope
+Can I get extra napkins?,in_scope
+Can I pay in cash?,in_scope
+Do you have sweet tea?,in_scope
+How much is a small soda?,in_scope
+Can I see the menu?,in_scope
+I want a chicken sandwich.,in_scope
+Can I see the menu?,in_scope
+Can I get a side salad instead of fries?,in_scope
+Do you have hot tea?,in_scope
+Is this location pet-friendly?,in_scope
+How long will my order take?,in_scope
+How many nuggets come in a 10-piece meal?,in_scope
+Is the chicken spicy?,in_scope
+Is the chicken spicy?,in_scope
+I want a chicken sandwich.,in_scope
+What are the ingredients in the Caesar salad?,in_scope
+Do you offer a student discount?,in_scope
+Can I get a discount?,in_scope
+What are your hours on weekends?,in_scope
+Can I get a combo meal with a drink?,in_scope
+I'd like to change the delivery address.,in_scope
+I want a chicken sandwich.,in_scope
+Can I get a receipt for my order?,in_scope
+Can I pay in cash?,in_scope
+How many nuggets come in a 10-piece meal?,in_scope
+Can I get a combo with no drink?,in_scope
+Is there a kids' menu?,in_scope
+I want a chicken sandwich.,in_scope
+Can I place an order for pickup?,in_scope
+Can I order catering?,in_scope
+How many nuggets come in a 10-piece meal?,in_scope
+Do you serve breakfast all day?,in_scope
+Can I get a water cup?,in_scope
+What are your hours on weekends?,in_scope
+Do you have iced coffee?,in_scope
+Do you have iced coffee?,in_scope
+Do you have nutritional information?,in_scope
+Can I get a receipt for my order?,in_scope
+Do you have a loyalty program?,in_scope
+Can I get a side salad instead of fries?,in_scope
+Can I get a receipt for my order?,in_scope
+What are your hours on weekends?,in_scope
+Can I get extra napkins?,in_scope
+Do you offer a student discount?,in_scope
+Can I place an order for pickup?,in_scope
+Can I get extra napkins?,in_scope
+Is there a drive-thru?,in_scope
+Can I pay in cash?,in_scope
+Do you offer contactless delivery?,in_scope
+Is the chicken spicy?,in_scope
+Can I get extra napkins?,in_scope
+What is your best-selling item?,in_scope
+Do you offer contactless delivery?,in_scope
+What time do you open?,in_scope
+How much is a small soda?,in_scope
+What time do you open?,in_scope
+Can I get a discount?,in_scope
+How long will my order take?,in_scope
+Is there a drive-thru?,in_scope
+Is there a drive-thru?,in_scope
+Is there a kids' menu?,in_scope
+I'd like to change the delivery address.,in_scope
+Do you have sweet tea?,in_scope
+Can I see the menu?,in_scope
+Can I place an order for pickup?,in_scope
+Can I order catering?,in_scope
+Can I pay with a gift card?,in_scope
+Can I get a receipt for my order?,in_scope
+Do you offer gluten-free options?,in_scope
+Can I get a combo meal with a drink?,in_scope
+How many nuggets come in a 10-piece meal?,in_scope
+Is the chicken spicy?,in_scope
+Do you serve breakfast all day?,in_scope
+How many calories are in the grilled chicken?,in_scope
+Do you have a loyalty program?,in_scope
+Can I pay in cash?,in_scope
+Do you have any vegetarian options?,in_scope
+Are the fries gluten-free?,in_scope
+What is your best-selling item?,in_scope
+How many calories are in the grilled chicken?,in_scope
+Is the milkshake made with real ice cream?,in_scope
+Do you serve breakfast all day?,in_scope
+Can I order for a future date?,in_scope
+Do you have iced coffee?,in_scope
+Can I pay in cash?,in_scope
+Do you have any seasonal menu items?,in_scope
+Can I get a receipt for my order?,in_scope
+Do you offer contactless delivery?,in_scope
+Is there a kids' menu?,in_scope
+What is your best-selling item?,in_scope
+Is there a drive-thru?,in_scope
+Can I order online?,in_scope
+Can I place an order for pickup?,in_scope
+Do you have nutritional information?,in_scope
+Can I get a discount?,in_scope
+Do you have any seasonal menu items?,in_scope
+Do you have any seasonal menu items?,in_scope
+Are the fries gluten-free?,in_scope
+Are the fries gluten-free?,in_scope
+Do you have any seasonal menu items?,in_scope
+What are the ingredients in the Caesar salad?,in_scope
+Can I order extra sauce on the side?,in_scope
+What is your best-selling item?,in_scope
+Can I get a combo with no drink?,in_scope
+I want a chicken sandwich.,in_scope
+Can I see the menu?,in_scope
+I'd like to place a large order for a party.,in_scope
+How much is a small soda?,in_scope
+What is your best-selling item?,in_scope
+Can I pay with a gift card?,in_scope
+Can I get a combo with no drink?,in_scope
+Is there a drive-thru?,in_scope
+Is the milkshake made with real ice cream?,in_scope
+Can I add a dessert to my order?,in_scope
+What is the fastest car in the world?,out_of_scope
+Who was the first man on the moon?,out_of_scope
+What's the weather like today?,out_of_scope
+Who painted the Mona Lisa?,out_of_scope
+Who was the first man on the moon?,out_of_scope
+What is the capital of Germany?,out_of_scope
+Can you fly?,out_of_scope
+Can you fly?,out_of_scope
+What is the meaning of life?,out_of_scope
+How do I learn a new language?,out_of_scope
+What's the weather like today?,out_of_scope
+What's your favorite movie?,out_of_scope
+Can you help me with my homework?,out_of_scope
+How do I cook pasta?,out_of_scope
+Who discovered electricity?,out_of_scope
+How do I fix a flat tire?,out_of_scope
+Who wrote 'To Kill a Mockingbird'?,out_of_scope
+What's your favorite color?,out_of_scope
+What is the chemical formula for water?,out_of_scope
+What does the fox say?,out_of_scope
+What's your favorite movie?,out_of_scope
+Who painted the Mona Lisa?,out_of_scope
+Tell me a story.,out_of_scope
+Who directed 'Inception'?,out_of_scope
+Who invented the internet?,out_of_scope
+How do I reset my phone?,out_of_scope
+What is the longest river in the world?,out_of_scope
+What is the smallest country?,out_of_scope
+How do I change a tire?,out_of_scope
+Who was the first man on the moon?,out_of_scope
+Who painted the Mona Lisa?,out_of_scope
+Who painted the Mona Lisa?,out_of_scope
+What is the meaning of life?,out_of_scope
+How do I learn a new language?,out_of_scope
+Who won the World Series?,out_of_scope
+How do I reset my phone?,out_of_scope
+Can you fly?,out_of_scope
+What is the airspeed velocity of an unladen swallow?,out_of_scope
+Who is the richest person in the world?,out_of_scope
+What's your favorite movie?,out_of_scope
+What is the periodic table?,out_of_scope
+Who directed 'Inception'?,out_of_scope
+What's the weather like today?,out_of_scope
+Can you help me with my homework?,out_of_scope
+What time is it in New York?,out_of_scope
+What is the capital of Germany?,out_of_scope
+What is the capital of Germany?,out_of_scope
+How do I learn a new language?,out_of_scope
+Can you recommend a movie?,out_of_scope
+What does the fox say?,out_of_scope
+What's 2 + 2?,out_of_scope
+Tell me a story.,out_of_scope
+What is the capital of Germany?,out_of_scope
+Tell me a story.,out_of_scope
+What is the chemical formula for water?,out_of_scope
+Who won the World Series?,out_of_scope
+Can you recommend a movie?,out_of_scope
+Who was the first man on the moon?,out_of_scope
+How do I fix a flat tire?,out_of_scope
+Tell me a story.,out_of_scope
+What is the national animal of Canada?,out_of_scope
+What is the national animal of Canada?,out_of_scope
+Can you dance?,out_of_scope
+Can you dance?,out_of_scope
+How many stars are in the sky?,out_of_scope
+How do I fix a flat tire?,out_of_scope
+What is the fastest car in the world?,out_of_scope
+Can you speak French?,out_of_scope
+What's 2 + 2?,out_of_scope
+What's the weather like today?,out_of_scope
+Can you play a song for me?,out_of_scope
+What is the chemical formula for water?,out_of_scope
+Can you recommend a movie?,out_of_scope
+Can you draw?,out_of_scope
+Can you speak French?,out_of_scope
+What is the national animal of Canada?,out_of_scope
+Can you draw?,out_of_scope
+Can you draw?,out_of_scope
+How tall is Mount Everest?,out_of_scope
+Can you sing?,out_of_scope
+Can you sing?,out_of_scope
+Who wrote 'To Kill a Mockingbird'?,out_of_scope
+Who wrote 'To Kill a Mockingbird'?,out_of_scope
+Who is the richest person in the world?,out_of_scope
+Can you sing?,out_of_scope
+What does the fox say?,out_of_scope
+What is the smallest country?,out_of_scope
+What's your favorite movie?,out_of_scope
+What's your favorite color?,out_of_scope
+What is the boiling point of water?,out_of_scope
+How do I change a tire?,out_of_scope
+What's your favorite color?,out_of_scope
+What's the weather like today?,out_of_scope
+What is the speed of light?,out_of_scope
+Who discovered electricity?,out_of_scope
+Who wrote 'To Kill a Mockingbird'?,out_of_scope
+Who was the first man on the moon?,out_of_scope
+What is the periodic table?,out_of_scope
+What time is it in New York?,out_of_scope
+Who was the first man on the moon?,out_of_scope
+Who painted the Mona Lisa?,out_of_scope
+What's 2 + 2?,out_of_scope
+What is the boiling point of water?,out_of_scope
+What is the chemical formula for water?,out_of_scope
+Can you help me with my homework?,out_of_scope
+Who is the president of the United States?,out_of_scope
+What's the weather like today?,out_of_scope
+Can you draw?,out_of_scope
+What is the airspeed velocity of an unladen swallow?,out_of_scope
+Who discovered electricity?,out_of_scope
+What is the fastest car in the world?,out_of_scope
+What time is it in New York?,out_of_scope
+Can you solve a math problem?,out_of_scope
+Who invented the internet?,out_of_scope
+What is the national animal of Canada?,out_of_scope
+How do I reset my phone?,out_of_scope
+What time is it in New York?,out_of_scope
+Who invented the internet?,out_of_scope
+What is the fastest car in the world?,out_of_scope
+How tall is Mount Everest?,out_of_scope
+Who directed 'Inception'?,out_of_scope
+What's the weather like today?,out_of_scope
+What is the periodic table?,out_of_scope
+What is the square root of 16?,out_of_scope
+Who wrote 'To Kill a Mockingbird'?,out_of_scope
+What is the chemical formula for water?,out_of_scope
+Who directed 'Inception'?,out_of_scope
+What does the fox say?,out_of_scope
+How many stars are in the sky?,out_of_scope
+What is 10 factorial?,out_of_scope
+Can you speak French?,out_of_scope
+Who is the president of the United States?,out_of_scope
+Who discovered electricity?,out_of_scope
+What's your favorite color?,out_of_scope
+Can you play a song for me?,out_of_scope
+What is the airspeed velocity of an unladen swallow?,out_of_scope
+What is the meaning of life?,out_of_scope
+What time is it in New York?,out_of_scope
+Who painted the Mona Lisa?,out_of_scope
+Who directed 'Inception'?,out_of_scope
+Can you play a song for me?,out_of_scope
+Can you fly?,out_of_scope
+Can you help me with my homework?,out_of_scope
+Do aliens exist?,out_of_scope
+What's 2 + 2?,out_of_scope
+Can you sing?,out_of_scope
+Can you recommend a movie?,out_of_scope
+What is the national animal of Canada?,out_of_scope
+What is the fastest car in the world?,out_of_scope
+Can you help me with my homework?,out_of_scope
+Who painted the Mona Lisa?,out_of_scope
+How do I reset my phone?,out_of_scope
+Can you solve a math problem?,out_of_scope
+Can you help me with my homework?,out_of_scope
+What does the fox say?,out_of_scope
+Can you recommend a movie?,out_of_scope
+Can you fly?,out_of_scope
+Who built the pyramids?,out_of_scope
+How do I reset my phone?,out_of_scope
+Who is the president of the United States?,out_of_scope
+What is the smallest country?,out_of_scope
+Who discovered electricity?,out_of_scope
+Can you recommend a movie?,out_of_scope
+Who built the pyramids?,out_of_scope
+What does the fox say?,out_of_scope
+How many stars are in the sky?,out_of_scope
+Who was the first man on the moon?,out_of_scope
+Who directed 'Inception'?,out_of_scope
+Who invented the internet?,out_of_scope
+Who discovered electricity?,out_of_scope
+Can you sing?,out_of_scope
+What is the longest river in the world?,out_of_scope
+What is the national animal of Canada?,out_of_scope
+What's the weather like today?,out_of_scope
+How many stars are in the sky?,out_of_scope
+How do I reset my phone?,out_of_scope
+What is the periodic table?,out_of_scope
+Do aliens exist?,out_of_scope
+What is the capital of Germany?,out_of_scope
+What's your favorite color?,out_of_scope
+What's your favorite color?,out_of_scope
+What is the boiling point of water?,out_of_scope
+Can you help me with my homework?,out_of_scope
+What time is it in New York?,out_of_scope
+How do I cook pasta?,out_of_scope
+What is 10 factorial?,out_of_scope
+What's your favorite movie?,out_of_scope
+Who was the first man on the moon?,out_of_scope
+How do I bake a cake?,out_of_scope
+What is quantum physics?,out_of_scope
+Who was the first man on the moon?,out_of_scope
+What is the chemical formula for water?,out_of_scope
+What is the smallest country?,out_of_scope
+What is quantum physics?,out_of_scope
+Can you speak French?,out_of_scope
+How many stars are in the sky?,out_of_scope
+What is quantum physics?,out_of_scope
+How do I change a tire?,out_of_scope
+What's 2 + 2?,out_of_scope
+What is the airspeed velocity of an unladen swallow?,out_of_scope
+What time is it in New York?,out_of_scope
+What is the chemical formula for water?,out_of_scope
+What's the weather like today?,out_of_scope
+What is the periodic table?,out_of_scope
+Can you draw?,out_of_scope
+What's the weather like today?,out_of_scope
+How do I fix a flat tire?,out_of_scope
+Can you play a song for me?,out_of_scope
+Can you help me with my homework?,out_of_scope
+Can you help me with my homework?,out_of_scope
+What is the square root of 16?,out_of_scope
+What is the national animal of Canada?,out_of_scope
+What is the smallest country?,out_of_scope
+Who won the World Series?,out_of_scope
+How do I cook pasta?,out_of_scope
+How do I fix a flat tire?,out_of_scope
+What is the airspeed velocity of an unladen swallow?,out_of_scope
+What is the smallest country?,out_of_scope
+What is quantum physics?,out_of_scope
+What is the fastest car in the world?,out_of_scope
+Can you draw?,out_of_scope
+Who painted the Mona Lisa?,out_of_scope
+Who is the richest person in the world?,out_of_scope
+Can you play a song for me?,out_of_scope
+What is the meaning of life?,out_of_scope
+Who is the president of the United States?,out_of_scope
+What is the largest ocean on Earth?,out_of_scope
+How tall is Mount Everest?,out_of_scope
+Can you dance?,out_of_scope
+How do I learn a new language?,out_of_scope
+Can you sing?,out_of_scope
+What is the boiling point of water?,out_of_scope
+How tall is Mount Everest?,out_of_scope
+Who built the pyramids?,out_of_scope
+What does the fox say?,out_of_scope
+What is the speed of light?,out_of_scope
+Can you fly?,out_of_scope
+What's the weather like today?,out_of_scope
+What is the capital of Germany?,out_of_scope
+Who discovered electricity?,out_of_scope
+What is the smallest country?,out_of_scope
+What is the national animal of Canada?,out_of_scope
+How many stars are in the sky?,out_of_scope
+Who invented the internet?,out_of_scope
+How many stars are in the sky?,out_of_scope
+What does the fox say?,out_of_scope
+How do I reset my phone?,out_of_scope
+Can you recommend a movie?,out_of_scope
+Who is the president of the United States?,out_of_scope
+What's your favorite color?,out_of_scope
