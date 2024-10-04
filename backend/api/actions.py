@@ -4,13 +4,12 @@ import spacy
 import numpy as np
 import boto3 as boto
 from order import Order
+import response_generator
 
-binary_model = "/backend/resources/api-resources/models/scope_classifier"
-binary_model_tokenizer = "/backend/resources/api-resources/models/scope_classifier"
+binary_model = "./backend/resources/api-resources/models/scope_classifier"
+binary_model_tokenizer = "./backend/resources/api-resources/models/scope_classifier"
 scope_classifier = pipeline("text-classification", model=binary_model)
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
-llm_model = "meta-llama/Llama-2-7b-chat-hf"
-llm_nlp = pipeline("text-classification", model=llm_model)
 entity_nlp = spacy.load("en_core_web_sm")
 dynamodb = boto.resource('dynamodb', 
                         aws_access_key_id=os.getenv('AWS_ACCESS_KEY'),
@@ -18,15 +17,14 @@ dynamodb = boto.resource('dynamodb',
                         region_name='us-east-1')
 menu = dynamodb.Table('CFA-Data')
 order = Order()
+llama_model = "meta-llama/Llama-2-7b-chat-hf"
+#llm_nlp = pipeline("text-generation", model=llama_model)
+
 
 INTENTS = {
     "order": "placing an order for food or drinks",
     "menu": "asking about the available menu items",
-    "cancel": "request to cancel the current order",
-    "status": "checking the status of the current order",
-    "modify": "request to modify an existing order",
     "help": "asking for help with using the chatbot",
-    "nutrition": "asking about the nutritional information of items"
 }
 
 intent_embeddings_map = {intent: embedding_model.encode(description) for intent, description in INTENTS.items()}
@@ -36,11 +34,11 @@ def get_intent_and_entities(customer_message):
     customer_message_embedding = embedding_model.encode(customer_message)
 
     #ensure query is in scope
-    if not is_in_scope(customer_message):
-        return {
-            'intent': 'invalid',
-            'entities': None
-        }
+    #if not is_in_scope(customer_message):
+    #    return {
+    #        'intent': 'invalid',
+    #        'entities': None
+    #    }
     
     #get intent using cossim
     intent = detect_intent(customer_message_embedding)
@@ -53,10 +51,43 @@ def get_intent_and_entities(customer_message):
         'entities': entities
     }
 
-'''
-initial high level intent detection for:
-order, menu, or help
-'''
+#need to implement order low level intent detection
+def order_handler(low_level_intent, entities):
+    if low_level_intent == 'place':
+        return response_generator.place_order(entities)
+    elif low_level_intent == 'modify':
+        return response_generator.modify_order(entities)
+    elif low_level_intent == 'status':
+        return response_generator.get_order_status()
+    elif low_level_intent == 'cancel':
+        return response_generator.cancel_order()
+    elif low_level_intent == 'nutrition':
+        return response_generator.get_order_info(entities)
+    else:
+        return "Error!"
+
+#need to implement menu low level intent detection
+def menu_handler(low_level_intent, entities):
+    if low_level_intent == "entire_menu":
+        return response_generator.list_entire_menu()
+    elif low_level_intent == "dietary_restrictions":
+        return response_generator.get_items_by_dietary_restriction(entities)
+    elif low_level_intent == "ingredients":
+        return response_generator.get_ingredients(entities)
+    elif low_level_intent == "nutrition":
+        return response_generator.get_nutritional_info(entities)
+    else:
+        return "Error!"
+
+def get_help():
+    return "Hi! I'm Chick-Fil-AI, a natural language processing powered chatbot created to help you handle ordering food at Chick-Fil-A.\nPlease let me know how I can assist you in one of the following areas: ordering related queries and menu related queries.\nUnfortunately, I'm unable to answer queries that are out of my domain knowledge, so please keep that in mind!"
+
+#############################################################################
+#############################################################################
+######################      HELPER FUNCTIONS        #########################
+#############################################################################
+#############################################################################
+
 def detect_intent(customer_message_embedding):
     #calculate vector similarity for each intent vs the customer message
     similarities = {intent: cosine_similarity(customer_message_embedding, intent_embedding)
@@ -274,6 +305,10 @@ def extract_entities(customer_message):
     
     return entities
 
+def cosine_similarity(vec1, vec2):
+    return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
+
 def is_in_scope(customer_message):
     result = scope_classifier(customer_message)
-    return result[0]['label'] == 'in_scope'
+    print(result)
+    return result[0]['label'] == 'LABEL_0'

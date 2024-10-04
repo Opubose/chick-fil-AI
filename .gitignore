@@ -1,6 +1,7 @@
 # Python backend
 __pycache__/
-backend/resources/api-resources/cc.en.300.bin
+backend/resources/api-resources/models 
+backend/resources/api-resources/model-logs
 .env
 *.py[cod]
 *$py.class

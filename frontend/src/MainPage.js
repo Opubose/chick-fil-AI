@@ -17,27 +17,10 @@ function MainPage() {
     }, 1000);
   };
 
-  //mock handling of user message, remove when backend is done
-  // const handleUserMessage = (userMessage) => {
-  //   const newMessage = { id: messages.length + 1, sender: "user", content: userMessage };
-  //   setMessages([...messages, newMessage]);
-
-  //   //mock response for the chatbot
-  //   setTimeout(() => {
-  //     const botResponse = {
-  //       id: messages.length + 2,
-  //       sender: "bot",
-  //       content: `You asked about: "${userMessage}". I'm still learning!`
-  //     };
-  //     setMessages((prevMessages) => [...prevMessages, botResponse]);
-  //   }, 1000);
-  // };
-
-
   // Handle sending a message to the backend
   const sendMessage = async (userMessage) => {
     try {
-      const response = await fetch('http://localhost:5000/chat', {
+      const response = await fetch('http://127.0.0.1:8000/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ customer_message: userMessage }),
@@ -45,6 +28,7 @@ function MainPage() {
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data.bot_message);
         return data.bot_message;  
       } else {
         return "Sorry, I'm having trouble connecting to the server.";

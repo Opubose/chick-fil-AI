@@ -1,8 +1,9 @@
+numpy==1.24.3
+torch==1.13.1
 boto3
-numpy
 spacy
 Flask
-spacy
 transformers
 sentence-transformers
 datasets
+python-dotenv
