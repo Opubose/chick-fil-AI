@@ -80,3 +80,5 @@ docker-compose.override.yml
 *.bak
 *.tmp
 *~
+
+dialogflow-credentials.json
