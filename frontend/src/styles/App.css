@@ -17,6 +17,10 @@
   align-items: center;
 }
 
+.menu-container {
+  padding-bottom: 2%;
+}
+
 .logo-container {
   flex-grow: 1;
   display: flex;
@@ -30,7 +34,7 @@
 
 /* Input container to hold input and arrow */
 .input-container {
-  position: absolute; 
+  position:absolute;
   display: flex;
   align-items: center;
   justify-content: center;
