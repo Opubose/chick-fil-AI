@@ -4,7 +4,7 @@
   flex-direction: column-reverse;
   overflow: scroll;
   scroll-behavior: smooth;
-  height: 55vh;
+  height: 45vh;
 }
 
 .chat {

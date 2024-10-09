@@ -1,4 +1,3 @@
-from openai import OpenAI
 from dotenv import load_dotenv
 import os
 import spacy
@@ -33,20 +32,6 @@ def get_intent_and_entities(customer_message):
         'intent': intent,
         'entities': entities
     }
-
-# def get_intent_and_entities(customer_message):
-#     #get intent using dialogflow
-#     ''' TODO GRACE, AGASTYA
-#     intent = get_intent(customer_message)
-#     '''
-
-#     #get entities using spacy
-#     entities = extract_entities(customer_message)
-
-#     return {
-#         'intent': "intent", #replace with intent
-#         'entities': entities
-#     }
 
 def extract_entities(entities):
     extracted_entities = {
@@ -109,12 +94,11 @@ def order_cancel(entities):
     return "order cancel"
 
 def order_modify(entities):
-    # original_intent = "modifying or changing an order"
-    # extracted_entities = extract_entities(entities)  # Extract entities from the incoming data
-    # database_information = response_generator.modify_order(entities)  # Modify the order in the database
+    original_intent = "modifying or changing an order"
+    extracted_entities = extract_entities(entities)  # Extract entities from the incoming data
+    database_information = response_generator.modify_order(entities)  # Modify the order in the database
 
-    # return construct_output_response(original_intent, extracted_entities, database_information)
-    return "modify order"
+    return construct_output_response(original_intent, extracted_entities, database_information)
 
 def order_nutrition(entities):
     # original_intent = "getting the full nutritional information of the current order"
@@ -133,30 +117,13 @@ def order_place(entities):
     return "order place"
 
 def order_status(entities):
-    # original_intent = "retrieving the current status of an order"
-    # extracted_entities = extract_entities(entities)
-    # database_information = response_generator.get_items_by_dietary_restriction(entities)
+    original_intent = "retrieving the current status of an order"
+    database_information = response_generator.get_order_status()
 
-    # return construct_output_response(original_intent, extracted_entities, database_information)
-    return "order status"
+    return construct_output_response(original_intent, [], database_information)
 
 def construct_output_response(original_intent, extracted_entities, database_information):
-    # Format the entities into a string for display
-    food_items = ', '.join(extracted_entities['food_items'])
-    modifiers = ', '.join(extracted_entities['modifiers'])
-    quantities = ', '.join(extracted_entities['quantities'])
-
-    # Construct the output message
-    response_message = f"Modifying order: {original_intent}.\n"
-    
-    if food_items:
-        response_message += f"Food items: {food_items}.\n"
-    if modifiers:
-        response_message += f"Modifiers: {modifiers}.\n"
-    if quantities:
-        response_message += f"Quantities: {quantities}.\n"
-    
-    return response_message
+    return database_information
 
 # def construct_output_response(original_intent, extracted_entities, database_information):
 #     pass
