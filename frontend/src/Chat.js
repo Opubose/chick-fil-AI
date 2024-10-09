@@ -6,7 +6,6 @@ import botIcon from './icons/cfa-cow-icon.svg';
 function Chat({ messages }) {
   return (
     <div className="chat-container">
-      <button className="menu-button">View Menu</button>
       <div className="chat">
         {messages.map((message) => (
           <div key={message.id} className={`message ${message.sender}`}>

@@ -48,6 +48,49 @@ def place_order(entities):
         return "No items were added to your order"
     
 def modify_order(entities):
+    food_items = entities['food_items']
+    quantities = entities['quantities']
+    modifiers = entities['modifiers']
+    
+    if not food_items:
+        return "No food items were found to modify in your order."
+
+    modified_items = []
+
+    for i, food_item in enumerate(food_items):
+        # Default to 1 if no quantity specified
+        quantity = quantities[i] if i < len(quantities) else 1
+        
+        # Check if the food item exists in the menu (DynamoDB)
+        response = menu.get_item(Key={'Item': food_item})
+
+        if 'Item' in response:
+            matched_item = response['Item']
+            price = float(matched_item['Price'])
+            print(matched_item, price)
+            
+            # Check the modifier for the current food item
+            if modifiers and modifiers[0].lower() == "want":
+                # If the modifier indicates to add or change the quantity
+                order.add_item(food_item, price, quantity)
+                modified_items.append(f"Ok, sure. We added {food_item} to your order.");
+                # modified_items.append(f"Added {food_item} to your order with quantity {quantity} at ${price:.2f} each. Your order includes {order.items.items()}")
+            else:
+                # If the modifier indicates to remove the item
+                order.remove_item(food_item, price)
+                modified_items.append(f"Removed {food_item} from your order.")
+        else:
+            # Handle case when item is not found in the menu
+            modified_items.append(f"Sorry, we couldn't find '{food_item}' on the menu.")
+    print(order.items.items())
+    print(order.total_price)
+    if modified_items:
+        modified_string = ', '.join(modified_items[:-1]) + f", and {modified_items[-1]}" if len(modified_items) > 1 else modified_items[0]
+        return f"{modified_string} Your order has been updated."
+    else:
+        return "No changes were made to your order."
+    
+'''def modify_order(entities):
     global order
     food_items = entities['food_items']
     quantities = entities['quantities']
@@ -79,7 +122,7 @@ def modify_order(entities):
         modified_string = ', '.join(modified_items[:-1]) + f", and {modified_items[-1]}" if len(modified_items) > 1 else modified_items[0]
         return f"{modified_string}. Your order has been updated."
     else:
-        return "No changes were made to your order."
+        return "No changes were made to your order." '''
     
 def get_order_info():
     global order
@@ -113,9 +156,8 @@ def get_order_info():
             f"{info['Protein']}g protein."
         )
     return "\n".join(summary_lines)
-def get_order_status():
-    global order
 
+def get_order_status():
     if not order.get_total_items():
         return "Your order is currently empty."
     
@@ -123,9 +165,8 @@ def get_order_status():
     order_details = []
 
     for item, quantity in order_items.items():
-        order_details.append(f"{quantity}x {item}")
+        order_details.append(f"{quantity} x {item}")
 
-    # Join all items into a single string
     order_summary = ", ".join(order_details)
 
     return f"Your current order is {order_summary}."
