@@ -36,11 +36,8 @@ coverage.xml
 *.cover
 .hypothesis/
 .pytest_cache/
-<<<<<<< Updated upstream
 .venv/
-=======
 backend/api/__pycache__
->>>>>>> Stashed changes
 
 # React frontend
 node_modules/
