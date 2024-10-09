@@ -22,23 +22,41 @@ function MainPage() {
     }, 1000);
   };
 
-  const handleUserMessage = (userMessage) => {
-    const newMessage = {
+  // Handle sending a message to the backend
+  const sendMessage = async (userMessage) => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ customer_message: userMessage }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.bot_message);
+        return data.bot_message;
+      } else {
+        return "Sorry, I'm having trouble connecting to the server.";
+      }
+    } catch (error) {
+      console.error("Error communicating with the backend:", error);
+      return "Sorry, I couldn't process your request.";
+    }
+  };
+  const handleUserMessage = async (userMessage) => {
+    const userMsgObj = {
       id: messages.length + 1,
       sender: "user",
       content: userMessage,
     };
-    setMessages([...messages, newMessage]);
-
-    //mock response for the chatbot
-    setTimeout(() => {
-      const botResponse = {
-        id: messages.length + 2,
-        sender: "bot",
-        content: `You asked about: "${userMessage}". I'm still learning!`,
-      };
-      setMessages((prevMessages) => [...prevMessages, botResponse]);
-    }, 1000);
+    setMessages([...messages, userMsgObj]);
+    const botResponse = await sendMessage(userMessage);
+    const botMsgObj = {
+      id: messages.length + 2,
+      sender: "bot",
+      content: botResponse,
+    };
+    setMessages((prevMessages) => [...prevMessages, botMsgObj]);
   };
 
   return (
