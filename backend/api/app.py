@@ -13,7 +13,7 @@ def get_bot_response():
     if customer_message:
         bot_response = actions.get_intent_and_entities(customer_message) #returns {'intent': 'intent', 'entities' [entites]}
 
-        #ensure query in scope
+        #handle various intents
         if bot_response['intent'] == 'out_of_scope':
             bot_message = response_generator.out_of_scope()
             return jsonify({"bot_message": bot_message}), 200

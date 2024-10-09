@@ -21,7 +21,7 @@ model = "meta-llama/llama-3.2-3b-instruct:free"
 
 def get_intent_and_entities(customer_message):
     #get intent using dialogflow
-    ''' TODO
+    ''' TODO GRACE, AGASTYA
     intent = get_intent(customer_message)
     '''
 
@@ -115,7 +115,7 @@ def order_status(entities):
     return construct_output_response(original_intent, extracted_entities, database_information)
 
 def construct_output_response(original_intent, extracted_entities, database_information):
-
     pass
     ''' TODO ADITYA
+    use client
     '''
