@@ -12,21 +12,19 @@ class Order:
         if item in self.items:
             self.items[item] = quantity
         else:
-            pass #return jsonify error that this item isnt in the order
+            pass #throw error
 
     def remove_item(self, item):
         if item in self.items:
             del self.items[item]
         else:
-            pass #return jsonify error that this item isnt in the order
+            pass #throw error
 
     def clear_order(self):
         self.items.clear()
-        #return jsonify order is cleared
 
     def get_total_items(self):
         return self.items
-        #return jsonify current items
 
     def get_total_price(self, menu_table):
         total_price = 0

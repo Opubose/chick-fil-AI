@@ -1,92 +1,37 @@
-from transformers import pipeline
-from sentence_transformers import SentenceTransformer
+from openai import OpenAI
+from dotenv import load_dotenv
+import os
 import spacy
-import numpy as np
+import dialogflow_v2 as dialogflow
+from google.protobuf.json_format import MessageToDict
 import response_generator
+load_dotenv()
 
-binary_model = "./backend/resources/api-resources/models/scope_classifier"
-binary_model_tokenizer = "./backend/resources/api-resources/models/scope_classifier"
-scope_classifier = pipeline("text-classification", model=binary_model)
-embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+GOOGLE_APPLICATION_CREDENTIALS = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+DIALOGFLOW_PROJECT_ID = os.getenv("DIALOGFLOW_PROJECT_ID")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = GOOGLE_APPLICATION_CREDENTIALS
+
 entity_nlp = spacy.load("en_core_web_sm")
-llama_model = "meta-llama/Llama-2-7b-chat-hf"
-#llm_nlp = pipeline("text-generation", model=llama_model)
+client = OpenAI(
+    base_url=os.getenv("OR_BASE_URL"),
+    api_key=os.getenv("OR_API_KEY")
+)
+model = "meta-llama/llama-3.2-3b-instruct:free"
 
-INTENTS = {
-    "order": "placing an order for food or drinks",
-    "menu": "asking about the available menu items",
-    "help": "asking for help with using the chatbot",
-}
-
-intent_embeddings_map = {intent: embedding_model.encode(description) for intent, description in INTENTS.items()}
 
 def get_intent_and_entities(customer_message):
-    #embedding of the customer's message
-    customer_message_embedding = embedding_model.encode(customer_message)
-
-    #ensure query is in scope
-    #if not is_in_scope(customer_message):
-    #    return {
-    #        'intent': 'invalid',
-    #        'entities': None
-    #    }
-    
-    #get intent using cossim
-    intent = detect_intent(customer_message_embedding)
+    #get intent using dialogflow
+    ''' TODO
+    intent = get_intent(customer_message)
+    '''
 
     #get entities using spacy
     entities = extract_entities(customer_message)
 
     return {
-        'intent': intent,
+        'intent': "intent", #replace with intent
         'entities': entities
     }
-
-#need to implement order low level intent detection
-def order_handler(low_level_intent, entities):
-    if low_level_intent == 'place':
-        return response_generator.place_order(entities)
-    elif low_level_intent == 'modify':
-        return response_generator.modify_order(entities)
-    elif low_level_intent == 'status':
-        return response_generator.get_order_status()
-    elif low_level_intent == 'cancel':
-        return response_generator.cancel_order()
-    elif low_level_intent == 'nutrition':
-        return response_generator.get_order_info(entities)
-    else:
-        return "Error!"
-
-#need to implement menu low level intent detection
-def menu_handler(low_level_intent, entities):
-    if low_level_intent == "entire_menu":
-        return response_generator.list_entire_menu()
-    elif low_level_intent == "dietary_restrictions":
-        return response_generator.get_items_by_dietary_restriction(entities)
-    elif low_level_intent == "ingredients":
-        return response_generator.get_ingredients(entities)
-    elif low_level_intent == "nutrition":
-        return response_generator.get_nutritional_info(entities)
-    else:
-        return "Error!"
-
-def get_help():
-    return "Hi! I'm Chick-Fil-AI, a natural language processing powered chatbot created to help you handle ordering food at Chick-Fil-A.\nPlease let me know how I can assist you in one of the following areas: ordering related queries and menu related queries.\nUnfortunately, I'm unable to answer queries that are out of my domain knowledge, so please keep that in mind!"
-
-#############################################################################
-#############################################################################
-######################      HELPER FUNCTIONS        #########################
-#############################################################################
-#############################################################################
-
-def detect_intent(customer_message_embedding):
-    #calculate vector similarity for each intent vs the customer message
-    similarities = {intent: cosine_similarity(customer_message_embedding, intent_embedding)
-                    for intent, intent_embedding in intent_embeddings_map.items()}
-    
-    #get the best one
-    detected_intent = max(similarities, key=similarities.get)
-    return detected_intent
 
 def extract_entities(customer_message):
     doc = entity_nlp(customer_message)
@@ -106,10 +51,71 @@ def extract_entities(customer_message):
     
     return entities
 
-def cosine_similarity(vec1, vec2):
-    return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
+def menu_dietary(entities):
+    original_intent = "menu dietary information"
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.get_items_by_dietary_restriction(entities)
 
-def is_in_scope(customer_message):
-    result = scope_classifier(customer_message)
-    print(result)
-    return result[0]['label'] == 'LABEL_0'
+    return construct_output_response(original_intent, extracted_entities, database_information)
+
+def menu_entire(entities):
+    original_intent = "entire menu information"
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.get_items_by_dietary_restriction(entities)
+
+    return construct_output_response(original_intent, extracted_entities, database_information)
+
+def menu_ingredients(entities):
+    original_intent = "ingredients of a menu item"
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.get_items_by_dietary_restriction(entities)
+
+    return construct_output_response(original_intent, extracted_entities, database_information)
+
+def menu_nutrition(entities):
+    original_intent = "nutritional information of a menu item"
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.get_items_by_dietary_restriction(entities)
+
+    return construct_output_response(original_intent, extracted_entities, database_information)
+
+def order_cancel(entities):
+    original_intent = "cancelling an order"
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.get_items_by_dietary_restriction(entities)
+
+    return construct_output_response(original_intent, extracted_entities, database_information)
+
+def order_modify(entities):
+    original_intent = "modifying or changing an order"
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.get_items_by_dietary_restriction(entities)
+
+    return construct_output_response(original_intent, extracted_entities, database_information)
+
+def order_nutrition(entities):
+    original_intent = "getting the full nutritional information of the current order"
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.get_items_by_dietary_restriction(entities)
+
+    return construct_output_response(original_intent, extracted_entities, database_information)
+
+def order_place(entities):
+    original_intent = "placing an order"
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.get_items_by_dietary_restriction(entities)
+
+    return construct_output_response(original_intent, extracted_entities, database_information)
+
+def order_status(entities):
+    original_intent = "retrieving the current status of an order"
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.get_items_by_dietary_restriction(entities)
+
+    return construct_output_response(original_intent, extracted_entities, database_information)
+
+def construct_output_response(original_intent, extracted_entities, database_information):
+
+    pass
+    ''' TODO ADITYA
+    '''
