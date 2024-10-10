@@ -46,7 +46,8 @@ def place_order(entities):
         return f"{order_str} have been added to your order. The total will be ${total_price:.2f}."
     else:
         return "No items were added to your order"
-    
+
+# Filled out 
 def modify_order(entities):
     food_items = entities['food_items']
     quantities = entities['quantities']
@@ -89,43 +90,12 @@ def modify_order(entities):
         return f"{modified_string} Your order has been updated."
     else:
         return "No changes were made to your order."
-    
-def get_order_info():
-    global order
 
-    if not order.get_total_items():
-        return "You don't have anything in your order yet."
-    
-    nutritional_info = {}
-
-    for item, quantity in order.get_total_items().items():
-        response = menu.get_item(Key={'Item': item})
-
-        if 'Item' in response:
-            menu_item = response['Item']
-
-            nutritional_info[item] = {
-                'Calories': menu_item['Calories'] * quantity,
-                'Fat': menu_item['Fat'] * quantity,
-                'Carbohydrates': menu_item['Carbohydrates'] * quantity,
-                'Sugar': menu_item['Sugar'] * quantity,
-                'Protein': menu_item['Protein'] * quantity,
-            }
-        else:
-            return f"Sorry, we couldn't find nutritional information for '{item}'."
-    
-    summary_lines = []
-    for item, info in nutritional_info.items():
-        summary_lines.append(
-            f"{item}: {info['Calories']} calories, {info['Fat']}g fat, "
-            f"{info['Carbohydrates']}g carbohydrates, {info['Sugar']}g sugar, "
-            f"{info['Protein']}g protein."
-        )
-    return "\n".join(summary_lines)
 
 def get_order_nutrition():
     pass
 
+# Filled out
 def get_order_status():
     if not order.get_total_items():
         return "Your order is currently empty."
