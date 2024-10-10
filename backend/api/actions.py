@@ -8,6 +8,8 @@ load_dotenv()
 
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./dialogflow-credentials.json"
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/app/config/dialogflow-credentials.json"
+# Uncomment the above if dockerizing
 
 entity_nlp = spacy.load("en_core_web_sm")
 model = "meta-llama/llama-3.2-3b-instruct:free"
