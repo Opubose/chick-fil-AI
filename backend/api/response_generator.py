@@ -12,83 +12,62 @@ menu = dynamodb.Table("CFA-Data")
 order = Order()
 
 
-# for place: query database and add the items to an "order" --> need to think of how to handle an order. probably a seperate class called Order?
-# for modify: update order and requery database to update accordingly (different nutritonal, ingredient) information --> will be useful for menu related queries
-# for status: literally just return what the current order is
-# for cancel: just scrap the entire order and jsonify return ("Ok, I've cancelled your order")
-# for info: return the nutritional information (only main ones (calories, fat, carb, sugar, protein)) of the items currently in the order
-def place_order(entities):
-    global order
-    food_items = entities["food_items"]
-    if not food_items:
-        return "No food items were found in your order."
-
-    modifiers = entities["modifiers"]
-    quantities = entities["quantities"]
-
-    items_added = []
-
-    for i, food_item in enumerate(food_items):
-        quantity = quantities[i] if i < len(quantities) else 1
-        db_response = menu.get_item(Key={"Item": food_item})
-
-        if "Item" in db_response:
-            matched_item = db_response["Item"]
-            order.add_item(matched_item["Item"], quantity=quantity)
-            items_added.append(f"{quantity} {matched_item['Item']}")
-        else:
-            return f"Sorry. we don't have an item called {food_item} on the menu."
-
-    total_price = order.get_total_price(menu)
-
-    if items_added:
-        if len(items_added) == 1:
-            order_str = items_added[0]
-        else:
-            order_str = ", ".join(items_added[:-1]) + f", and {items_added[-1]}"
-        return f"{order_str} have been added to your order. The total will be ${total_price:.2f}."
-    else:
-        return "No items were added to your order"
-
-
-# Filled out
 def modify_order(entities):
     food_items = entities["food_items"]
     quantities = entities["quantities"]
-    modifiers = entities["modifiers"]
 
     if not food_items:
         return "No food items were found to modify in your order."
 
     modified_items = []
 
-    for i, food_item in enumerate(food_items):
-        # Default to 1 if no quantity specified
-        quantity = quantities[i] if i < len(quantities) else 1
+    # If there are two food items: remove the first and add the second
+    if len(food_items) == 2:
+        food_item_to_remove = food_items[0]
+        food_item_to_add = food_items[1]
+        quantity_to_add = quantities[1] if len(quantities) > 1 else 1
 
-        # Check if the food item exists in the menu (DynamoDB)
-        response = menu.get_item(Key={"Item": food_item})
+        # Remove the first item
+        response_remove = menu.get_item(Key={"Item": food_item_to_remove})
+        if "Item" in response_remove:
+            matched_item_remove = response_remove["Item"]
+            price_remove = float(matched_item_remove["Price"])
+            order.remove_item(food_item_to_remove, price_remove)
+            modified_items.append(f"Removed {food_item_to_remove} from your order.")
+        else:
+            modified_items.append(
+                f"Sorry, we couldn't find '{food_item_to_remove}' on the menu to remove."
+            )
+
+        # Add the second item
+        response_add = menu.get_item(Key={"Item": food_item_to_add})
+        if "Item" in response_add:
+            matched_item_add = response_add["Item"]
+            price_add = float(matched_item_add["Price"])
+            order.add_item(food_item_to_add, price_add, quantity_to_add)
+            modified_items.append(
+                f"Added {food_item_to_add} to your order with quantity {quantity_to_add}."
+            )
+        else:
+            modified_items.append(
+                f"Sorry, we couldn't find '{food_item_to_add}' on the menu to add."
+            )
+
+    # If only one item: remove it from the order
+    elif len(food_items) == 1:
+        food_item_to_remove = food_items[0]
+        response = menu.get_item(Key={"Item": food_item_to_remove})
 
         if "Item" in response:
-            matched_item = response["Item"]
-            price = float(matched_item["Price"])
-            print(matched_item, price)
-
-            # Check the modifier for the current food item
-            if modifiers and modifiers[0].lower() == "want":
-                # If the modifier indicates to add or change the quantity
-                order.add_item(food_item, price, quantity)
-                modified_items.append(f"Ok, sure. We added {food_item} to your order.")
-                # modified_items.append(f"Added {food_item} to your order with quantity {quantity} at ${price:.2f} each. Your order includes {order.items.items()}")
-            else:
-                # If the modifier indicates to remove the item
-                order.remove_item(food_item, price)
-                modified_items.append(f"Removed {food_item} from your order.")
+            matched_item_remove = response["Item"]
+            price_remove = float(matched_item_remove["Price"])
+            order.remove_item(food_item_to_remove, price_remove)
+            modified_items.append(f"Removed {food_item_to_remove} from your order.")
         else:
-            # Handle case when item is not found in the menu
-            modified_items.append(f"Sorry, we couldn't find '{food_item}' on the menu.")
-    print(order.items.items())
-    print(order.total_price)
+            modified_items.append(
+                f"Sorry, we couldn't find '{food_item_to_remove}' on the menu to remove."
+            )
+
     if modified_items:
         modified_string = (
             ", ".join(modified_items[:-1]) + f", and {modified_items[-1]}"
@@ -104,7 +83,6 @@ def get_order_nutrition():
     pass
 
 
-# Filled out
 def get_order_status():
     if not order.get_total_items():
         return "Your order is currently empty."
@@ -120,13 +98,46 @@ def get_order_status():
     return f"Your current order is {order_summary}."
 
 
-def place_order():
-    pass
+def place_order(entities):
+    food_items = entities["food_items"]
+    quantities = entities["quantities"]
+
+    if not food_items:
+        return "No food items were provided to place in your order."
+
+    added_items = []
+
+    for i, food_item in enumerate(food_items):
+        quantity = quantities[i] if i < len(quantities) else 1
+
+        # Check if the food item exists in the menu (DynamoDB)
+        response = menu.get_item(Key={"Item": food_item})
+
+        if "Item" in response:
+            matched_item = response["Item"]
+            price = float(matched_item["Price"])
+
+            # Add the item to the order
+            order.add_item(food_item, price, quantity)
+            added_items.append(
+                f"Added {food_item} to your order with quantity {quantity} at ${price:.2f} each."
+            )
+        else:
+            # Handle case when item is not found in the menu
+            added_items.append(f"Sorry, we couldn't find '{food_item}' on the menu.")
+
+    if added_items:
+        added_string = (
+            ", ".join(added_items[:-1]) + f", and {added_items[-1]}"
+            if len(added_items) > 1
+            else added_items[0]
+        )
+        return f"{added_string} Your order has been updated."
+    else:
+        return "No items were added to your order."
 
 
 def cancel_order():
-    global order
-
     order.clear_order()
 
     return "Okay, I have canceled your order."
