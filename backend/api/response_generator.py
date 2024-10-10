@@ -63,8 +63,62 @@ def modify_order(entities):
     else:
         return "No changes were made to your order."
 
-def get_order_nutrition():
-    pass
+def get_order_nutrition(entities):
+    if not order.get_total_items():
+        return "Your order is empty."
+    properties = entities['properties']
+    # Determine if we should gather all nutrition or specific properties
+    if properties and properties[0] == 'nutrition':
+        # List of all possible nutritional values
+        requested_nutrients = ["Calories", "Fat", "Sat_Fat", "Trans_Fat", "Cholesterol", "Sodium", "Carbohydrates", "Fiber", "Sugar", "Protein"]
+    elif properties:
+        # Gather only the specific properties requested
+        requested_nutrients = properties
+    else:
+        return "Invalid properties. Please specify 'nutrition' or a list of specific nutritional properties."
+
+    # Initialize totals for each requested nutrient
+    total_nutrition = {nutrient: 0 for nutrient in requested_nutrients}
+
+    nutritional_info_list = []
+
+    # Loop through each item in the order
+    for food_item, quantity in order.get_total_items().items():
+        try:
+            # Query DynamoDB to get the item's details
+            response = menu.get_item(Key={'Item': food_item})
+
+            if 'Item' in response:
+                item = response['Item']
+
+                # Extract nutritional information
+                nutritional_info = {"Food_item": food_item, "Quantity": quantity}
+                for nutrient in requested_nutrients:
+                    # Default to 0 if the nutrient is not found
+                    nutrient_value = item.get(nutrient, 0)
+                    nutritional_info[nutrient] = nutrient_value
+
+                    # Add the value to the total nutrition (multiplied by quantity)
+                    total_nutrition[nutrient] += float(nutrient_value) * quantity
+
+                # Append the item's requested nutritional info to the list as a formatted string
+                nutrient_details = ", ".join([f"{nutritional_info[n]}g {n}" for n in requested_nutrients])
+                nutritional_info_list.append(f"{quantity}x {food_item}: {nutrient_details}")
+
+            else:
+                nutritional_info_list.append(f"Sorry, we couldn't find '{food_item}' on the menu.")
+
+        except Exception as e:
+            nutritional_info_list.append(f"Error retrieving info for '{food_item}': {str(e)}")
+
+    # Build the final string response for both individual and total nutrition info
+    if nutritional_info_list:
+        total_nutrition_string = "\n".join([f"{nutrient}: {total:.2f}g" for nutrient, total in total_nutrition.items()])
+        return (f"Total Nutritional Information:\n{total_nutrition_string}")
+    else:
+        return "No nutritional information found for your order."
+
+
 
 def get_order_status():
     if not order.get_total_items():
