@@ -14,9 +14,8 @@ RUN rm -rf /app/api/__pycache__
 # Expose the flask default port
 EXPOSE 8000
 
-# Set environment variables (optional, customize as needed)
 ENV FLASK_APP=api/app.py
 ENV FLASK_ENV=development
+# Set FLASK_ENV to 'production' if on prod 
 
-# Command to run the Flask app (adjust this if you use a different entry point)
 CMD ["flask", "run", "--host=0.0.0.0", "--port=8000"]
