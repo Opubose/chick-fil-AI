@@ -2,6 +2,7 @@ class Order:
     def __init__(self):
         self.items = {}
         self.total_price = 0.0
+        self.modifiers = {}
 
     def add_item(self, item, price, quantity=1):
         if item in self.items:
@@ -25,6 +26,8 @@ class Order:
 
     def clear_order(self):
         self.items.clear()
+        self.total_price = 0.0
+        self.modifiers = {}
 
     def get_total_items(self):
         return self.items

@@ -27,6 +27,7 @@ def get_intent_and_entities(customer_message):
     for entity in response.query_result.parameters:
         entities[entity] = response.query_result.parameters[entity]
     
+    print("Intent:", intent)
     print("Extracted Entities:", entities)
     return {
         'intent': intent,
@@ -61,7 +62,7 @@ def menu_dietary(entities):
     # return construct_output_response(original_intent, extracted_entities, database_information)
     return "menu dietary"
 
-def menu_entire(entities):
+def menu_entire():
     # original_intent = "entire menu information"
     # extracted_entities = extract_entities(entities)
     # database_information = response_generator.list_entire_menu()
@@ -86,12 +87,11 @@ def menu_nutrition(entities):
     return "menu nutrition"
 
 def order_cancel(entities):
-    # original_intent = "cancelling an order"
-    # extracted_entities = extract_entities(entities)
-    # database_information = response_generator.cancel_order()
+    original_intent = "cancelling an order"
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.cancel_order()
 
-    # return construct_output_response(original_intent, extracted_entities, database_information)
-    return "order cancel"
+    return construct_output_response(original_intent, extracted_entities, database_information)
 
 def order_modify(entities):
     original_intent = "modifying or changing an order"
@@ -109,14 +109,13 @@ def order_nutrition(entities):
     return "order nutrition"
 
 def order_place(entities):
-    # original_intent = "placing an order"
-    # extracted_entities = extract_entities(entities)
-    # database_information = response_generator.place_order(entities)
+    original_intent = "placing an order"
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.place_order(entities)
 
-    # return construct_output_response(original_intent, extracted_entities, database_information)
-    return "order place"
+    return construct_output_response(original_intent, extracted_entities, database_information)
 
-def order_status(entities):
+def order_status():
     original_intent = "retrieving the current status of an order"
     database_information = response_generator.get_order_status()
 
