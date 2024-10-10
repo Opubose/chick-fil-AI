@@ -90,40 +90,6 @@ def modify_order(entities):
     else:
         return "No changes were made to your order."
     
-'''def modify_order(entities):
-    global order
-    food_items = entities['food_items']
-    quantities = entities['quantities']
-
-    if not food_items:
-        return "No food items were found to modify in your order."
-    
-    modified_items = []
-
-    for i, food_item in enumerate(food_items):
-        quantity = quantities[i] if i < len(quantities) else 1
-
-        response = menu.get_item(Key={'Item': food_item})
-
-        if 'Item' in response:
-            matched_item = response['Item']
-            
-            if quantity == 0:
-                order.remove_item(matched_item['Item'])
-                modified_items.append(f"Removed {matched_item['Item']} from your order")
-            else:
-                order.modify_item(matched_item['Item'], quantity)
-                modified_items.append(f"Updated {matched_item['Item']} to {quantity} in your order")
-        else:
-            # Handle case when item is not found in the menu
-            return f"Sorry, we couldn't find '{food_item}' on the menu."
-    
-    if modified_items:
-        modified_string = ', '.join(modified_items[:-1]) + f", and {modified_items[-1]}" if len(modified_items) > 1 else modified_items[0]
-        return f"{modified_string}. Your order has been updated."
-    else:
-        return "No changes were made to your order." '''
-    
 def get_order_info():
     global order
 
@@ -157,6 +123,9 @@ def get_order_info():
         )
     return "\n".join(summary_lines)
 
+def get_order_nutrition():
+    pass
+
 def get_order_status():
     if not order.get_total_items():
         return "Your order is currently empty."
@@ -170,6 +139,9 @@ def get_order_status():
     order_summary = ", ".join(order_details)
 
     return f"Your current order is {order_summary}."
+
+def place_order():
+    pass
 
 def cancel_order():
     global order

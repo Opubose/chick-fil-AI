@@ -64,7 +64,7 @@ def menu_dietary(entities):
 def menu_entire(entities):
     # original_intent = "entire menu information"
     # extracted_entities = extract_entities(entities)
-    # database_information = response_generator.get_items_by_dietary_restriction(entities)
+    # database_information = response_generator.list_entire_menu()
 
     # return construct_output_response(original_intent, extracted_entities, database_information)
     return "menu entire"
@@ -72,7 +72,7 @@ def menu_entire(entities):
 def menu_ingredients(entities):
     # original_intent = "ingredients of a menu item"
     # extracted_entities = extract_entities(entities)
-    # database_information = response_generator.get_items_by_dietary_restriction(entities)
+    # database_information = response_generator.get_ingredients(entities)
 
     # return construct_output_response(original_intent, extracted_entities, database_information)
     return "menu ingredients"
@@ -80,7 +80,7 @@ def menu_ingredients(entities):
 def menu_nutrition(entities):
     # original_intent = "nutritional information of a menu item"
     # extracted_entities = extract_entities(entities)
-    # database_information = response_generator.get_items_by_dietary_restriction(entities)
+    # database_information = response_generator.get_nutritional_info(entities)
 
     # return construct_output_response(original_intent, extracted_entities, database_information)
     return "menu nutrition"
@@ -88,22 +88,22 @@ def menu_nutrition(entities):
 def order_cancel(entities):
     # original_intent = "cancelling an order"
     # extracted_entities = extract_entities(entities)
-    # database_information = response_generator.get_items_by_dietary_restriction(entities)
+    # database_information = response_generator.cancel_order()
 
     # return construct_output_response(original_intent, extracted_entities, database_information)
     return "order cancel"
 
 def order_modify(entities):
     original_intent = "modifying or changing an order"
-    extracted_entities = extract_entities(entities)  # Extract entities from the incoming data
-    database_information = response_generator.modify_order(entities)  # Modify the order in the database
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.modify_order(entities)
 
     return construct_output_response(original_intent, extracted_entities, database_information)
 
 def order_nutrition(entities):
     # original_intent = "getting the full nutritional information of the current order"
     # extracted_entities = extract_entities(entities)
-    # database_information = response_generator.get_items_by_dietary_restriction(entities)
+    # database_information = response_generator.get_order_nutrition()
 
     # return construct_output_response(original_intent, extracted_entities, database_information)
     return "order nutrition"
@@ -111,7 +111,7 @@ def order_nutrition(entities):
 def order_place(entities):
     # original_intent = "placing an order"
     # extracted_entities = extract_entities(entities)
-    # database_information = response_generator.get_items_by_dietary_restriction(entities)
+    # database_information = response_generator.place_order(entities)
 
     # return construct_output_response(original_intent, extracted_entities, database_information)
     return "order place"
