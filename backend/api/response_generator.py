@@ -1,6 +1,9 @@
 import boto3
 import os
+import re
 from order import Order
+from dotenv import load_dotenv
+load_dotenv()
 
 dynamodb = boto3.resource('dynamodb', 
                         aws_access_key_id=os.getenv('AWS_ACCESS_KEY'),
@@ -118,8 +121,6 @@ def get_order_nutrition(entities):
     else:
         return "No nutritional information found for your order."
 
-
-
 def get_order_status():
     if not order.get_total_items():
         return "Your order is currently empty."
@@ -132,7 +133,7 @@ def get_order_status():
 
     order_summary = ", ".join(order_details)
 
-    return f"Your current order is {order_summary}."
+    return f"Your current order is {order_summary}, with a total price of ${order.get_total_price():.2f}."
 
 def place_order(entities):
     food_items = entities['food_items']
@@ -178,99 +179,164 @@ def cancel_order():
 def list_entire_menu():
     try:
         response = menu.scan()
-        items = response.get('Items', [])
-        menu_items = [item['Item_index'] for item in items]
-        return {"menu_items": menu_items}
+        items = response.get("Items", [])
+        menu_items = [item["Item"] for item in items]
+        return f"Absolutely! Here's the menu: {', '.join(menu_items)}"
     except Exception as e:
-        return {"error": str(e)}
+        return f"Exception {e}"
     
+# Helper for dietary restrictions
+def is_vegetarian(ingredients):
+    non_vegetarian_items = [
+        "chicken",
+        "beef",
+        "pork",
+        "fish",
+        "seafood",
+        "lamb",
+        "bacon",
+        "ham",
+        "duck",
+        "turkey",
+        "gelatin",
+        "anchovy",
+        "meat",
+    ]
+    words = re.findall(r"\b\w+\b", ingredients.lower())
+
+    for item in non_vegetarian_items:
+        if item in words:
+            return False
+    return True
+
+
+# Helper for dietary restrictions
+def is_vegan(ingredients):
+    if not is_vegetarian(ingredients):
+        return False
+    non_vegan_items = [
+        "milk",
+        "cheese",
+        "butter",
+        "honey",
+        "egg",
+        "cream",
+        "yogurt",
+        "whey",
+        "casein",
+    ]
+    words = re.findall(r"\b\w+\b", ingredients.lower())
+
+    for item in non_vegan_items:
+        if item in words:
+            return False
+    return True
+
+
 def get_items_by_dietary_restriction(entities):
-    if entities and 'modifiers' in entities:
-        restriction = entities['modifiers'][0].lower()
+    if entities and "modifiers" in entities:
+        restriction = entities["modifiers"].lower()
     else:
         return "Please specify a dietary restriction (e.g., vegetarian, vegan)."
 
     try:
-        if restriction == "vegan":
-            response = menu.scan(
-                FilterExpression="Vegan_Index = :v",
-                ExpressionAttributeValues={":v": 1}
-            )
-        elif restriction == "vegetarian":
-            response = menu.scan(
-                FilterExpression="Vegetarian_Index = :v",
-                ExpressionAttributeValues={":v": 1}
-            )
-        else:
-            return "Currently, we only support 'vegan' and 'vegetarian' dietary restrictions."
+        response = menu.scan()
+        items = response.get("Items", [])
 
-        items = response.get('Items', [])
-        matching_items = [item['Item_index'] for item in items]
-        
+        matching_items = []
+
+        for item in items:
+            ingredients = item.get("Ingredients", "").lower()
+            if restriction == "vegan":
+                if is_vegan(ingredients):
+                    matching_items.append(item["Item"])
+            elif restriction == "vegetarian":
+                if is_vegetarian(ingredients):
+                    matching_items.append(item["Item"])
+            else:
+                return "Currently, we only support 'vegan' and 'vegetarian' dietary restrictions."
+
         if not matching_items:
             return f"No items found for dietary restriction: {restriction}."
-        
-        return {"items_matching_dietary_restriction": matching_items}
-    
+        return f"Here are some of our {restriction} items: {', '.join(matching_items)}"
     except Exception as e:
-        return {"error": str(e)}
+        return f"Error retrieving for items with restriction {restriction}: {str(e)}"
     
 def get_ingredients(entities):
-    if entities and 'food_items' in entities:
-        food_item = entities['food_items'][0]
+    if entities and "food_items" in entities and entities["food_items"]:
+        food_item = entities["food_items"].lower()
     else:
-        return "Please specify a food item."
+        return "Please specify a single food item to get its ingredients"
 
     try:
-        response = menu.get_item(
-            Key={'Item': food_item}
-        )
+        response = menu.get_item(Key={"Item": food_item})
 
-        if 'Item' not in response:
+        if "Item" not in response:
             return f"No item found with the name: {food_item}."
 
-        item = response['Item']
-        ingredients = item.get('Ingredients', "No ingredients found for this item.")
-        
-        return {"food_item": food_item, "ingredients": ingredients}
+        item = response["Item"]
+        ingredients = item.get("Ingredients", "No ingredients found for this item.")
+
+        return f"Sure! Our {food_item} has {ingredients}."
 
     except Exception as e:
-        return {"error": str(e)}
+        return f"Error retrieving ingredients for '{food_item}': {str(e)}"
     
 def get_nutritional_info(entities):
-    if entities and 'food_items' in entities:
-        food_item = entities['food_items'][0]
+    # Check if the food item is specified
+    if 'food_items' not in entities or not entities['food_items']:
+        return "Please specify a food item to get its nutritional information."
+
+    food_item = entities['food_items']
+    # Handle if food_item is a list
+    if isinstance(food_item, list):
+        food_item = food_item[0]
+    food_item = food_item.lower()
+
+    properties = entities.get('properties', None)
+    # Determine if we should gather all nutrition or specific properties
+    if properties:
+        if isinstance(properties, str):
+            properties = [properties]
+        if properties[0] == 'nutrition':
+            # List of all possible nutritional values
+            requested_nutrients = [
+                "Calories", "Fat", "Sat_Fat", "Trans_Fat", "Cholesterol",
+                "Sodium", "Carbohydrates", "Fiber", "Sugar", "Protein"
+            ]
+        else:
+            # Gather only the specific properties requested
+            requested_nutrients = properties
     else:
-        return "Please specify a food item."
+        return "Invalid properties. Please specify 'nutrition' or a list of specific nutritional properties."
 
     try:
-        response = menu.get_item(
-            Key={'Item': food_item}
-        )
+        # Query DynamoDB to get the item's details
+        response = menu.get_item(Key={'Item': food_item})
 
         if 'Item' not in response:
-            return f"No item found with the name: {food_item}."
+            return f"No item found with the name '{food_item}'."
 
         item = response['Item']
 
-        nutritional_info = {
-            "Serving_size": item.get("Serving_size", "No serving size found."),
-            "Calories": item.get("Calories", "No calorie information found."),
-            "Fat": item.get("Fat", "No fat information found."),
-            "Sat_Fat": item.get("Sat_Fat", "No saturated fat information found."),
-            "Trans_Fat": item.get("Trans_Fat", "No trans fat information found."),
-            "Cholesterol": item.get("Cholesterol", "No cholesterol information found."),
-            "Sodium": item.get("Sodium", "No sodium information found."),
-            "Carbohydrates": item.get("Carbohydrates", "No carbohydrate information found."),
-            "Fiber": item.get("Fiber", "No fiber information found."),
-            "Sugar": item.get("Sugar", "No sugar information found."),
-            "Protein": item.get("Protein", "No protein information found.")
-        }
-        
-        return {"food_item": food_item, "nutritional_info": nutritional_info}
+        # Extract nutritional information
+        nutritional_info = {"Food_item": food_item.title()}
+        for nutrient in requested_nutrients:
+            # Default to "Data not available" if the nutrient is not found
+            nutrient_value = item.get(nutrient, "Data not available")
+            nutritional_info[nutrient] = nutrient_value
+
+        # Format the nutritional information
+        nutrient_details = "\n".join([
+            f"{nutrient}: {nutritional_info[nutrient]:.2f}g" if isinstance(nutritional_info[nutrient], (int, float))
+            else f"{nutrient}: {nutritional_info[nutrient]}"
+            for nutrient in requested_nutrients
+        ])
+
+        return f"Nutritional Information for {food_item.title()}:\n{nutrient_details}"
 
     except Exception as e:
-        return {"error": str(e)}
+        return f"Error retrieving nutritional information for '{food_item}': {str(e)}"
 
 def out_of_scope():
     return "Sorry, I can only help with queries related to the restaurant ordering system."

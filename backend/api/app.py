@@ -49,7 +49,7 @@ def get_bot_response():
             return jsonify({'bot_message': bot_message}), 200 
         
         #default handler
-        return jsonify({"bot_message": "Error parsing intent!"}), 200
+        return jsonify({"bot_message": response_generator.out_of_scope()}), 200
     else:
         return jsonify({"bot_message": "Error in Flask application!"}), 400
 

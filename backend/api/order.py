@@ -32,12 +32,5 @@ class Order:
     def get_total_items(self):
         return self.items
 
-    def get_total_price(self, menu_table):
-        # total_price = 0
-        # for item, quantity in self.items.items():
-        #     response = menu_table.get_item(Key={'Item': item})
-        #     if 'Item' in response:
-        #         price = response['Item']['Price']
-        #         total_price += price * quantity
-        # return total_price
+    def get_total_price(self):
         return self.total_price
