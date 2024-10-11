@@ -46,13 +46,13 @@ def extract_entities(entities):
 
     for key, value in entities.items():
         if key == "food_items":
-            extracted_entities["food_items"].extend(value)
+            extracted_entities["food_items"].append(value)
         elif key == "modifiers":
-            extracted_entities["modifiers"].extend(value)
+            extracted_entities["modifiers"].append(value)
         elif key == "quantities":
-            extracted_entities["quantities"].extend(value)
+            extracted_entities["quantities"].append(value)
         elif key == "properties":
-            extract_entities["properties"].extend(value)
+            extracted_entities["properties"].append(value)
 
     return extracted_entities
 
@@ -114,12 +114,23 @@ def order_modify(entities):
 
 
 def order_nutrition(entities):
+    original_intent = "getting the full nutritional information of the current order"
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.get_order_nutrition(entities)
+
+    return construct_output_response(
+        original_intent, extracted_entities, database_information
+    )
+
+
+def order_nutrition(entities):
     # original_intent = "getting the full nutritional information of the current order"
     # extracted_entities = extract_entities(entities)
     # database_information = response_generator.get_order_nutrition()
 
-    # return construct_output_response(original_intent, extracted_entities, database_information)
-    return "order nutrition"
+    return construct_output_response(
+        original_intent, extracted_entities, database_information
+    )
 
 
 def order_place(entities):
