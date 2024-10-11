@@ -58,30 +58,30 @@ def extract_entities(entities):
 
 
 def menu_dietary(entities):
-    # original_intent = "menu dietary information"
-    # extracted_entities = extract_entities(entities)
-    # database_information = response_generator.get_items_by_dietary_restriction(entities)
+    original_intent = "menu dietary information"
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.get_items_by_dietary_restriction(entities)
 
-    # return construct_output_response(original_intent, extracted_entities, database_information)
-    return "menu dietary"
+    return construct_output_response(
+        original_intent, extracted_entities, database_information
+    )
 
 
 def menu_entire():
-    # original_intent = "entire menu information"
-    # extracted_entities = extract_entities(entities)
-    # database_information = response_generator.list_entire_menu()
+    original_intent = "entire menu information"
+    database_information = response_generator.list_entire_menu()
 
-    # return construct_output_response(original_intent, extracted_entities, database_information)
-    return "menu entire"
+    return database_information
 
 
 def menu_ingredients(entities):
-    # original_intent = "ingredients of a menu item"
-    # extracted_entities = extract_entities(entities)
-    # database_information = response_generator.get_ingredients(entities)
+    original_intent = "ingredients of a menu item"
+    extracted_entities = extract_entities(entities)
+    database_information = response_generator.get_ingredients(entities)
 
-    # return construct_output_response(original_intent, extracted_entities, database_information)
-    return "menu ingredients"
+    return construct_output_response(
+        original_intent, extracted_entities, database_information
+    )
 
 
 def menu_nutrition(entities):
