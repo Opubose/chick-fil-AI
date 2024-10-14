@@ -10,12 +10,12 @@ services:
       - "8000:8000"
     environment:
       - FLASK_APP=api/app.py
-      - FLASK_ENV=development
-      - FLASK_DEBUG=True
+      - FLASK_ENV=production
+      - FLASK_DEBUG=False
 
   frontend:
     build: ./frontend
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=build
+      - NODE_ENV=production
