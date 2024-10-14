@@ -1,5 +1,9 @@
 # Python backend
 __pycache__/
+backend/resources/api-resources/models 
+backend/resources/api-resources/model-logs
+backend/resources/api-resources/dialogflow-credentials.json
+.env
 *.py[cod]
 *$py.class
 *.so
@@ -34,6 +38,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 .venv/
+backend/api/__pycache__
 
 # React frontend
 node_modules/
@@ -73,3 +78,5 @@ docker-compose.override.yml
 *.bak
 *.tmp
 *~
+
+dialogflow-credentials.json
