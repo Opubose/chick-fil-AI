@@ -8,14 +8,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY api/ /app/api/
 
-# just in case
+# Just in case
 RUN rm -rf /app/api/__pycache__
 
 # Expose the flask default port
 EXPOSE 8000
 
 ENV FLASK_APP=api/app.py
-ENV FLASK_ENV=development
+ENV FLASK_ENV=production
 # Set FLASK_ENV to 'production' if on prod 
 
 CMD ["flask", "run", "--host=0.0.0.0", "--port=8000"]
