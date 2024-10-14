@@ -8,6 +8,9 @@ services:
       - ./dialogflow-credentials.json:/app/config/dialogflow-credentials.json:ro
     ports:
       - "8000:8000"
+    environment:
+      - FLASK_APP=api/app.py
+      - FLASK_ENV=development
 
   frontend:
     build: ./frontend
