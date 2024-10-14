@@ -51,10 +51,6 @@ def menu_ingredients(entities):
     original_intent = "ingredients of a menu item"
     database_information = response_generator.get_ingredients(entities)
 
-    return construct_output_response(
-        original_intent, extracted_entities, database_information
-    )
-
     return construct_output_response(original_intent, entities, database_information)
 
 
@@ -69,20 +65,12 @@ def order_cancel(entities):
     original_intent = "cancelling an order"
     database_information = response_generator.cancel_order()
 
-    return construct_output_response(
-        original_intent, extracted_entities, database_information
-    )
-
     return construct_output_response(original_intent, entities, database_information)
 
 
 def order_modify(entities):
     original_intent = "modifying or changing an order"
     database_information = response_generator.modify_order(entities)
-
-    return construct_output_response(
-        original_intent, extracted_entities, database_information
-    )
 
     return construct_output_response(original_intent, entities, database_information)
 
