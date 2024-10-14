@@ -2,6 +2,7 @@
 __pycache__/
 backend/resources/api-resources/models 
 backend/resources/api-resources/model-logs
+backend/resources/api-resources/dialogflow-credentials.json
 .env
 *.py[cod]
 *$py.class

@@ -1,5 +1,6 @@
 import boto3
 import os
+import re
 from order import Order
 import re
 
@@ -331,39 +332,73 @@ def get_ingredients(entities):
 
 
 def get_nutritional_info(entities):
-    if entities and "food_items" in entities:
-        food_item = entities["food_items"][0]
+    # Check if the food item is specified
+    if "food_items" not in entities or not entities["food_items"]:
+        return "Please specify a food item to get its nutritional information."
+
+    food_item = entities["food_items"]
+    # Handle if food_item is a list
+    if isinstance(food_item, list):
+        food_item = food_item[0]
+    food_item = food_item.lower()
+
+    properties = entities.get("properties", None)
+    # Determine if we should gather all nutrition or specific properties
+    if properties:
+        if isinstance(properties, str):
+            properties = [properties]
+        if properties[0] == "nutrition":
+            # List of all possible nutritional values
+            requested_nutrients = [
+                "Calories",
+                "Fat",
+                "Sat_Fat",
+                "Trans_Fat",
+                "Cholesterol",
+                "Sodium",
+                "Carbohydrates",
+                "Fiber",
+                "Sugar",
+                "Protein",
+            ]
+        else:
+            # Gather only the specific properties requested
+            requested_nutrients = properties
     else:
-        return "Please specify a food item."
+        return "Invalid properties. Please specify 'nutrition' or a list of specific nutritional properties."
 
     try:
+        # Query DynamoDB to get the item's details
         response = menu.get_item(Key={"Item": food_item})
 
         if "Item" not in response:
-            return f"No item found with the name {food_item} found!"
+            return f"No item found with the name '{food_item}'."
 
         item = response["Item"]
 
-        nutritional_info = {
-            "Serving_size": item.get("Serving_size", "No serving size found."),
-            "Calories": item.get("Calories", "No calorie information found."),
-            "Fat": item.get("Fat", "No fat information found."),
-            "Sat_Fat": item.get("Sat_Fat", "No saturated fat information found."),
-            "Trans_Fat": item.get("Trans_Fat", "No trans fat information found."),
-            "Cholesterol": item.get("Cholesterol", "No cholesterol information found."),
-            "Sodium": item.get("Sodium", "No sodium information found."),
-            "Carbohydrates": item.get(
-                "Carbohydrates", "No carbohydrate information found."
-            ),
-            "Fiber": item.get("Fiber", "No fiber information found."),
-            "Sugar": item.get("Sugar", "No sugar information found."),
-            "Protein": item.get("Protein", "No protein information found."),
-        }
+        # Extract nutritional information
+        nutritional_info = {"Food_item": food_item.title()}
+        for nutrient in requested_nutrients:
+            # Default to "Data not available" if the nutrient is not found
+            nutrient_value = item.get(nutrient, "Data not available")
+            nutritional_info[nutrient] = nutrient_value
 
-        return {"food_item": food_item, "nutritional_info": nutritional_info}
+        # Format the nutritional information
+        nutrient_details = "\n".join(
+            [
+                (
+                    f"{nutrient}: {nutritional_info[nutrient]:.2f}g"
+                    if isinstance(nutritional_info[nutrient], (int, float))
+                    else f"{nutrient}: {nutritional_info[nutrient]}"
+                )
+                for nutrient in requested_nutrients
+            ]
+        )
+
+        return f"Nutritional Information for {food_item.title()}:\n{nutrient_details}"
 
     except Exception as e:
-        return {"error": str(e)}
+        return f"Error retrieving nutritional information for '{food_item}': {str(e)}"
 
 
 def out_of_scope():
