@@ -10,7 +10,7 @@ services:
       - "8000:8000"
     environment:
       - FLASK_APP=api/app.py
-      - FLASK_ENV=development
+      - FLASK_ENV=production
 
   frontend:
     build: ./frontend
