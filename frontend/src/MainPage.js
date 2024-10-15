@@ -5,7 +5,7 @@ import logo from "./images/cfa-logo.png";
 
 function MainPage() {
   const [isOrdering, setIsOrdering] = useState(false);
-  const [isBotThinking, setIsBotThinking] = useState(true);
+  const [isBotThinking, setIsBotThinking] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [messages, setMessages] = useState([
     {
