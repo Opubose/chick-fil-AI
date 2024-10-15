@@ -49,7 +49,7 @@
 .input-container.transform {
   width: 600px; /* Expands the input animation part */
   top: calc(100vh - 100px); /* Moves the input to the bottom animation part */
-  transform: translate(-50%, 0); /* Keep input centered */
+  transform: translate(-50%, 0); 
 }
 
 .order-input {
@@ -60,10 +60,13 @@
   border: none;
   border-radius: 50px;
   width: 100%; 
-  height: 100%; 
+  height: auto; 
+  max-height: 150px; 
   text-align: center; 
   cursor: pointer; 
   transition: top 1s ease-in-out, width 1s ease-in-out; 
+  resize: none;
+  overflow-y: auto;
 }
 
 .order-input.initial {
@@ -72,12 +75,14 @@
   left: 50%; 
 }
 
-/* Input after transformation, expanding and allowing typing */
 .order-input.transform {
   font-size: 15px;
-  text-align: left; /* Align text to the left after transformation */
-  cursor: text; /* Show text cursor when input becomes editable */
-  outline: none; /* Remove default outline */
+  text-align: left; 
+  cursor: text; 
+  outline: none; 
+  height: auto; 
+  max-height: 150px; 
+  overflow-y: auto; 
 }
 
 /* Circular arrow icon styling */
@@ -86,13 +91,13 @@
   right: 15px;
   width: 30px;
   height: 30px;
-  border: 2px solid white; /* Circular border */
-  border-radius: 50%; /* Make the arrow container circular */
+  border: 2px solid white; 
+  border-radius: 50%; 
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
   margin-right: 2px;
+  cursor: pointer;
 }
 
 .arrow-icon::before {
@@ -112,6 +117,7 @@
 
 .arrow-icon::after {
   content: "";
+  cursor: pointer;
   display: block;
   width: 8px;
   height: 8px;
@@ -135,3 +141,5 @@
   opacity: 1;
   text-align: left;
 }
+
+

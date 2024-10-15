@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "./styles/App.css";
 import Chat from "./Chat";
-import logo from "./icons/cfa-logo.png";
+import logo from "./images/cfa-logo.png";
 
 function MainPage() {
   const [isOrdering, setIsOrdering] = useState(false);
+  const [isBotThinking, setIsBotThinking] = useState(true);
   const [showChat, setShowChat] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -50,7 +51,11 @@ function MainPage() {
       content: userMessage,
     };
     setMessages([...messages, userMsgObj]);
+  
+    setIsBotThinking(true); // Bot starts "thinking"
     const botResponse = await sendMessage(userMessage);
+    setIsBotThinking(false); // Bot finishes "thinking"
+  
     const botMsgObj = {
       id: messages.length + 2,
       sender: "bot",
@@ -68,7 +73,8 @@ function MainPage() {
       <div className="menu-container">
         <button className="menu-button">View Menu</button>
       </div>
-      {showChat && <Chat messages={messages} />}{" "}
+      {showChat && <Chat messages={messages} isBotThinking={isBotThinking} />}
+{" "}
       {/** render the chat messages after pressing button */}
       <div className={`input-container ${isOrdering ? "transform" : ""}`}>
         <input
@@ -84,7 +90,20 @@ function MainPage() {
             }
           }}
         />
-        <span className="arrow-icon"></span>
+        <span
+          className="arrow-icon"
+          onClick={() => {
+            if (isOrdering) { 
+              const inputElement = document.querySelector(".order-input");
+              const userMessage = inputElement.value.trim();
+              console.log("y")
+              if (userMessage) {
+                handleUserMessage(userMessage);
+                inputElement.value = ""; 
+              }
+            }
+          }}
+        ></span>
       </div>
     </div>
   );
