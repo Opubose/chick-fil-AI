@@ -1,3 +1,4 @@
+// MainPage.js
 import React, { useState } from "react";
 import "./styles/App.css";
 import Chat from "./Chat";
@@ -15,12 +16,15 @@ function MainPage() {
         "Hi, I am Chick-Fil-AI. Ask me anything about our menu or type your order!",
     },
   ]);
+  const [inputValue, setInputValue] = useState("");
 
   const handleClick = () => {
-    setIsOrdering(true);
-    setTimeout(() => {
-      setShowChat(true);
-    }, 1000);
+    if (!isOrdering) {
+      setIsOrdering(true);
+      setTimeout(() => {
+        setShowChat(true);
+      }, 1000);
+    }
   };
 
   // Handle sending a message to the backend
@@ -44,6 +48,7 @@ function MainPage() {
       return "Sorry, I couldn't process your request.";
     }
   };
+
   const handleUserMessage = async (userMessage) => {
     const userMsgObj = {
       id: messages.length + 1,
@@ -51,17 +56,39 @@ function MainPage() {
       content: userMessage,
     };
     setMessages([...messages, userMsgObj]);
-  
+
     setIsBotThinking(true); // Bot starts "thinking"
     const botResponse = await sendMessage(userMessage);
     setIsBotThinking(false); // Bot finishes "thinking"
-  
+
     const botMsgObj = {
       id: messages.length + 2,
       sender: "bot",
       content: botResponse,
     };
     setMessages((prevMessages) => [...prevMessages, botMsgObj]);
+  };
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  
+    const textarea = e.target;
+    textarea.style.height = "25px"; 
+    if (textarea.scrollHeight > textarea.offsetHeight) {
+      textarea.style.height = textarea.scrollHeight - 30 + "px";
+    }
+  };
+  
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey && isOrdering) {
+      e.preventDefault();
+      const userMessage = inputValue.trim();
+      if (userMessage) {
+        handleUserMessage(userMessage);
+        setInputValue("");
+      }
+    }
   };
 
   return (
@@ -74,32 +101,26 @@ function MainPage() {
         <button className="menu-button">View Menu</button>
       </div>
       {showChat && <Chat messages={messages} isBotThinking={isBotThinking} />}
-{" "}
-      {/** render the chat messages after pressing button */}
-      <div className={`input-container ${isOrdering ? "transform" : ""}`}>
-        <input
-          type="text"
+      <div
+        className={`input-container ${isOrdering ? "transform" : "initial"}`}
+      >
+        <textarea
           className={`order-input ${isOrdering ? "transform" : "initial"}`}
           placeholder="Place Your Order"
           readOnly={!isOrdering}
           onClick={handleClick}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && isOrdering) {
-              handleUserMessage(e.target.value);
-              e.target.value = "";
-            }
-          }}
-        />
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+        ></textarea>
         <span
           className="arrow-icon"
           onClick={() => {
-            if (isOrdering) { 
-              const inputElement = document.querySelector(".order-input");
-              const userMessage = inputElement.value.trim();
-              console.log("y")
+            if (isOrdering) {
+              const userMessage = inputValue.trim();
               if (userMessage) {
                 handleUserMessage(userMessage);
-                inputElement.value = ""; 
+                setInputValue("");
               }
             }
           }}

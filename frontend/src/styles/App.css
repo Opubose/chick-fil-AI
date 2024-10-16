@@ -29,7 +29,7 @@
 }
 
 .logo {
-  width: 500px;
+  width: 200px;
 }
 
 /* Input container to hold input and arrow */
@@ -48,7 +48,7 @@
 
 .input-container.transform {
   width: 600px; /* Expands the input animation part */
-  top: calc(100vh - 100px); /* Moves the input to the bottom animation part */
+  top: calc(100vh - 125px); /* Moves the input to the bottom animation part */
   transform: translate(-50%, 0); 
 }
 
@@ -58,15 +58,20 @@
   background-color: #D32329;
   color: white;
   border: none;
-  border-radius: 50px;
+  border-radius: 35px;
   width: 100%; 
-  height: auto; 
-  max-height: 150px; 
+  height: 25px; /* Allows the input to grow */
+  max-height: 100px; /* Set the maximum height before scrolling kicks in */
   text-align: center; 
   cursor: pointer; 
   transition: top 1s ease-in-out, width 1s ease-in-out; 
-  resize: none;
-  overflow-y: auto;
+  resize: none; /* Prevent manual resizing */
+  overflow-y: auto; /* Adds scrolling once the input reaches max-height */
+  scrollbar-width: thin;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: -10px;
+  padding-bottom: -10px;
 }
 
 .order-input.initial {
@@ -78,11 +83,12 @@
 .order-input.transform {
   font-size: 15px;
   text-align: left; 
-  cursor: text; 
+  cursor: text;
   outline: none; 
-  height: auto; 
+  height: 25px;
   max-height: 150px; 
   overflow-y: auto; 
+  
 }
 
 /* Circular arrow icon styling */
@@ -91,7 +97,7 @@
   right: 15px;
   width: 30px;
   height: 30px;
-  border: 2px solid white; 
+  border: 2px solid white; /* Circular border */
   border-radius: 50%; 
   display: flex;
   align-items: center;
@@ -141,3 +147,9 @@
   opacity: 1;
   text-align: left;
 }
+
+
+textarea{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
