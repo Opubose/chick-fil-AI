@@ -234,33 +234,80 @@ def is_vegan(ingredients):
 
 
 def get_items_by_dietary_restriction(entities):
-    if entities and "modifiers" in entities:
-        restriction = entities["modifiers"].lower()
+    if entities and "dietary" in entities:
+        restriction = entities["dietary"].lower()
     else:
-        return "Please specify a dietary restriction (e.g., vegetarian, vegan)."
+        return "Please specify a dietary restriction (e.g., vegetarian, vegan, dairy-free, soy-free, etc.)."
 
     try:
         response = menu.scan()
         items = response.get("Items", [])
-
-        matching_items = []
+        
+        # If specific food items are provided, filter the items list
+        if entities and "food_items" in entities and entities["food_items"]:
+            food_items = [item.lower() for item in entities["food_items"]]
+            items = [item for item in items if item.get("Item", "").lower() in food_items]
+        
+        matching_items = set()
 
         for item in items:
             ingredients = item.get("Ingredients", "").lower()
+            
+            # Vegan restriction check
             if restriction == "vegan":
                 if is_vegan(ingredients):
-                    matching_items.append(item["Item"])
+                    matching_items.add(item["Item"])
+                    
+            # Vegetarian restriction check
             elif restriction == "vegetarian":
                 if is_vegetarian(ingredients):
-                    matching_items.append(item["Item"])
+                    matching_items.add(item["Item"])
+            
+            # Checking for allergen-related restrictions
+            elif restriction == "dairy":
+                if item.get("Dairy") == 0:
+                    matching_items.add(item["Item"])
+            elif restriction == "soy":
+                if item.get("Soy") == 0:
+                    matching_items.add(item["Item"])
+            elif restriction == "wheat":
+                if item.get("Wheat") == 0:
+                    matching_items.add(item["Item"])
+            elif restriction == "tree_nuts":
+                if item.get("Tree_Nuts") == 0:
+                    matching_items.add(item["Item"])
+            elif restriction == "fish":
+                if item.get("Fish") == 0:
+                    matching_items.add(item["Item"])
+            elif restriction == "egg":
+                if item.get("Egg") == 0:
+                    matching_items.add(item["Item"])
             else:
-                return "Currently, we only support 'vegan' and 'vegetarian' dietary restrictions."
-
-        if not matching_items:
-            return f"No items found for dietary restriction: {restriction}."
-        return f"Here are some of our {restriction} items: {', '.join(matching_items)}"
+                return "Currently, we only support 'vegan', 'vegetarian', and allergen-related dietary restrictions like 'dairy-free', 'soy-free', etc."
+        
+        # Handling specific food items and results formatting
+        if entities and "food_items" in entities and entities["food_items"]:
+            res = []
+            for item in entities["food_items"]:
+                if not matching_items or item not in matching_items:
+                    if restriction == 'vegan' or restriction == 'vegetarian':
+                        res.append(f"{item} is not {restriction}")
+                    else:
+                        res.append(f"{item} is not {restriction}-free")
+                else:
+                    if restriction == 'vegan' or restriction == 'vegetarian':
+                        res.append(f"{item} is {restriction}")
+                    else:
+                        res.append(f"{item} is {restriction}-free")
+            return '. '.join(res)
+        else:
+            if not matching_items:
+                return f"No items found for dietary restriction: {restriction}."
+            return f"Here are some of our {restriction}-free items: {', '.join(matching_items)}"
     except Exception as e:
-        return f"Error retrieving for items with restriction {restriction}: {str(e)}"
+        return f"Error retrieving items with restriction {restriction}: {str(e)}"
+
+
     
 def get_ingredients(entities):
     if entities and "food_items" in entities and entities["food_items"]:
@@ -282,7 +329,19 @@ def get_ingredients(entities):
     except Exception as e:
         return f"Error retrieving ingredients for '{food_item}': {str(e)}"
     
-def get_nutritional_info(entities):
+def get_nutritional_info(entities): # should add units (ex: grams)
+    units = {
+        "Fat": "G",
+        "Sat. Fat": "G",
+        "Trans Fat": "G",
+        "Cholesterol": "MG",
+        "Sodium": "MG",
+        "Carbohydrates": "G",
+        "Fiber": "G",
+        "Sugar": "G",
+        "Protein": "G"
+    }
+
     # Check if the food item is specified
     if 'food_items' not in entities or not entities['food_items']:
         return "Please specify a food item to get its nutritional information."
@@ -328,8 +387,9 @@ def get_nutritional_info(entities):
 
         # Format the nutritional information
         nutrient_details = "\n".join([
-            f"{nutrient}: {nutritional_info[nutrient]:.2f}g" if isinstance(nutritional_info[nutrient], (int, float))
-            else f"{nutrient}: {nutritional_info[nutrient]}"
+            f"{nutrient}: {nutritional_info[nutrient]:.2f}{units.get(nutrient, '')}"
+            # f"{nutrient}: {nutritional_info[nutrient]:.2f}" if isinstance(nutritional_info[nutrient], (int, float))
+            #else f"{nutrient}: {nutritional_info[nutrient]}"
             for nutrient in requested_nutrients
         ])
 
