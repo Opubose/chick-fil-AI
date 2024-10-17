@@ -1,4 +1,4 @@
-FROM node:23-alpine AS build
+FROM node:23-slim AS build
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build
 
-FROM node:23-alpine AS production
+FROM node:23-slim AS production
 
 RUN npm install -g serve
 
