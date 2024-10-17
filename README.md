@@ -1,72 +1,77 @@
-# Getting Started with Create React App
+# Chick-fil-AI Chatbot
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is an AI chatbot application for Chick-fil-A restaurants, developed as a senior design project (CS 4485) for Computer Science majors at The University of Texas at Dallas.
+The following members contributed to this project:
 
-## Available Scripts
+1. Aditya Kulkarni
+2. Agastya Bose
+3. David Tepeneu
+4. Dilon Sok
+5. Grace Zhou
 
-In the project directory, you can run:
+## Project Structure
 
-### `npm start`
+The project is organized into two main subdirectories:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- `backend`: Contains the Flask API, NLP scripts, and database scripts
+- `frontend`: Contains the React application
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Both subdirectories have their own Dockerfiles for containerization.
 
-### `npm test`
+## Prerequisites
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Before running the application, ensure you have the following:
 
-### `npm run build`
+1. Docker and Docker Compose installed on your system
+2. Required API keys and secrets:
+   - Google Dialogflow key
+   - Amazon AWS keys for DynamoDB
+   - OpenAI API key
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Getting Started
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To run the application:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone this repository
+2. Navigate to the project's root directory
+3. Set up the required environment variables (see "Environment Variables" section below)
+4. Run the following command:
 
-### `npm run eject`
+```bash
+docker compose up --build
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+This command will build and start both the backend and frontend containers.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Environment Variables
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Create a `.env` file in the project root directory with the following variables:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+GOOGLE_APPLICATION_CREDENTIALS=path_to_your_dialogflow_key
+AWS_ACCESS_KEY=your_aws_access_key
+AWS_SECRET_KEY=your_aws_secret_key
+OPENROUTER_API_KEY=your_openai_api_key
+```
 
-## Learn More
+Replace the placeholder values with your actual API keys and secrets.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Backend
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The backend is built using Flask and serves as the API for the chatbot. It interacts with:
 
-### Code Splitting
+- Google Dialogflow for natural language processing
+- Amazon DynamoDB to store and query the restaurant menu
+- OpenAI for advanced response generation capabilities
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Frontend
 
-### Analyzing the Bundle Size
+The frontend is a React application that provides the user interface for interacting with the chatbot.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Data Storage
 
-### Making a Progressive Web App
+The restaurant menu is stored in an Amazon DynamoDB table, which is queried by the backend during the runtime of the application.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Contributing
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-.
+This project is part of UTD's senior design course. No external contributions will be accepted.
