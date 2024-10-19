@@ -1,4 +1,3 @@
-// MainPage.js
 import React, { useState } from "react";
 import "./styles/App.css";
 import Chat from "./Chat";
@@ -7,13 +6,12 @@ import logo from "./images/cfa-logo.png";
 function MainPage() {
   const [isOrdering, setIsOrdering] = useState(false);
   const [isBotThinking, setIsBotThinking] = useState(false);
-  const [showChat, setShowChat] = useState(false);
+  const [chatState, setChatState] = useState('initial');  
   const [messages, setMessages] = useState([
     {
       id: 1,
       sender: "bot",
-      content:
-        "Hi, I am Chick-Fil-AI. Ask me anything about our menu or type your order!",
+      content: "Hi, I am Chick-Fil-AI. Ask me anything about our menu or type your order!",
     },
   ]);
   const [inputValue, setInputValue] = useState("");
@@ -21,13 +19,11 @@ function MainPage() {
   const handleClick = () => {
     if (!isOrdering) {
       setIsOrdering(true);
-      setTimeout(() => {
-        setShowChat(true);
-      }, 1000);
+      setChatState('expanded');  
     }
   };
 
-  // Handle sending a message to the backend
+  
   const sendMessage = async (userMessage) => {
     try {
       const response = await fetch("http://127.0.0.1:8000/chat", {
@@ -57,9 +53,9 @@ function MainPage() {
     };
     setMessages([...messages, userMsgObj]);
 
-    setIsBotThinking(true); // Bot starts "thinking"
+    setIsBotThinking(true);
     const botResponse = await sendMessage(userMessage);
-    setIsBotThinking(false); // Bot finishes "thinking"
+    setIsBotThinking(false);
 
     const botMsgObj = {
       id: messages.length + 2,
@@ -71,14 +67,11 @@ function MainPage() {
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
-  
     const textarea = e.target;
-    textarea.style.height = "25px"; 
     if (textarea.scrollHeight > textarea.offsetHeight) {
-      textarea.style.height = textarea.scrollHeight - 30 + "px";
+      textarea.style.height = `${textarea.scrollHeight - 30}px`;
     }
   };
-  
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey && isOrdering) {
@@ -86,7 +79,7 @@ function MainPage() {
       const userMessage = inputValue.trim();
       if (userMessage) {
         handleUserMessage(userMessage);
-        setInputValue("");
+        setInputValue(""); 
       }
     }
   };
@@ -95,17 +88,19 @@ function MainPage() {
     <div className="MainPage">
       <header className="top-bar"></header>
       <img src={logo} alt="Chick-Fil-A Logo" className="logo" />
-      <div className="logo-container"></div>
       <div className="settings"></div>
       <div className="menu-container">
         <button className="menu-button">View Menu</button>
       </div>
-      {showChat && <Chat messages={messages} isBotThinking={isBotThinking} />}
-      <div
-        className={`input-container ${isOrdering ? "transform" : "initial"}`}
-      >
+
+      <div className={`chat-container ${chatState}`}>
+        {chatState === 'expanded' && <Chat messages={messages} isBotThinking={isBotThinking}/>}
+      </div>
+
+      {/* Input field with click handler to trigger ordering */}
+      <div className={`input-container ${isOrdering ? "transform" : ""}`}>
         <textarea
-          className={`order-input ${isOrdering ? "transform" : "initial"}`}
+          className={`order-input ${isOrdering ? "transform" : ""}`}
           placeholder="Place Your Order"
           readOnly={!isOrdering}
           onClick={handleClick}
@@ -113,18 +108,6 @@ function MainPage() {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
         ></textarea>
-        <span
-          className="arrow-icon"
-          onClick={() => {
-            if (isOrdering) {
-              const userMessage = inputValue.trim();
-              if (userMessage) {
-                handleUserMessage(userMessage);
-                setInputValue("");
-              }
-            }
-          }}
-        ></span>
       </div>
     </div>
   );
