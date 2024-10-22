@@ -2,7 +2,6 @@ import boto3
 import os
 import re
 from order import Order
-import re
 
 dynamodb = boto3.resource(
     "dynamodb",
