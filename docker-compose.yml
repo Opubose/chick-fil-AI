@@ -5,7 +5,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./dialogflow-credentials.json:/app/config/dialogflow-credentials.json:ro
+      - ./backend/resources/api-resources/dialogflow-credentials.json:/app/config/dialogflow-credentials.json:ro
     ports:
       - "8000:8000"
     environment:
