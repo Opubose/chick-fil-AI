@@ -3,11 +3,11 @@
 This project is an AI chatbot application for Chick-fil-A restaurants, developed as a senior design project (CS 4485) for Computer Science majors at The University of Texas at Dallas.
 The following members contributed to this project:
 
-1. Aditya Kulkarni
-2. Agastya Bose
-3. David Tepeneu
-4. Dilon Sok
-5. Grace Zhou
+1. [Aditya Kulkarni](https://www.linkedin.com/in/aditya34/)
+2. [Agastya Bose](https://www.linkedin.com/in/agastya-bose/)
+3. [David Tepeneu](https://www.linkedin.com/in/david-tepeneu/)
+4. [Dilon Sok](https://www.linkedin.com/in/dilon-sok/)
+5. [Grace Zhou](https://www.linkedin.com/in/gzhou624/)
 
 ## Project Structure
 
