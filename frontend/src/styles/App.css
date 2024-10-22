@@ -2,6 +2,7 @@
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+
 .App {
   text-align: center;
   height: 100vh;
@@ -20,15 +21,48 @@
   height: 100%;
 }
 
-.menu-container {
-  padding-bottom: 2%;
+.top-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; 
+  position: relative; 
+  height: 70px; 
+  margin-bottom:15px;
 }
 
+.menu-container {
+  position: absolute;
+  top: 25%;
+  left: -100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background-color: #D32329;
+  border: none;
+  border-radius: 35px;
+  height: 50px;
+  width: 130px;
+  padding-left: 15px;
+}
+
+.menu-button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.phone-icon {
+  width: 45px;
+}
+
+
 .logo-container {
-  flex-grow: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-grow: 1;
 }
 
 .logo {
@@ -52,30 +86,37 @@
 }
 
 .order-input {
-  padding: 15px 40px;
+  padding: 15px 35px;
   font-size: 15px;
   background-color: #D32329;
-  color: white;
   border: none;
   border-radius: 35px;
-  height: 25px;
   width: 200px;
-  max-height: 150px;
-  text-align: center;
-  resize: none;
-  transition: width 1.5s ease-in, height 1s ease-in-out;
+  max-width: 60%;
+  resize: none; 
+  overflow-y: auto; 
+  color: white;
+  cursor: pointer;
+  min-height: 25px;
+  max-height: 150px; 
+  box-sizing: border-box; 
+  transition: width 1.6s ease-in, height 0.2s ease; 
+}
+
+
+.order-input::placeholder {
+  color: white; 
 }
 
 .order-input.initial {
   text-align: center;
-  color: white;
   overflow-y: auto;
   scrollbar-width: thin;
   scroll-padding: -20px;
-  cursor: pointer;
 }
 
 .order-input.transform {
+  height: initial;
   text-align: left;
   cursor: text;
   outline: none;
@@ -124,15 +165,14 @@
   transform: translateY(-50%) rotate(315deg);
 }
 
-.input-wrapper.transform .arrow-icon {
+/* .input-wrapper.transform .arrow-icon {
   transform: rotate(-90deg);
-}
+} */
 
 textarea::-webkit-scrollbar {
   width: 6px;
 }
 
 textarea::-webkit-scrollbar-thumb {
-  background-color: #d32329;
-  border-radius: 10px;
+  background-color: rgb(169, 169, 169);
 }
