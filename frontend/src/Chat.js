@@ -14,7 +14,7 @@ function Chat({ messages, isBotThinking }) {
               alt={`${message.sender} Icon`}
               className="icon"
             />
-            <div className="response">{message.content}</div>
+            <div className="response" style={{ whiteSpace: "pre-line" }}>{message.content}</div>
           </div>
         ))}
         {isBotThinking && (
