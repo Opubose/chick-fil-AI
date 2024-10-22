@@ -26,7 +26,7 @@ Before running the application, ensure you have the following:
 2. Required API keys and secrets:
    - Google Dialogflow key
    - Amazon AWS keys for DynamoDB
-   - OpenAI API key
+   - OpenRouter API key
 
 ## Getting Started
 
@@ -51,7 +51,7 @@ Create a `.env` file in the project root directory with the following variables:
 GOOGLE_APPLICATION_CREDENTIALS=path_to_your_dialogflow_key
 AWS_ACCESS_KEY=your_aws_access_key
 AWS_SECRET_KEY=your_aws_secret_key
-OPENROUTER_API_KEY=your_openai_api_key
+OPENROUTER_API_KEY=your_openrouter_api_key
 ```
 
 Replace the placeholder values with your actual API keys and secrets.
@@ -62,7 +62,7 @@ The backend is built using Flask and serves as the API for the chatbot. It inter
 
 - Google Dialogflow for natural language processing
 - Amazon DynamoDB to store and query the restaurant menu
-- OpenAI for advanced response generation capabilities
+- OpenRouter for cloud-based LLM response generation
 
 ## Frontend
 
