@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "./styles/Chat.css";
 import userIcon from "./images/user-icon.svg";
 import botIcon from "./images/cfa-cow-icon.svg";
 
 function Chat({ messages, isBotThinking }) {
+  // Create a ref to access the chat container
+  const chatRef = useRef(null);
+
+  // Use useEffect to scroll to the bottom every time messages change
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [messages, isBotThinking]);
+
   return (
     <div className="chat-container">
-      <div className="chat">
+      <div className="chat" ref={chatRef}>
         {messages.map((message) => (
           <div key={message.id} className={`message ${message.sender}`}>
             <img
@@ -31,6 +41,5 @@ function Chat({ messages, isBotThinking }) {
     </div>
   );
 }
-
 
 export default Chat;
