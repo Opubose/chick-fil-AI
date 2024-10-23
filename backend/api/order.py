@@ -15,14 +15,14 @@ class Order:
         if item in self.items:
             self.items[item] = quantity
         else:
-            pass #throw error
+            pass  # throw error
 
     def remove_item(self, item, price):
         if item in self.items:
             del self.items[item]
             self.total_price -= price
         else:
-            pass #throw error
+            pass  # throw error
 
     def clear_order(self):
         self.items.clear()
