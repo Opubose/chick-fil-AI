@@ -10,4 +10,4 @@ FROM node:22-slim AS production
 RUN npm install -g serve
 WORKDIR /app
 COPY --from=build /app/build /app/build
-CMD ["serve", "-s", "build", "-l", "${PORT:-3000}"]
+CMD ["serve", "-s", "build", "-l", "$PORT"]
