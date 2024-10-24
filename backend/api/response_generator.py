@@ -1,13 +1,13 @@
 import boto3
-import os
-import re
+from os import getenv
+from re import findall
 from order import Order
 from flask import session
 
 dynamodb = boto3.resource(
     "dynamodb",
-    aws_access_key_id=os.getenv("AWS_ACCESS_KEY"),
-    aws_secret_access_key=os.getenv("AWS_SECRET_KEY"),
+    aws_access_key_id=getenv("AWS_ACCESS_KEY"),
+    aws_secret_access_key=getenv("AWS_SECRET_KEY"),
     region_name="us-east-1",
 )
 menu = dynamodb.Table("CFA-Data")
@@ -275,7 +275,7 @@ def is_vegetarian(ingredients):
         "anchovy",
         "meat",
     ]
-    words = re.findall(r"\b\w+\b", ingredients.lower())
+    words = findall(r"\b\w+\b", ingredients.lower())
 
     for item in non_vegetarian_items:
         if item in words:
@@ -298,7 +298,7 @@ def is_vegan(ingredients):
         "whey",
         "casein",
     ]
-    words = re.findall(r"\b\w+\b", ingredients.lower())
+    words = findall(r"\b\w+\b", ingredients.lower())
 
     for item in non_vegan_items:
         if item in words:
