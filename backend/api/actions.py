@@ -1,17 +1,7 @@
-from dotenv import load_dotenv
 import os
 import requests
 from google.cloud import dialogflow_v2 as dialogflow
 import response_generator
-
-load_dotenv()
-
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv(
-    "GOOGLE_APPLICATION_CREDENTIALS"
-)
-OPENROUTER_API_KEY = os.getenv(
-    'OPENROUTER_API_KEY'
-)
 
 
 def get_intent_and_entities(customer_message):
@@ -97,8 +87,9 @@ def order_status():
     return construct_output_response(original_intent, "", database_information)
 
 
-#def construct_output_response(original_intent, extracted_entities, database_information):
+# def construct_output_response(original_intent, extracted_entities, database_information):
 #    return database_information
+
 
 def construct_output_response(original_intent, entities, output_string):
     prompt = f"""You are a Chick-Fil-A AI chatbot assistant that helps users with their orders.
@@ -116,7 +107,7 @@ def construct_output_response(original_intent, entities, output_string):
     url = "https://openrouter.ai/api/v1/chat/completions"
 
     headers = {
-        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+        "Authorization": f"Bearer {os.getenv("OPENROUTER_API_KEY")}",
         "Content-Type": "application/json",
     }
 
@@ -126,22 +117,23 @@ def construct_output_response(original_intent, entities, output_string):
         "model": model,
         "messages": [
             {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": prompt}
+            {"role": "user", "content": prompt},
         ],
         "max_tokens": 300,
         "temperature": 0.7,
-        "top_p": 0.9
+        "top_p": 0.9,
     }
     print(output_string)
 
     response = requests.post(url, headers=headers, json=data)
 
     if response.status_code != 200:
-        raise Exception(f"OpenRouter API request failed with status code {response.status_code}: {response.text}")
+        raise Exception(
+            f"OpenRouter API request failed with status code {response.status_code}: {response.text}"
+        )
 
     response_data = response.json()
 
-    corrected_response = response_data['choices'][0]['message']['content'].strip()
+    corrected_response = response_data["choices"][0]["message"]["content"].strip()
 
     return corrected_response
-
