@@ -7,4 +7,4 @@ COPY api/ /app/api/
 RUN rm -rf /app/api/__pycache__
 RUN pip install gunicorn
 WORKDIR /app/api
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "app:app"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:${PORT:-8000}", "app:app"]
