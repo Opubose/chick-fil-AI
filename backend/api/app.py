@@ -11,6 +11,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
+allowed_origins = [
+    "http://localhost:3000",  # Development
+    "https://chick-fil-ai.herokuapp.com",  # Production
+]
 app.config["CORS_HEADERS"] = "Content-Type"
 app.config["SECRET_KEY"] = environ["SESSION_ID"]
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(
@@ -18,8 +22,17 @@ app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(
 )  # The browser cookies are valid for 30 minutes
 CORS(
     app,
-    resources={r"/*": {"origins": "http://localhost:3000"}},
-    supports_credentials=True,
+    resources={
+        r"/*": {
+            "origins": allowed_origins,
+            "methods": ["GET", "POST", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "expose_headers": ["Content-Range", "X-Content-Range"],
+            "supports_credentials": True,
+            "max_age": 3600,
+        }
+    },
+    vary_header=True,
 )
 
 
