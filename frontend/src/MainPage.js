@@ -4,7 +4,7 @@ import Chat from "./Chat";
 import MenuPopup from "./MenuPopup"; 
 import logo from "./images/cfa-logo.png";
 import phone_icon from "./images/phone-icon.svg";
-import menuImage from "./images/cfa-menu.png"; 
+import menuImage from "./images/cfa-menu.png";
 
 function MainPage() {
   const [isOrdering, setIsOrdering] = useState(false);
@@ -37,7 +37,7 @@ function MainPage() {
 
   const sendMessage = async (userMessage) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/chat", {
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: 'include',
