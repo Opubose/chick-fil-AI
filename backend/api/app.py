@@ -2,13 +2,17 @@ from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 import actions
 import response_generator
-import uuid
+from uuid import uuid4
+from os import environ
 from order import Order
 from datetime import timedelta
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config["CORS_HEADERS"] = "Content-Type"
-app.config["SECRET_KEY"] = "testing"
+app.config["SECRET_KEY"] = environ["SESSION_ID"]
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(
     minutes=30
 )  # The browser cookies are valid for 30 minutes
@@ -22,7 +26,7 @@ CORS(
 @app.before_request
 def before_request():
     if "user_id" not in session:
-        session["user_id"] = str(uuid.uuid4())
+        session["user_id"] = str(uuid4())
         session["order"] = Order().__dict__
 
 
