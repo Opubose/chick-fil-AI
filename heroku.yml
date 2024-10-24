@@ -1,0 +1,15 @@
+setup:
+  config:
+    NODE_ENV: production
+    FLASK_ENV: production
+    FLASK_DEBUG: False
+
+build:
+  docker:
+    web: frontend/Dockerfile
+    api: backend/Dockerfile
+
+run:
+  web: serve -s build -l $PORT
+  api: gunicorn -w 4 -b 0.0.0.0:$PORT app:app
+
