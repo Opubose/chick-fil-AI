@@ -127,7 +127,7 @@ def construct_output_response(original_intent, entities, output_string):
 
     response = requests.post(url, headers=headers, json=data)
 
-    if response.status_code != 200:
+    if not response.ok:
         raise Exception(
             f"OpenRouter API request failed with status code {response.status_code}: {response.text}"
         )
