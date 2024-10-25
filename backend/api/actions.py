@@ -10,7 +10,7 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv(
     "GOOGLE_APPLICATION_CREDENTIALS"
 )
 OPENROUTER_API_KEY = os.getenv(
-    'OPENROUTER_API_KEY'
+    "OPENROUTER_API_KEY"
 )
 
 
@@ -97,10 +97,10 @@ def order_status():
     return construct_output_response(original_intent, "", database_information)
 
 
-#def construct_output_response(original_intent, extracted_entities, database_information):
-#    return database_information
+def construct_output_response(original_intent, extracted_entities, database_information):
+   return database_information
 
-def construct_output_response(original_intent, entities, output_string):
+'''def construct_output_response(original_intent, entities, output_string):
     prompt = f"""You are a Chick-Fil-A AI chatbot assistant that helps users with their orders.
                 The intent of the message is: "{original_intent}"
                 The extracted entities are: {entities}
@@ -143,5 +143,5 @@ def construct_output_response(original_intent, entities, output_string):
 
     corrected_response = response_data['choices'][0]['message']['content'].strip()
 
-    return corrected_response
+    return corrected_response '''
 

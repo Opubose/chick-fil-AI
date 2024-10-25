@@ -11,16 +11,27 @@ class Order:
             self.items[item] = quantity
         self.total_price += quantity * price
 
-    def modify_item(self, item, quantity):
+    def modify_item(self, item, quantity): # huh?
         if item in self.items:
-            self.items[item] = quantity
+            self.items[item] -= quantity
+            if self.items[item] == 0:
+                del self.items
         else:
             pass  # throw error
+    
+    def add_modifier(self, item, modifier):
+        self.modifiers[item] = modifier
 
-    def remove_item(self, item, price):
+    def remove_item(self, item, price, quantity=1):
         if item in self.items:
-            del self.items[item]
-            self.total_price -= price
+            if self.items[item] >= quantity:
+                self.items[item] -= quantity
+                self.total_price -= quantity * price
+            else:
+                self.total_price -= self.items[item] * price
+                del self.items[item]
+                if item in self.modifiers:
+                    del self.modifiers[item]
         else:
             pass  # throw error
 

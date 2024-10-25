@@ -29,8 +29,48 @@ def save_user_order(order):
     session["order"] = order.__dict__
     session.modified = True
 
-
 def modify_order(entities):
+    order = get_user_order()
+    food_items = entities["food_items"]
+    discriminators = entities["discriminator"]
+    quantities = entities["quantities"] if "quantities" in entities else []
+    modifiers = entities["modifiers"] if "modifiers" in entities else []
+
+    if not food_items or not discriminators:
+        return "No food items or actions were found to modify in your order."
+
+    for i in range(len(food_items)):
+        food_item = food_items[i]
+        discriminator = discriminators[i]
+        quantity = quantities[i] if i < len(quantities) else 1
+        modifier = modifiers[i] if i < len(modifiers) else None
+
+        response = menu.get_item(Key={"Item": food_item})
+        if "Item" in response:
+            matched_item = response["Item"]
+            price = float(matched_item["Price"])
+
+            if modifier:
+                if discriminator == "Add":
+                    order.add_modifier(food_item, f"add {modifier}")
+                else:
+                    order.add_modifier(food_item, f"no {modifier}")
+            elif discriminator == "Add":
+                order.add_item(food_item, price, quantity)
+            elif discriminator == "Remove":
+                order.remove_item(food_item, price, quantity)
+
+    save_user_order(order)
+
+    order_items = order.get_total_items()
+    order_details = []
+
+    for item, quantity in order_items.items():
+        order_details.append(f"{quantity} x {item}" + (order.modifiers[item] if item in order.modifiers else ""))
+
+    return f"Your order has been updated. Here is your order: {', '.join(order_details)}"
+
+''' def modify_order(entities):
     food_items = entities["food_items"]
     quantities = entities["quantities"]
     order = get_user_order()
@@ -97,7 +137,7 @@ def modify_order(entities):
         )
         return f"{modified_string} Your order has been updated."
     else:
-        return "No changes were made to your order."
+        return "No changes were made to your order." '''
 
 
 def get_order_nutrition(entities):
