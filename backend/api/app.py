@@ -49,33 +49,24 @@ def get_bot_response():
     if customer_message:
         bot_response = actions.get_intent_and_entities(customer_message)
 
-        # handle various intents
-        if bot_response["intent"] == "out_of_scope":
-            bot_message = response_generator.out_of_scope()
+        # Use a dictionary to map intents to actions
+        actions_mapping = {
+            "menu_dietary": lambda: actions.menu_dietary(bot_response["entities"]),
+            "menu_entire": actions.menu_entire,
+            "menu_ingredients": lambda: actions.menu_ingredients(bot_response["entities"]),
+            "menu_nutrition": lambda: actions.menu_nutrition(bot_response["entities"]),
+            "order_cancel": lambda: actions.order_cancel(bot_response["entities"]),
+            "order_modify": lambda: actions.order_modify(bot_response["entities"]),
+            "order_nutrition": lambda: actions.order_nutrition(bot_response["entities"]),
+            "order_place": lambda: actions.order_place(bot_response["entities"]),
+            "order_status": actions.order_status,
+            "get_help": response_generator.get_help,
+        }
 
-        if bot_response["intent"] == "menu_dietary":
-            bot_message = actions.menu_dietary(bot_response["entities"])
-        if bot_response["intent"] == "menu_entire":
-            bot_message = actions.menu_entire()
-        if bot_response["intent"] == "menu_ingredients":
-            bot_message = actions.menu_ingredients(bot_response["entities"])
-        if bot_response["intent"] == "menu_nutrition":
-            bot_message = actions.menu_nutrition(bot_response["entities"])
-        if bot_response["intent"] == "order_cancel":
-            bot_message = actions.order_cancel(bot_response["entities"])
-        if bot_response["intent"] == "order_modify":
-            bot_message = actions.order_modify(bot_response["entities"])
-        if bot_response["intent"] == "order_nutrition":
-            bot_message = actions.order_nutrition(bot_response["entities"])
-        if bot_response["intent"] == "order_place":
-            bot_message = actions.order_place(bot_response["entities"])
-        if bot_response["intent"] == "order_status":
-            bot_message = actions.order_status()
-        if bot_response["intent"] == "get_help":
-            bot_message = response_generator.get_help()
+        # Attempt to get the bot message from the mapping, or set to out_of_scope if not found
+        bot_message = actions_mapping.get(bot_response["intent"], response_generator.out_of_scope)()
+
         return jsonify({"bot_message": bot_message}), 200
-        # default handler
-        return jsonify({"bot_message": response_generator.out_of_scope()}), 200
     else:
         return jsonify({"bot_message": "Error in Flask application!"}), 400
 
