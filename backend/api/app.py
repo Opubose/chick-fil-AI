@@ -15,7 +15,7 @@ allowed_origins = [
     "http://localhost:3000",  # Development
     "https://chick-fil-ai.herokuapp.com",  # Production
 ]
-app.config["ENV"] = os.environ.get("FLASK_ENV", "production")
+app.config["ENV"] = environ.get("FLASK_ENV", "production")
 app.config["DEBUG"] = False if app.config["ENV"] == "production" else True
 app.config["CORS_HEADERS"] = "Content-Type"
 app.config["SECRET_KEY"] = environ["SESSION_ID"]
