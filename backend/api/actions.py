@@ -61,6 +61,12 @@ def menu_nutrition(entities):
 
     return construct_output_response(original_intent, entities, database_information)
 
+def item_description(entities):
+    original_intent = "getting the description of a certain item"
+    database_information = response_generator.get_item_description(entities)
+
+    return construct_output_response(original_intent, entities, database_information)
+
 
 def order_cancel(entities):
     original_intent = "cancelling an order in its entirety"

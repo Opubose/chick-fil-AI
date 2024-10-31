@@ -510,6 +510,18 @@ def get_nutritional_info(entities):
 
     except Exception as e:
         return f"Error retrieving nutritional information for '{food_item}': {str(e)}"
+    
+
+def get_item_description(entities):
+    food_item = entities["food_items"]
+    try:
+        response = menu.get_item(Key={"Item": food_item})
+        if 'Item' in response:
+            description = response['Item'].get('Description')
+            return description if description else "Description not available."
+    except Exception as e:
+        return f"Error retrieving description for {food_item}"
+    pass
 
 
 def out_of_scope():
