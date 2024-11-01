@@ -20,6 +20,8 @@ function MainPage() {
   const [inputValue, setInputValue] = useState("");
   const [isPopupVisible, setIsPopupVisible] = useState(false); 
 
+  const CHARACTER_LIMIT = 250;
+
   const handleClick = () => {
     if (!isOrdering) {
       setIsOrdering(true);
@@ -76,19 +78,23 @@ function MainPage() {
 
   const handleInputChange = (e) => {
     const textarea = e.target;
-    setInputValue(textarea.value);
+    if (textarea.value.length <= CHARACTER_LIMIT) {
+      setInputValue(textarea.value);
+    }
     textarea.style.height = 'auto';
     const newHeight = Math.min(textarea.scrollHeight, 150); 
     textarea.style.height = `${newHeight}px`;
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey && isOrdering) {
-      e.preventDefault();
-      const userMessage = inputValue.trim();
-      if (userMessage) {
-        handleUserMessage(userMessage);
-        setInputValue("");
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); 
+      if (isOrdering && !isBotThinking) {
+        const userMessage = inputValue.trim();
+        if (userMessage) {
+          handleUserMessage(userMessage);
+          setInputValue("");
+        }
       }
     }
   };
@@ -121,6 +127,7 @@ function MainPage() {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           rows={1}
+          maxLength={CHARACTER_LIMIT}
         ></textarea>
       </div>
     </div>
