@@ -1,45 +1,44 @@
 import React, { useState } from "react";
 import "./styles/App.css";
 import Chat from "./Chat";
-import MenuPopup from "./MenuPopup"; 
+import MenuPopup from "./MenuPopup";
 import logo from "./images/cfa-logo.png";
 import phone_icon from "./images/phone-icon.svg";
-import menuImage from "./images/cfa-menu.png"; 
+import menuImage from "./images/cfa-menu.png";
 
 function MainPage() {
   const [isOrdering, setIsOrdering] = useState(false);
   const [isBotThinking, setIsBotThinking] = useState(false);
-  const [chatState, setChatState] = useState('initial');
+  const [chatState, setChatState] = useState("initial");
   const [messages, setMessages] = useState([
     {
       id: 1,
       sender: "bot",
-      content: "Hi, I am Chick-Fil-AI. Ask me anything about our menu or type your order!",
+      content:
+        "Hi, I am Chick-Fil-AI. Ask me anything about our menu or type your order!",
     },
   ]);
   const [inputValue, setInputValue] = useState("");
-  const [isPopupVisible, setIsPopupVisible] = useState(false); 
-
-  const CHARACTER_LIMIT = 250;
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const handleClick = () => {
     if (!isOrdering) {
       setIsOrdering(true);
-      setChatState('expanded');
+      setChatState("expanded");
     }
   };
 
   const handleMenuClick = () => {
-    setIsPopupVisible(true); 
+    setIsPopupVisible(true);
   };
 
   const handleClosePopup = () => {
-    setIsPopupVisible(false); 
+    setIsPopupVisible(false);
   };
 
   const sendMessage = async (userMessage) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/chat", {
+      const response = await fetch("https://chickfilai-backend.onrender.com/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ customer_message: userMessage }),
@@ -78,23 +77,19 @@ function MainPage() {
 
   const handleInputChange = (e) => {
     const textarea = e.target;
-    if (textarea.value.length <= CHARACTER_LIMIT) {
-      setInputValue(textarea.value);
-    }
-    textarea.style.height = 'auto';
-    const newHeight = Math.min(textarea.scrollHeight, 150); 
+    setInputValue(textarea.value);
+    textarea.style.height = "auto";
+    const newHeight = Math.min(textarea.scrollHeight, 150);
     textarea.style.height = `${newHeight}px`;
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); 
-      if (isOrdering && !isBotThinking) {
-        const userMessage = inputValue.trim();
-        if (userMessage) {
-          handleUserMessage(userMessage);
-          setInputValue("");
-        }
+    if (e.key === "Enter" && !e.shiftKey && isOrdering) {
+      e.preventDefault();
+      const userMessage = inputValue.trim();
+      if (userMessage) {
+        handleUserMessage(userMessage);
+        setInputValue("");
       }
     }
   };
@@ -103,19 +98,23 @@ function MainPage() {
     <div className="MainPage">
       <div className="top-bar">
         <div className="menu-container" onClick={handleMenuClick}>
-          <button className="menu-button">
-            View Menu
-          </button>
+          <button className="menu-button">View Menu</button>
           <img src={phone_icon} alt="Phone icon" className="phone-icon" />
         </div>
         <img src={logo} alt="Chick-Fil-A Logo" className="logo" />
       </div>
 
       <div className={`chat-container ${chatState}`}>
-        {chatState === 'expanded' && <Chat messages={messages} isBotThinking={isBotThinking} />}
+        {chatState === "expanded" && (
+          <Chat messages={messages} isBotThinking={isBotThinking} />
+        )}
       </div>
 
-      <MenuPopup isVisible={isPopupVisible} onClose={handleClosePopup} imgSrc={menuImage} />
+      <MenuPopup
+        isVisible={isPopupVisible}
+        onClose={handleClosePopup}
+        imgSrc={menuImage}
+      />
 
       <div className={`input-container ${isOrdering ? "transform" : ""}`}>
         <textarea
@@ -127,7 +126,6 @@ function MainPage() {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           rows={1}
-          maxLength={CHARACTER_LIMIT}
         ></textarea>
       </div>
     </div>
