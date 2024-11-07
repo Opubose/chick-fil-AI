@@ -24,7 +24,7 @@ class Order:
 
     def remove_item(self, item, price, quantity=1):
         if item in self.items:
-            if self.items[item] >= quantity:
+            if self.items[item] > quantity:
                 self.items[item] -= quantity
                 self.total_price -= quantity * price
             else:

@@ -11,9 +11,10 @@ dynamodb = boto3.resource(
     region_name="us-east-1",
 )
 menu = dynamodb.Table("CFA-Data")
+order = Order()
 
 
-def get_user_order():
+''' def get_user_order():
     """Helper function to get or create user-specific order"""
     if "order" not in session:
         session["order"] = Order().__dict__
@@ -21,16 +22,16 @@ def get_user_order():
     order_dict = session["order"]
     user_order = Order()
     user_order.__dict__.update(order_dict)
-    return user_order
+    return user_order, session["user_id"]
 
 
 def save_user_order(order):
     """Helper function to save order back to session"""
     session["order"] = order.__dict__
-    session.modified = True
+    session.modified = True '''
 
 def modify_order(entities):
-    order = get_user_order()
+    # order, session["user_id"] = get_user_order()
     food_items = entities["food_items"]
     discriminators = entities["discriminator"]
     quantities = entities["quantities"] if "quantities" in entities else []
@@ -60,7 +61,7 @@ def modify_order(entities):
             elif discriminator == "Remove":
                 order.remove_item(food_item, price, quantity)
 
-    save_user_order(order)
+    # save_user_order(order)
 
     order_items = order.get_total_items()
     order_details = []
@@ -141,7 +142,7 @@ def modify_order(entities):
 
 
 def get_order_nutrition(entities):
-    order = get_user_order()
+    # order = get_user_order()
 
     if not order.get_total_items():
         return "Your order is empty."
@@ -208,7 +209,7 @@ def get_order_nutrition(entities):
             nutritional_info_list.append(
                 f"Error retrieving info for '{food_item}': {str(e)}"
             )
-    save_user_order(order)
+    #save_user_order(order)
     # Build the final string response for both individual and total nutrition info
     if nutritional_info_list:
         total_nutrition_string = "\n".join(
@@ -220,7 +221,8 @@ def get_order_nutrition(entities):
 
 
 def get_order_status():
-    order = get_user_order()
+    #order, order_id = get_user_order()
+    #print(order_id)
 
     if not order.get_total_items():
         return "Your order is currently empty."
@@ -233,11 +235,12 @@ def get_order_status():
 
     order_summary = ", ".join(order_details)
 
-    return f"Your current order is {order_summary}."
+    return f"Your current order is {order_summary} for a total of {order.get_total_price()}."
 
 
 def place_order(entities):
-    order = get_user_order()
+    #order, order_id = get_user_order()
+    #print(order_id)
 
     food_items = entities["food_items"]
     quantities = entities["quantities"]
@@ -265,7 +268,7 @@ def place_order(entities):
         else:
             # Handle case when item is not found in the menu
             added_items.append(f"Sorry, we couldn't find '{food_item}' on the menu.")
-    save_user_order(order)
+    #save_user_order(order)
     if added_items:
         added_string = (
             ", ".join(added_items[:-1]) + f", and {added_items[-1]}"
@@ -278,9 +281,9 @@ def place_order(entities):
 
 
 def cancel_order():
-    order = get_user_order()
+    #order = get_user_order()
     order.clear_order()
-    save_user_order(order)
+    #save_user_order(order)
     return "Okay, I have canceled your order."
 
 
