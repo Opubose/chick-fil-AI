@@ -33,8 +33,6 @@ def get_bot_response():
         bot_response = actions.get_intent_and_entities(customer_message)
 
         # handle various intents
-        # if bot_response["intent"] == "out_of_scope":
-        #     bot_message = response_generator.out_of_scope()
 
         if bot_response["intent"] == "menu_dietary":
             bot_message = actions.menu_dietary(bot_response["entities"])
@@ -52,6 +50,8 @@ def get_bot_response():
             bot_message = actions.order_modify(bot_response["entities"])
         elif bot_response["intent"] == "order_nutrition":
             bot_message = actions.order_nutrition(bot_response["entities"])
+        elif bot_response["intent"] == "place_order":
+            bot_message = actions.place_order(bot_response["entities"])
         elif bot_response["intent"] == "order_place":
             bot_message = actions.order_place(bot_response["entities"])
         elif bot_response["intent"] == "order_status":
@@ -62,8 +62,6 @@ def get_bot_response():
             bot_message = response_generator.out_of_scope()
         
         return jsonify({"bot_message": bot_message}), 200
-        # default handler
-        # return jsonify({"bot_message": response_generator.out_of_scope()}), 200
     else:
         return jsonify({"bot_message": "Error in Flask application!"}), 400
 

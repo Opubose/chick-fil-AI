@@ -91,6 +91,12 @@ def order_nutrition(entities):
 
 def order_place(entities):
     original_intent = "placing an order or adding items to a current order"
+    database_information = response_generator.order_place(entities)
+
+    return construct_output_response(original_intent, entities, database_information)
+
+def place_order(entities):
+    original_intent = "placing an order or adding items to a current order"
     database_information = response_generator.place_order(entities)
 
     return construct_output_response(original_intent, entities, database_information)

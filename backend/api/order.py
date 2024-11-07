@@ -19,8 +19,8 @@ class Order:
         else:
             pass  # throw error
     
-    def add_modifier(self, item, modifier):
-        self.modifiers[item] = modifier
+    def add_modifier(self, item, discriminator, modifier):
+        self.modifiers[item] = discriminator + modifier
 
     def remove_item(self, item, price, quantity=1):
         if item in self.items:
