@@ -44,6 +44,8 @@ def get_bot_response():
             bot_message = actions.menu_nutrition(bot_response["entities"])
         elif bot_response["intent"] == "item_description":
             bot_message = actions.item_description(bot_response["entities"])
+        elif bot_response["intent"] == "item_price":
+            bot_message = actions.item_price(bot_response["entities"])
         elif bot_response["intent"] == "order_cancel":
             bot_message = actions.order_cancel(bot_response["entities"])
         elif bot_response["intent"] == "modify_order":
@@ -62,7 +64,7 @@ def get_bot_response():
             bot_message = response_generator.get_help()
         else:
             bot_message = response_generator.out_of_scope()
-        
+
         return jsonify({"bot_message": bot_message}), 200
     else:
         return jsonify({"bot_message": "Error in Flask application!"}), 400

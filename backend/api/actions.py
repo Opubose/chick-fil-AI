@@ -9,9 +9,7 @@ load_dotenv()
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv(
     "GOOGLE_APPLICATION_CREDENTIALS"
 )
-OPENROUTER_API_KEY = os.getenv(
-    "OPENROUTER_API_KEY"
-)
+# OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 
 def get_intent_and_entities(customer_message):
@@ -61,9 +59,17 @@ def menu_nutrition(entities):
 
     return construct_output_response(original_intent, entities, database_information)
 
+
 def item_description(entities):
     original_intent = "getting the description of a certain item"
     database_information = response_generator.get_item_description(entities)
+
+    return construct_output_response(original_intent, entities, database_information)
+
+
+def item_price(entities):
+    original_intent = "getting the cost of a certain item"
+    database_information = response_generator.get_item_price(entities)
 
     return construct_output_response(original_intent, entities, database_information)
 
@@ -80,6 +86,7 @@ def order_modify(entities):
     database_information = response_generator.order_modify(entities)
 
     return construct_output_response(original_intent, entities, database_information)
+
 
 def modify_order(entities):
     original_intent = "modifying or changing an order, including removing items."
@@ -101,6 +108,7 @@ def order_place(entities):
 
     return construct_output_response(original_intent, entities, database_information)
 
+
 def place_order(entities):
     original_intent = "placing an order or adding items to a current order"
     database_information = response_generator.place_order(entities)
@@ -115,8 +123,11 @@ def order_status():
     return construct_output_response(original_intent, "", database_information)
 
 
-def construct_output_response(original_intent, extracted_entities, database_information):
-   return database_information
+def construct_output_response(
+    original_intent, extracted_entities, database_information
+):
+    return database_information
+
 
 '''def construct_output_response(original_intent, entities, output_string):
     prompt = f"""You are a Chick-Fil-A AI chatbot assistant that helps users with their orders.
@@ -162,4 +173,3 @@ def construct_output_response(original_intent, extracted_entities, database_info
     corrected_response = response_data['choices'][0]['message']['content'].strip()
 
     return corrected_response '''
-
