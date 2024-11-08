@@ -35,7 +35,7 @@ def modify_order(entities):
         price = float(matched_item["Price"])
         if discriminator == "Add":
             if modifier and item_discriminator:
-                order.add_item(food_item, price, quantity, f"{discriminator} {modifier}")
+                order.add_item(food_item, price, quantity, f"{item_discriminator} {modifier}")
             else:
                 order.add_item(food_item, price, quantity)
         elif discriminator == "Remove":
