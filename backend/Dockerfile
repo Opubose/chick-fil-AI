@@ -11,4 +11,4 @@ COPY api/ /app/api/
 # Just in case
 RUN rm -rf /app/api/__pycache__
 
-CMD ["flask", "run", "--host=0.0.0.0", "--port=8000"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "--pythonpath", "/app/api", "app:app"]
