@@ -4,13 +4,13 @@ from order import Order
 from pymongo import MongoClient
 import certifi
 
-uri = os.getenv("URI-MONGODB")
+uri = "mongodb+srv://dilonsok:lord1234@cluster0.taaxxhg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 client = MongoClient(uri, tlsCAFile=certifi.where())
 db = client['CFA-Data']
 menu = db['Menu-Info']
 order = Order()
 
-def modify_order(entities):
+def order_modify(entities):
     food_items = entities["food_items"]
     discriminators = entities["discriminator"]
     quantities = entities["quantities"] if "quantities" in entities else []
@@ -47,6 +47,48 @@ def modify_order(entities):
 
     return f"Your order has been updated. Here is your order: {', '.join(order_details)}"
 
+
+def modify_order(entities):
+    item_details = entities["item_detail"]
+    discriminators = entities.get("discriminator", [])
+
+    if not item_details:
+        return "No items were provided to modify in your order."
+
+    for i, item in enumerate(item_details):
+        food_item = item.get("food_items")
+        modifier = item.get("modifiers")
+        quantity = int(item.get("quantities", 1))
+        item_discriminator = item.get("discriminator")
+        discriminator = discriminators[i]
+
+        # Fetch item details from the menu
+        matched_item = menu.find_one({"Item": food_item})
+        if not matched_item:
+            continue  # Skip items not found on the menu
+
+        # Process based on the discriminator
+        price = float(matched_item["Price"])
+        if discriminator == "Add":
+            order.add_item(food_item, price, quantity)
+            added_item_str = f"Added {quantity}x {food_item} to your order at ${price:.2f} each."
+
+            if modifier and item_discriminator:
+                order.add_modifier(food_item, item_discriminator, modifier)
+                added_item_str += f" {item_discriminator.capitalize()} {modifier}."
+
+        elif discriminator == "Remove":
+            order.remove_item(food_item, price, quantity)
+
+    # Generate a summary of the updated order
+    order_items = order.get_total_items()
+    order_details = []
+
+    for item, quantity in order_items.items():
+        order_details.append(f"{quantity}x {item}{ (' ' + order.modifiers[item]) if item in order.modifiers else ''}")
+
+    order_summary = ", ".join(order_details)
+    return f"Your order has been updated. Here is your current order: {order_summary} for a total of ${order.get_total_price():.2f}."
 
 def get_order_nutrition(entities):
     if not order.get_total_items():
@@ -97,10 +139,13 @@ def get_order_status():
         return "Your order is currently empty."
 
     order_items = order.get_total_items()
-    order_details = [f"{quantity} x {item}" for item, quantity in order_items.items()]
+    order_details = []
+
+    for item, quantity in order_items.items():
+        order_details.append(f"{quantity} x {item}, {order.modifiers[item]}")
 
     order_summary = ", ".join(order_details)
-    return f"Your current order is {order_summary} for a total of ${order.get_total_price()}."
+    return f"Your current order is {order_summary} for a total of ${order.get_total_price():.2f}."
 
 
 def place_order(entities):

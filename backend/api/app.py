@@ -46,6 +46,8 @@ def get_bot_response():
             bot_message = actions.item_description(bot_response["entities"])
         elif bot_response["intent"] == "order_cancel":
             bot_message = actions.order_cancel(bot_response["entities"])
+        elif bot_response["intent"] == "modify_order":
+            bot_message = actions.modify_order(bot_response["entities"])
         elif bot_response["intent"] == "order_modify":
             bot_message = actions.order_modify(bot_response["entities"])
         elif bot_response["intent"] == "order_nutrition":

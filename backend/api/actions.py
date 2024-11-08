@@ -6,7 +6,9 @@ import response_generator
 
 load_dotenv()
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "dialogflow-credentials.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv(
+    "GOOGLE_APPLICATION_CREDENTIALS"
+)
 OPENROUTER_API_KEY = os.getenv(
     "OPENROUTER_API_KEY"
 )
@@ -74,6 +76,12 @@ def order_cancel(entities):
 
 
 def order_modify(entities):
+    original_intent = "modifying or changing an order, including removing items."
+    database_information = response_generator.order_modify(entities)
+
+    return construct_output_response(original_intent, entities, database_information)
+
+def modify_order(entities):
     original_intent = "modifying or changing an order, including removing items."
     database_information = response_generator.modify_order(entities)
 
