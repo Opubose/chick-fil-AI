@@ -6,9 +6,7 @@ import response_generator
 
 load_dotenv()
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv(
-    "GOOGLE_APPLICATION_CREDENTIALS"
-)
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "dialogflow-credentials.json"
 OPENROUTER_API_KEY = os.getenv(
     "OPENROUTER_API_KEY"
 )

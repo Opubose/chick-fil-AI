@@ -1,15 +1,13 @@
-import boto3
 import os
 import re
 from order import Order
+from pymongo import MongoClient
+import certifi
 
-dynamodb = boto3.resource(
-    "dynamodb",
-    aws_access_key_id=os.getenv("AWS_ACCESS_KEY"),
-    aws_secret_access_key=os.getenv("AWS_SECRET_KEY"),
-    region_name="us-east-1",
-)
-menu = dynamodb.Table("CFA-Data")
+uri = os.getenv("URI-MONGODB")
+client = MongoClient(uri, tlsCAFile=certifi.where())
+db = client['CFA-Data']
+menu = db['Menu-Info']
 order = Order()
 
 def modify_order(entities):
@@ -27,9 +25,8 @@ def modify_order(entities):
         quantity = quantities[i] if i < len(quantities) else 1
         modifier = modifiers[i] if i < len(modifiers) else None
 
-        response = menu.get_item(Key={"Item": food_item})
-        if "Item" in response:
-            matched_item = response["Item"]
+        matched_item = menu.find_one({"Item": food_item})
+        if matched_item:
             price = float(matched_item["Price"])
 
             if modifier:
@@ -41,8 +38,6 @@ def modify_order(entities):
                 order.add_item(food_item, price, quantity)
             elif discriminator == "Remove":
                 order.remove_item(food_item, price, quantity)
-
-    # save_user_order(order)
 
     order_items = order.get_total_items()
     order_details = []
@@ -57,70 +52,37 @@ def get_order_nutrition(entities):
     if not order.get_total_items():
         return "Your order is empty."
     properties = entities["properties"]
-    # Determine if we should gather all nutrition or specific properties
+
     if properties and properties[0] == "nutrition":
-        # List of all possible nutritional values
         requested_nutrients = [
-            "Calories",
-            "Fat",
-            "Sat_Fat",
-            "Trans_Fat",
-            "Cholesterol",
-            "Sodium",
-            "Carbohydrates",
-            "Fiber",
-            "Sugar",
-            "Protein",
+            "Calories", "Fat", "Sat_Fat", "Trans_Fat", "Cholesterol",
+            "Sodium", "Carbohydrates", "Fiber", "Sugar", "Protein"
         ]
     elif properties:
-        # Gather only the specific properties requested
         requested_nutrients = properties
     else:
         return "Invalid properties. Please specify 'nutrition' or a list of specific nutritional properties."
 
-    # Initialize totals for each requested nutrient
     total_nutrition = {nutrient: 0 for nutrient in requested_nutrients}
-
     nutritional_info_list = []
 
-    # Loop through each item in the order
     for food_item, quantity in order.get_total_items().items():
-        try:
-            # Query DynamoDB to get the item's details
-            response = menu.get_item(Key={"Item": food_item})
+        matched_item = menu.find_one({"Item": food_item})
 
-            if "Item" in response:
-                item = response["Item"]
+        if matched_item:
+            nutritional_info = {"Food_item": food_item, "Quantity": quantity}
+            for nutrient in requested_nutrients:
+                nutrient_value = matched_item.get(nutrient, 0)
+                nutritional_info[nutrient] = nutrient_value
+                total_nutrition[nutrient] += float(nutrient_value) * quantity
 
-                # Extract nutritional information
-                nutritional_info = {"Food_item": food_item, "Quantity": quantity}
-                for nutrient in requested_nutrients:
-                    # Default to 0 if the nutrient is not found
-                    nutrient_value = item.get(nutrient, 0)
-                    nutritional_info[nutrient] = nutrient_value
-
-                    # Add the value to the total nutrition (multiplied by quantity)
-                    total_nutrition[nutrient] += float(nutrient_value) * quantity
-
-                # Append the item's requested nutritional info to the list as a formatted string
-                nutrient_details = ", ".join(
-                    [f"{nutritional_info[n]}g {n}" for n in requested_nutrients]
-                )
-                nutritional_info_list.append(
-                    f"{quantity}x {food_item}: {nutrient_details}"
-                )
-
-            else:
-                nutritional_info_list.append(
-                    f"Sorry, we couldn't find '{food_item}' on the menu."
-                )
-
-        except Exception as e:
-            nutritional_info_list.append(
-                f"Error retrieving info for '{food_item}': {str(e)}"
+            nutrient_details = ", ".join(
+                [f"{nutritional_info[n]}g {n}" for n in requested_nutrients]
             )
+            nutritional_info_list.append(f"{quantity}x {food_item}: {nutrient_details}")
+        else:
+            nutritional_info_list.append(f"Sorry, we couldn't find '{food_item}' on the menu.")
 
-    # Build the final string response for both individual and total nutrition info
     if nutritional_info_list:
         total_nutrition_string = "\n".join(
             [f"{nutrient}: {total:.2f}g" for nutrient, total in total_nutrition.items()]
@@ -135,14 +97,11 @@ def get_order_status():
         return "Your order is currently empty."
 
     order_items = order.get_total_items()
-    order_details = []
-
-    for item, quantity in order_items.items():
-        order_details.append(f"{quantity} x {item}")
+    order_details = [f"{quantity} x {item}" for item, quantity in order_items.items()]
 
     order_summary = ", ".join(order_details)
-
     return f"Your current order is {order_summary} for a total of ${order.get_total_price()}."
+
 
 def place_order(entities):
     added_items = []
@@ -153,10 +112,9 @@ def place_order(entities):
         discriminator = item.get("discriminator")
         modifier = item.get("modifiers")
 
-        response = menu.get_item(Key={"Item": food_item})
+        matched_item = menu.find_one({"Item": food_item})
         
-        if "Item" in response:
-            matched_item = response["Item"]
+        if matched_item:
             price = float(matched_item["Price"])
 
             order.add_item(food_item, price, quantity)
@@ -179,45 +137,6 @@ def place_order(entities):
         return "No items were added to your order."
 
 
-def order_place(entities):
-    food_items = entities["food_items"]
-    quantities = entities["quantities"]
-
-    if not food_items:
-        return "No food items were provided to place in your order."
-
-    added_items = []
-
-    for i, food_item in enumerate(food_items):
-        quantity = quantities[i] if i < len(quantities) else 1
-
-        # Check if the food item exists in the menu (DynamoDB)
-        response = menu.get_item(Key={"Item": food_item})
-
-        if "Item" in response:
-            matched_item = response["Item"]
-            price = float(matched_item["Price"])
-
-            # Add the item to the order
-            order.add_item(food_item, price, quantity)
-            added_items.append(
-                f"Added {food_item} to your order with quantity {quantity} at ${price:.2f} each."
-            )
-        else:
-            # Handle case when item is not found in the menu
-            added_items.append(f"Sorry, we couldn't find '{food_item}' on the menu.")
-    #save_user_order(order)
-    if added_items:
-        added_string = (
-            ", ".join(added_items[:-1]) + f", and {added_items[-1]}"
-            if len(added_items) > 1
-            else added_items[0]
-        )
-        return f"{added_string} Your order has been updated."
-    else:
-        return "No items were added to your order."
-
-
 def cancel_order():
     order.clear_order()
     return "Okay, I have canceled your order."
@@ -225,8 +144,7 @@ def cancel_order():
 
 def list_entire_menu():
     try:
-        response = menu.scan()
-        items = response.get("Items", [])
+        items = menu.find()
         menu_items = [item["Item"] for item in items]
         return f"Absolutely! Here's the menu: {', '.join(menu_items)}"
     except Exception as e:
