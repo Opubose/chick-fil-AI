@@ -42,6 +42,8 @@ def get_bot_response():
             bot_message = actions.menu_ingredients(bot_response["entities"])
         elif bot_response["intent"] == "menu_nutrition":
             bot_message = actions.menu_nutrition(bot_response["entities"])
+        elif bot_response["intent"] == "type_list":
+            bot_message = actions.type_list(bot_response["entities"])
         elif bot_response["intent"] == "item_description":
             bot_message = actions.item_description(bot_response["entities"])
         elif bot_response["intent"] == "item_price":

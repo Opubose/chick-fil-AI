@@ -428,6 +428,34 @@ def get_nutritional_info(entities):
         return f"Error retrieving nutritional information for '{food_item}': {str(e)}"
 
 
+def get_type_list(entities):
+    if "type" not in entities or not entities["type"]:
+        return "Please specify a type of item (e.g., 'salads', 'sandwiches') to list."
+
+    valid_types = {"drink", "side", "sandwich", "dessert", "chicken", "salad"}
+
+    item_type = entities["type"].lower()
+
+    if item_type not in valid_types:
+        return f"Sorry, I don't understand the '{item_type}' type."
+    try:
+        # Query MongoDB for items of the specified type
+        matching_items = menu.find({"Type": item_type})
+        item_names = [item["Item"] for item in matching_items]
+
+        matching_items = menu.find({item_type: 1})
+        item_names = [item["Item"] for item in matching_items]
+
+        if not item_names:
+            return f"Sorry, no items found for type '{item_type}'."
+
+        # Format and return the list of items
+        return f"Here are the {item_type}s we have: {', '.join(item_names)}."
+
+    except Exception as e:
+        return f"Error retrieving items for type '{item_type}': {str(e)}"
+
+
 def get_item_description(entities):
     if "food_items" not in entities or not entities["food_items"]:
         return "Please specify a food item to get its description."

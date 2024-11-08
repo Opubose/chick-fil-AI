@@ -60,6 +60,13 @@ def menu_nutrition(entities):
     return construct_output_response(original_intent, entities, database_information)
 
 
+def type_list(entities):
+    original_intent = "List out all items on the menu corresponding to a type"
+    database_information = response_generator.get_type_list(entities)
+
+    return construct_output_response(original_intent, entities, database_information)
+
+
 def item_description(entities):
     original_intent = "getting the description of a certain item"
     database_information = response_generator.get_item_description(entities)
