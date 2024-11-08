@@ -88,13 +88,6 @@ def order_cancel(entities):
     return construct_output_response(original_intent, entities, database_information)
 
 
-def order_modify(entities):
-    original_intent = "modifying or changing an order, including removing items."
-    database_information = response_generator.order_modify(entities)
-
-    return construct_output_response(original_intent, entities, database_information)
-
-
 def modify_order(entities):
     original_intent = "modifying or changing an order, including removing items."
     database_information = response_generator.modify_order(entities)
@@ -105,13 +98,6 @@ def modify_order(entities):
 def order_nutrition(entities):
     original_intent = "getting the full nutritional information of the current order"
     database_information = response_generator.get_order_nutrition(entities)
-
-    return construct_output_response(original_intent, entities, database_information)
-
-
-def order_place(entities):
-    original_intent = "placing an order or adding items to a current order"
-    database_information = response_generator.order_place(entities)
 
     return construct_output_response(original_intent, entities, database_information)
 

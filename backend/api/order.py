@@ -1,47 +1,44 @@
+from item import Item
+
 class Order:
     def __init__(self):
-        self.items = {}
+        self.items = {}  # Map of item name -> Item object
         self.total_price = 0.0
-        self.modifiers = {}
 
-    def add_item(self, item, price, quantity=1):
-        if item in self.items:
-            self.items[item] += quantity
+    def add_item(self, name, price, quantity=1, modifiers=None):
+        if name in self.items:
+            self.items[name].quantity += quantity
         else:
-            self.items[item] = quantity
-        self.total_price += quantity * price
+            self.items[name] = Item(name=name, price=price, quantity=quantity, modifiers=modifiers)
+        
+        self.total_price += price * quantity
 
-    def modify_item(self, item, quantity): # huh?
-        if item in self.items:
-            self.items[item] -= quantity
-            if self.items[item] == 0:
-                del self.items
-        else:
-            pass  # throw error
-    
-    def add_modifier(self, item, discriminator, modifier):
-        self.modifiers[item] = discriminator + " " + modifier
-
-    def remove_item(self, item, price, quantity=1):
-        if item in self.items:
-            if self.items[item] > quantity:
-                self.items[item] -= quantity
-                self.total_price -= quantity * price
-            else:
-                self.total_price -= self.items[item] * price
-                del self.items[item]
-                if item in self.modifiers:
-                    del self.modifiers[item]
-        else:
-            pass  # throw error
+    def remove_item(self, name, quantity=1):
+        if name in self.items:
+            item = self.items[name]
+            if item.quantity > quantity: # reduce quantity
+                item.quantity -= quantity
+                self.total_price -= item.price * quantity
+            else: # remove item completely
+                self.total_price -= item.price * item.quantity
+                del self.items[name]
 
     def clear_order(self):
         self.items.clear()
         self.total_price = 0.0
-        self.modifiers = {}
 
     def get_total_items(self):
-        return self.items
+        return [(item.name, item.quantity) for item in self.items.values()]
 
     def get_total_price(self):
         return self.total_price
+    
+    def to_string(self):
+        if not self.items:
+            return "Your order is empty."
+        
+        item_descriptions = [item.to_string() for item in self.items.values()]
+        items_str = "\n".join(item_descriptions)
+        total_str = f"Total Price: ${self.total_price:.2f}"
+        
+        return f"Order Summary:\n{items_str}\n\n{total_str}"

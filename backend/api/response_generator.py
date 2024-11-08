@@ -14,52 +14,9 @@ menu = db["Menu-Info"]
 order = Order()
 
 
-def order_modify(entities):
-    food_items = entities["food_items"]
-    discriminators = entities["discriminator"]
-    quantities = entities["quantities"] if "quantities" in entities else []
-    modifiers = entities["modifiers"] if "modifiers" in entities else []
-
-    if not food_items or not discriminators:
-        return "No food items or actions were found to modify in your order."
-
-    for i in range(len(food_items)):
-        food_item = food_items[i]
-        discriminator = discriminators[i]
-        quantity = quantities[i] if i < len(quantities) else 1
-        modifier = modifiers[i] if i < len(modifiers) else None
-
-        matched_item = menu.find_one({"Item": food_item})
-        if matched_item:
-            price = float(matched_item["Price"])
-
-            if modifier:
-                if discriminator == "Add":
-                    order.add_modifier(food_item, f"add {modifier}")
-                else:
-                    order.add_modifier(food_item, f"no {modifier}")
-            elif discriminator == "Add":
-                order.add_item(food_item, price, quantity)
-            elif discriminator == "Remove":
-                order.remove_item(food_item, price, quantity)
-
-    order_items = order.get_total_items()
-    order_details = []
-
-    for item, quantity in order_items.items():
-        order_details.append(
-            f"{quantity} x {item}"
-            + (order.modifiers[item] if item in order.modifiers else "")
-        )
-
-    return (
-        f"Your order has been updated. Here is your order: {', '.join(order_details)}"
-    )
-
-
 def modify_order(entities):
     item_details = entities["item_detail"]
-    discriminators = entities.get("discriminator", [])
+    discriminators = entities["discriminator"]
 
     if not item_details:
         return "No items were provided to modify in your order."
@@ -69,39 +26,22 @@ def modify_order(entities):
         modifier = item.get("modifiers")
         quantity = int(item.get("quantities", 1))
         item_discriminator = item.get("discriminator")
-        discriminator = discriminators[i]
+        discriminator = discriminators[i] if i < len(discriminators) else "Remove"
 
-        # Fetch item details from the menu
         matched_item = menu.find_one({"Item": food_item})
         if not matched_item:
-            continue  # Skip items not found on the menu
+            continue
 
-        # Process based on the discriminator
         price = float(matched_item["Price"])
         if discriminator == "Add":
-            order.add_item(food_item, price, quantity)
-            added_item_str = (
-                f"Added {quantity}x {food_item} to your order at ${price:.2f} each."
-            )
-
             if modifier and item_discriminator:
-                order.add_modifier(food_item, item_discriminator, modifier)
-                added_item_str += f" {item_discriminator.capitalize()} {modifier}."
-
+                order.add_item(food_item, price, quantity, f"{discriminator} {modifier}")
+            else:
+                order.add_item(food_item, price, quantity)
         elif discriminator == "Remove":
-            order.remove_item(food_item, price, quantity)
+            order.remove_item(food_item, quantity)
 
-    # Generate a summary of the updated order
-    order_items = order.get_total_items()
-    order_details = []
-
-    for item, quantity in order_items.items():
-        order_details.append(
-            f"{quantity}x {item}{ (' ' + order.modifiers[item]) if item in order.modifiers else ''}"
-        )
-
-    order_summary = ", ".join(order_details)
-    return f"Your order has been updated. Here is your current order: {order_summary} for a total of ${order.get_total_price():.2f}."
+    return f"Your order has been updated successfully. {order.to_string()}"
 
 
 def get_order_nutrition(entities):
@@ -112,25 +52,25 @@ def get_order_nutrition(entities):
     if properties and properties[0] == "nutrition":
         requested_nutrients = [
             "Calories",
-            "Fat",
-            "Sat_Fat",
-            "Trans_Fat",
-            "Cholesterol",
-            "Sodium",
-            "Carbohydrates",
-            "Fiber",
-            "Sugar",
-            "Protein",
+            "Fat (G)",
+            "Sat. Fat (G)",
+            "Trans Fat (G)",
+            "Cholesterol (MG)",
+            "Sodium (MG)",
+            "Carbohydrates (G)",
+            "Fiber (G)",
+            "Sugar (G)",
+            "Protein (G)"
         ]
     elif properties:
         requested_nutrients = properties
     else:
         return "Invalid properties. Please specify 'nutrition' or a list of specific nutritional properties."
-
+    
     total_nutrition = {nutrient: 0 for nutrient in requested_nutrients}
     nutritional_info_list = []
 
-    for food_item, quantity in order.get_total_items().items():
+    for food_item, quantity in order.get_total_items():
         matched_item = menu.find_one({"Item": food_item})
 
         if matched_item:
@@ -141,13 +81,9 @@ def get_order_nutrition(entities):
                 total_nutrition[nutrient] += float(nutrient_value) * quantity
 
             nutrient_details = ", ".join(
-                [f"{nutritional_info[n]}g {n}" for n in requested_nutrients]
+                [f"{nutritional_info[n]} {n}" for n in requested_nutrients]
             )
             nutritional_info_list.append(f"{quantity}x {food_item}: {nutrient_details}")
-        else:
-            nutritional_info_list.append(
-                f"Sorry, we couldn't find '{food_item}' on the menu."
-            )
 
     if nutritional_info_list:
         total_nutrition_string = "\n".join(
@@ -159,22 +95,10 @@ def get_order_nutrition(entities):
 
 
 def get_order_status():
-    if not order.get_total_items():
-        return "Your order is currently empty."
-
-    order_items = order.get_total_items()
-    order_details = []
-
-    for item, quantity in order_items.items():
-        order_details.append(f"{quantity} x {item}, {order.modifiers[item]}")
-
-    order_summary = ", ".join(order_details)
-    return f"Your current order is {order_summary} for a total of ${order.get_total_price():.2f}."
+    return order.to_string()
 
 
 def place_order(entities):
-    added_items = []
-
     for item in entities["item_detail"]:
         food_item = item.get("food_items")
         quantity = int(item.get("quantities", 1))
@@ -186,26 +110,12 @@ def place_order(entities):
         if matched_item:
             price = float(matched_item["Price"])
 
-            order.add_item(food_item, price, quantity)
-            added_item_str = (
-                f"Added {quantity}x {food_item} to your order at ${price:.2f} each."
-            )
-
             if modifier and discriminator:
-                order.add_modifier(food_item, discriminator, modifier)
-                added_item_str += f" {discriminator.capitalize()} {modifier}."
+                order.add_item(food_item, price, quantity, f"{discriminator} {modifier}")
+            else:
+                order.add_item(food_item, price, quantity)
 
-            added_items.append(added_item_str)
-
-    if added_items:
-        added_string = (
-            ", ".join(added_items[:-1]) + f", and {added_items[-1]}"
-            if len(added_items) > 1
-            else added_items[0]
-        )
-        return f"{added_string} Your order has been updated."
-    else:
-        return "No items were added to your order."
+    return f"Your order has been updated. {order.to_string()}"
 
 
 def cancel_order():
@@ -217,7 +127,7 @@ def list_entire_menu():
     try:
         items = menu.find()
         menu_items = [item["Item"] for item in items]
-        return f"Absolutely! Here's the menu: {', '.join(menu_items)}"
+        return f"Absolutely! Here's the menu:\n" + "\n".join(menu_items)
     except Exception as e:
         return f"Exception {e}"
 
@@ -275,11 +185,11 @@ def get_items_by_dietary_restriction(entities):
         return "Please specify a dietary restriction (e.g., vegetarian, vegan, dairy-free, soy-free, etc.)."
 
     try:
-        response = menu.scan()
-        items = response.get("Items", [])
+        response = list(menu.find({}))  # Convert cursor to list for processing
+        items = response if response else []
 
-        # If specific food items are provided, filter the items list
-        if entities and "food_items" in entities and entities["food_items"]:
+        # Filter items by specified food items if provided
+        if "food_items" in entities and entities["food_items"]:
             food_items = [item.lower() for item in entities["food_items"]]
             items = [
                 item for item in items if item.get("Item", "").lower() in food_items
@@ -384,22 +294,22 @@ def get_nutritional_info(entities):
             # List of all possible nutritional values
             requested_nutrients = [
                 "Calories",
-                "Fat",
-                "Sat_Fat",
-                "Trans_Fat",
-                "Cholesterol",
-                "Sodium",
-                "Carbohydrates",
-                "Fiber",
-                "Sugar",
-                "Protein",
+                "Fat (G)",
+                "Sat. Fat (G)",
+                "Trans Fat (G)",
+                "Cholesterol (MG)",
+                "Sodium (MG)",
+                "Carbohydrates (G)",
+                "Fiber (G)",
+                "Sugar (G)",
+                "Protein (G)"
             ]
         else:
             # Gather only the specific properties requested
             requested_nutrients = properties
     else:
         return "Invalid properties. Please specify 'nutrition' or a list of specific nutritional properties."
-
+    
     try:
         # Query MongoDB to get the item's details
         item = menu.find_one({"Item": food_item})
@@ -414,7 +324,7 @@ def get_nutritional_info(entities):
         nutrient_details = "\n".join(
             [
                 (
-                    f"{nutrient}: {nutritional_info[nutrient]:.2f}g"
+                    f"{nutrient}: {nutritional_info[nutrient]:.2f}"
                     if isinstance(nutritional_info[nutrient], (int, float))
                     else f"{nutrient}: {nutritional_info[nutrient]}"
                 )

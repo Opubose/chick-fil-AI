@@ -52,14 +52,10 @@ def get_bot_response():
             bot_message = actions.order_cancel(bot_response["entities"])
         elif bot_response["intent"] == "modify_order":
             bot_message = actions.modify_order(bot_response["entities"])
-        elif bot_response["intent"] == "order_modify":
-            bot_message = actions.order_modify(bot_response["entities"])
         elif bot_response["intent"] == "order_nutrition":
             bot_message = actions.order_nutrition(bot_response["entities"])
         elif bot_response["intent"] == "place_order":
             bot_message = actions.place_order(bot_response["entities"])
-        elif bot_response["intent"] == "order_place":
-            bot_message = actions.order_place(bot_response["entities"])
         elif bot_response["intent"] == "order_status":
             bot_message = actions.order_status()
         elif bot_response["intent"] == "get_help":
