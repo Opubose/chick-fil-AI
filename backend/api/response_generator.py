@@ -82,20 +82,20 @@ def get_order_nutrition(entities):
     total_nutrition = {nutrient: 0 for nutrient in requested_nutrients}
     nutritional_info_list = []
 
-    for food_item, quantity in order.get_total_items():
+    for food_item in order.get_total_items():
         matched_item = menu.find_one({"Item": food_item})
 
         if matched_item:
-            nutritional_info = {"Food_item": food_item, "Quantity": quantity}
+            nutritional_info = {"Food_item": food_item}
             for nutrient in requested_nutrients:
                 nutrient_value = matched_item.get(nutrient, 0)
                 nutritional_info[nutrient] = nutrient_value
-                total_nutrition[nutrient] += float(nutrient_value) * quantity
+                total_nutrition[nutrient] += float(nutrient_value)
 
             nutrient_details = ", ".join(
                 [f"{nutritional_info[n]}{units[n]} {n}" for n in requested_nutrients]
             )
-            nutritional_info_list.append(f"{quantity}x {food_item}: {nutrient_details}")
+            nutritional_info_list.append(f"{food_item}: {nutrient_details}")
 
     if nutritional_info_list:
         total_nutrition_string = "\n".join(

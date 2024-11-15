@@ -43,8 +43,7 @@ class Order:
 
     def get_total_items(self):
         # return [(item.name, item.quantity) for item in self.items.values()]
-        return [(item.name, item.quantity) for item in self.items]
-        pass
+        return [item.name for item in self.items]
 
     def get_total_price(self):
         return self.total_price
