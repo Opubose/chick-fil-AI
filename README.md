@@ -24,9 +24,8 @@ Before running the application, ensure you have the following:
 
 1. Docker and Docker Compose installed on your system
 2. Required API keys and secrets:
-   - Google Dialogflow key
-   - Amazon AWS keys for DynamoDB
-   - OpenRouter API key
+   - Google Dialogflow credentials
+   - MongoDB URI
 
 ## Getting Started
 
@@ -48,10 +47,9 @@ This command will build and start both the backend and frontend containers.
 Create a `.env` file in the project root directory with the following variables:
 
 ```
-GOOGLE_APPLICATION_CREDENTIALS=path_to_your_dialogflow_key
-AWS_ACCESS_KEY=your_aws_access_key
-AWS_SECRET_KEY=your_aws_secret_key
-OPENROUTER_API_KEY=your_openrouter_api_key
+URI-MONGODB="your MongoDB URI"
+GOOGLE_APPLICATION_CREDENTIALS="path to your Dialogflow credentials json file"
+SESSION_ID="your randomly generated session ID"
 ```
 
 Replace the placeholder values with your actual API keys and secrets.
@@ -61,8 +59,7 @@ Replace the placeholder values with your actual API keys and secrets.
 The backend is built using Flask and serves as the API for the chatbot. It interacts with:
 
 - Google Dialogflow for natural language processing
-- Amazon DynamoDB to store and query the restaurant menu
-- OpenRouter for cloud-based LLM response generation
+- MongoDB to store and query the restaurant menu
 
 ## Frontend
 
@@ -74,4 +71,4 @@ The restaurant menu is stored in an Amazon DynamoDB table, which is queried by t
 
 ## Contributing
 
-This project is part of UTD's senior design course. No external contributions will be accepted.
+This project is part of UTD's senior design course for computer science and software engineering majors. No external contributions will be accepted.
