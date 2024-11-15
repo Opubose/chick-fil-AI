@@ -7,18 +7,18 @@ class Order:
         self.items = []
         self.total_price = 0.0
 
-    def add_item(self, name, price, quantity=1, modifiers=None):
+    def add_item(self, name, price, quantity, modifiers=None):
         ''' if name in self.items:
             self.items[name].quantity += quantity
         else:
             self.items[name] = Item(name=name, price=price, quantity=quantity, modifiers=modifiers)
         
         self.total_price += price * quantity '''
-        for _ in range(quantity):
+        for _ in range(max(1, quantity)):
             self.items.append(Item(name=name, price=price, modifiers=modifiers))
             self.total_price += price
 
-    def remove_item(self, name, quantity=1):
+    def remove_item(self, name, quantity, modifiers=None):
         ''' if name in self.items:
             item = self.items[name]
             if item.quantity > quantity: # reduce quantity
@@ -27,16 +27,24 @@ class Order:
             else: # remove item completely
                 self.total_price -= item.price * item.quantity
                 del self.items[name] '''
-        for _ in range(quantity):
-            found = False
-            for item in self.items:
-                if item.name == name:
+        if quantity == 0: # default to remove all
+            for i in range(len(self.items) -1, -1, -1):
+                item = self.items[i]
+                if item.name == name and (not modifiers or (modifiers and item.modifiers == modifiers)):
                     found = True
                     self.items.remove(item)
                     self.total_price -= item.price
+        else: # remove quantity amount
+            for _ in range(quantity):
+                found = False
+                for item in self.items:
+                    if item.name == name and (not modifiers or (modifiers and item.modifiers == modifiers)):
+                        found = True
+                        self.items.remove(item)
+                        self.total_price -= item.price
+                        break
+                if not found:
                     break
-            if not found:
-                break
 
     def clear_order(self):
         self.items.clear()

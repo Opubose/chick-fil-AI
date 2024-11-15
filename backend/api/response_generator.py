@@ -46,7 +46,7 @@ def modify_order(entities):
     for i, item in enumerate(item_details):
         food_item = item.get("food_items")
         modifier = item.get("modifiers")
-        quantity = int(item.get("quantities", 1))
+        quantity = int(item.get("quantities", 0))
         item_discriminator = item.get("discriminator")
         discriminator = discriminators[i] if i < len(discriminators) else "Remove"
 
@@ -61,7 +61,10 @@ def modify_order(entities):
             else:
                 order.add_item(food_item, price, quantity)
         elif discriminator == "Remove":
-            order.remove_item(food_item, quantity)
+            if modifier and item_discriminator:
+                order.remove_item(food_item, quantity, f"{item_discriminator} {modifier}")
+            else:
+                order.remove_item(food_item, quantity)
 
     index = random.randint(0, 50) % 3
     return f"{modify_place_order_strings[index]}{order.to_string()}"
