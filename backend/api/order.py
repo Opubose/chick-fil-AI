@@ -1,4 +1,5 @@
 from item import Item
+import random
 
 class Order:
     def __init__(self):
@@ -50,13 +51,18 @@ class Order:
     
     def to_string(self):
         if not self.items:
-            return "Your order is empty."
+            index = random.randint(0, 50) % 3
+            str1 = f"Your order is currently empty."
+            str2 = f"Right now there's nothing in your cart. Please let me know if you wish to order anything!"
+            str3 = f"There's nothing in your order right now. If you need anything, I'm here to help!"
+            random_list = [str1, str2, str3]
+            return random_list[index]
         
-        item_descriptions = [item.to_string() for item in self.items]
+        item_descriptions = [item.to_string().capitalize() for item in self.items]
         items_str = "\n".join(item_descriptions)
         total_str = f"Total Price: ${self.total_price:.2f}"
         
-        return f"Order Summary:\n{items_str}\n\n{total_str}"
+        return f"\n\n{items_str}\n\n{total_str}"
         
         ''' item_descriptions = [item.to_string() for item in self.items.values()]
         items_str = "\n".join(item_descriptions)

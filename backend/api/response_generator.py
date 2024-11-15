@@ -3,8 +3,8 @@ import re
 from order import Order
 from pymongo import MongoClient
 import certifi
+import random
 from dotenv import load_dotenv
-
 
 load_dotenv()
 uri = os.getenv("URI-MONGODB")
@@ -25,6 +25,16 @@ units = {
             "Sugar": "G",
             "Protein": "G"
         }
+
+modify_place_order_strings = ["Of course! I've updated your order accordingly, which now includes the following: ", "Great choice. Your order has been updated successfully, and it contains: ", "All set! I've updated your order accordingly: "]
+order_nutrition_strings = ["Here's a full breakdown of your order's nutritional value:\n", "Here's everything you need to know about the nutrition in your order:\n", "Here's the nutritional info for everything in your order:\n"]
+cancel_order_strings = ["Got it! Your order has been cleared. Please let me know if you need anything else.", "Done! Your order is now empty. I'm happy to help with a new order whenever you're ready.", "Understood - I've emptied your order. If you need anything else, please let me know!"]
+order_menu_strings = ["Absolutely! Here's our current menu:\n", "Sure thing! Here's what we have on the menu today:\n", "Here's a full view of our menu:\n"]
+menu_restriction_strings = ["Of course. Here are some of our menu items that are", "No problem! Here's what we can offer that's", "Understood. Here's a selection of items that are"]
+menu_ingredient_strings = ["Of course! Here's what's in our", "Here's a quick look at what goes into our", "We use the following ingredients in our"]
+menu_nutrition_strings = ["Here's all the nutritional information you requested for the", "Here's the nutritional profile requested for the", "Got it! Here's the nutritional information requested for the"]
+order_status_strings = ["Of course. Your current order is:", "Here's your current order:", "This is your order as of now:"]
+
 
 def modify_order(entities):
     item_details = entities["item_detail"]
@@ -53,7 +63,8 @@ def modify_order(entities):
         elif discriminator == "Remove":
             order.remove_item(food_item, quantity)
 
-    return f"Your order has been updated successfully. {order.to_string()}"
+    index = random.randint(0, 50) % 3
+    return f"{modify_place_order_strings[index]}{order.to_string()}"
 
 
 def get_order_nutrition(entities):
@@ -101,13 +112,15 @@ def get_order_nutrition(entities):
         total_nutrition_string = "\n".join(
             [f"{nutrient}: {total:.2f}g" for nutrient, total in total_nutrition.items()]
         )
-        return f"Total Nutritional Information:\n{total_nutrition_string}"
+        index = random.randint(0, 50) % 3
+        return f"{order_nutrition_strings[index]}{total_nutrition_string}"
     else:
-        return "No nutritional information found for your order."
+        return "I'm sorry, I wasn't able to find any nutritional information for your order."
 
 
 def get_order_status():
-    return order.to_string()
+    index = random.randint(0, 50) % 3
+    return f"{order_status_strings[index]} {order.to_string()}"
 
 
 def place_order(entities):
@@ -127,19 +140,22 @@ def place_order(entities):
             else:
                 order.add_item(food_item, price, quantity)
 
-    return f"Your order has been updated. {order.to_string()}"
+    index = random.randint(0, 50) % 3
+    return f"{modify_place_order_strings[index]}{order.to_string()}"
 
 
 def cancel_order():
     order.clear_order()
-    return "Okay, I have canceled your order."
+    index = random.randint(0, 50) % 3
+    return cancel_order_strings[index]
 
 
 def list_entire_menu():
     try:
         items = menu.find()
         menu_items = [item["Item"] for item in items]
-        return f"Absolutely! Here's the menu:\n" + "\n".join(menu_items)
+        index = random.randint(0, 50) % 3
+        return f"{order_menu_strings[index]}" + "\n".join(menu_items)
     except Exception as e:
         return f"Exception {e}"
 
@@ -262,7 +278,8 @@ def get_items_by_dietary_restriction(entities):
         else:
             if not matching_items:
                 return f"No items found for dietary restriction: {restriction}."
-            return f"Here are some of our {restriction}-free items: {', '.join(matching_items)}"
+            index = random.randint(0, 50) % 3
+            return f"{menu_restriction_strings[index]} {restriction}-free: {', '.join(matching_items)}."
     except Exception as e:
         return f"Error retrieving for items with restriction {restriction}: {str(e)}"
 
@@ -279,8 +296,9 @@ def get_ingredients(entities):
         if not item:
             return f"No item found with the name: {food_item}."
         ingredients = item.get("Ingredients", "No ingredients found for this item.")
-
-        return f"Sure! Our {food_item} has {ingredients}."
+        
+        index = random.randint(0, 50) % 3
+        return f"{menu_ingredient_strings[index]} {food_item}: {ingredients}."
 
     except Exception as e:
         return f"Error retrieving ingredients for '{food_item}': {str(e)}"
@@ -344,7 +362,8 @@ def get_nutritional_info(entities):
             ]
         )
 
-        return f"Nutritional Information for {food_item.title()}:\n{nutrient_details}"
+        index = random.randint(0, 50) % 3
+        return f"{menu_nutrition_strings[index]} {food_item.title().lower()}:\n{nutrient_details}"
 
     except Exception as e:
         return f"Error retrieving nutritional information for '{food_item}': {str(e)}"
@@ -372,7 +391,13 @@ def get_type_list(entities):
             return f"Sorry, no items found for type '{item_type}'."
 
         # Format and return the list of items
-        return f"Here are the {item_type}s we have: {', '.join(item_names)}."
+        index = random.randint(0, 50) % 3
+        str1 = f"Here's a list of the {item_type}s we have:"
+        str2 = f"These are all the {item_type}s available for you to choose from:"
+        str3 = f"Of course! Take a look at the {item_type}s we have for you:"
+        type_list_strings = [str1, str2, str3]
+
+        return f"{type_list_strings[index]} {', '.join(item_names)}."
 
     except Exception as e:
         return f"Error retrieving items for type '{item_type}': {str(e)}"
@@ -385,7 +410,14 @@ def get_item_description(entities):
     item = menu.find_one({"Item": food_item})
     if item:
         description = item.get("Description", "Description not available.")
-        return description
+
+        index = random.randint(0, 50) % 3
+        str1 = f"Here's a summary of our popular {item}:"
+        str2 = f"This is everything you need to know about our {item}:"
+        str3 = f"Sure! Our {item} is described as:"
+        item_description_strings = [str1, str2, str3]
+        
+        return f"{item_description_strings[index]} {description}"
 
     return f"Error retrieving description for {food_item}"
 
@@ -405,16 +437,20 @@ def get_item_price(entities):
         if cost is None:
             return f"The cost for '{food_item}' is not available."
 
-        return f"The cost of {food_item} is ${cost:.2f}."
+        index = random.randint(0, 50) % 3
+        str1 = f"Our {food_item} is priced at $"
+        str2 = f"The cost for our {food_item} is just $"
+        str3 = f"You can get our {food_item} for $"
+        food_item_strings = [str1, str2, str3]
+
+        return f"{food_item_strings[index]}{cost:.2f}."
 
     except Exception as e:
         return f"Error retrieving cost for '{food_item}': {str(e)}"
 
 
 def out_of_scope():
-    return (
-        "Sorry, I can only help with queries related to the restaurant ordering system."
-    )
+    return "Sorry, I can only help with queries related to the restaurant ordering system."
 
 
 def get_help():

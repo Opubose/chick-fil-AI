@@ -9,7 +9,7 @@ load_dotenv()
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv(
     "GOOGLE_APPLICATION_CREDENTIALS"
 )
-# OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+#OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 
 def get_intent_and_entities(customer_message):
@@ -116,22 +116,20 @@ def order_status():
     return construct_output_response(original_intent, "", database_information)
 
 
-def construct_output_response(
-    original_intent, extracted_entities, database_information
-):
+def construct_output_response(_, __, database_information):
     return database_information
 
 
 '''def construct_output_response(original_intent, entities, output_string):
+    print(output_string)
     prompt = f"""You are a Chick-Fil-A AI chatbot assistant that helps users with their orders.
-                The intent of the message is: "{original_intent}"
-                The extracted entities are: {entities}
                 The initial response generated is: "{output_string}"
 
                 Please provide a corrected and user-friendly response based on the intent and entities, ensuring that the information is accurate and the response is well-formatted in plain text. Do not use markdown or anything like that.
                 Be somewhat concise as well, don't talk TOO much but talk enough to be friendly and nice. Also, if there's something very weird in the initial response, you are good to get rid of it ONLY if you evaluate and make sure it doesn't make sense/fit into the context.
-                For instance, if the initial response is "Sorry, we couldn't find 'sure' on the menu., and Added large fries to your order with quantity 1 at $2.95 each. Your order has been updated.", obviously 'sure' isn't a menu item. You can completely disregard it in the response, and only say that large fries were added.
-                Also, be direct and give full insight into what the user is seeking information about. Do not hide anything from the user that is given to you in the initial response.
+                For instance, if the initial response is "Sorry, we couldn't find 'sure' on the menu., and Added large fries to your order with quantity 1 at $2.95 each. Your order has been updated.", obviously 'sure' isn't a menu item. 
+                You can completely disregard it in the response, and only say that large fries were added. Also, be direct and give full insight into what the user is seeking information about. 
+                Do not hide anything from the user that is given to you in the initial response. Everything in the initial response should be included in the final response, including all discriminators and such.
                 Do not include starting or ending sentences such as "Sure! Here's a corrected output...". This is strictly only for constructing an AI chatbot that repsond to users.
             """
 
@@ -154,7 +152,6 @@ def construct_output_response(
         "temperature": 0.7,
         "top_p": 0.9
     }
-    print(output_string)
 
     response = requests.post(url, headers=headers, json=data)
 
@@ -165,4 +162,5 @@ def construct_output_response(
 
     corrected_response = response_data['choices'][0]['message']['content'].strip()
 
-    return corrected_response '''
+    return corrected_response 
+'''
