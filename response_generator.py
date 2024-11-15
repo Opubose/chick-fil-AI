@@ -5,8 +5,7 @@ from pymongo import MongoClient
 import certifi
 from dotenv import load_dotenv
 
-load_dotenv()
-uri = os.getenv("URI-MONGODB")
+uri = "mongodb+srv://dilonsok:lord1234@cluster0.taaxxhg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 client = MongoClient(uri, tlsCAFile=certifi.where())
 db = client["CFA-Data"]
 menu = db["Menu-Info"]
