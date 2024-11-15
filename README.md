@@ -1,5 +1,7 @@
 # Chick-fil-AI Chatbot
 
+![Chick-fil-AI working screenshot](frontend/public/cfa-screenshot.png "I love Chick-fil-AI!")
+
 This project is an AI chatbot application for Chick-fil-A restaurants, developed as a senior design project (CS 4485) for Computer Science majors at The University of Texas at Dallas.
 The following members contributed to this project:
 
