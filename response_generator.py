@@ -416,9 +416,9 @@ def get_item_description(entities):
         description = item.get("Description", "Description not available.")
 
         index = random.randint(0, 50) % 3
-        str1 = f"Here's a summary of our popular {item}:"
-        str2 = f"This is everything you need to know about our {item}:"
-        str3 = f"Sure! Our {item} is described as:"
+        str1 = f"Here's a summary of our popular {item['Item']}:"
+        str2 = f"This is everything you need to know about our {item['Item']}:"
+        str3 = f"Sure! Our {item['Item']} is described as:"
         item_description_strings = [str1, str2, str3]
         
         return f"{item_description_strings[index]} {description}"
