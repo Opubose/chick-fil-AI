@@ -3,6 +3,7 @@ import re
 from order import Order
 from pymongo import MongoClient
 import certifi
+import random
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -48,7 +49,7 @@ def modify_order(entities):
         modifier = item.get("modifiers")
         quantity = int(item.get("quantities", 0))
         item_discriminator = item.get("discriminator")
-        discriminator = discriminators[i] if i < len(discriminators) else "Remove"
+        discriminator = discriminators[i] if i < len(discriminators) else discriminators[-1]
 
         matched_item = menu.find_one({"Item": food_item})
         if not matched_item:
