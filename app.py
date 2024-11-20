@@ -53,7 +53,3 @@ def get_bot_response():
         return jsonify({"bot_message": bot_message}), 200
     else:
         return jsonify({"bot_message": "Error in Flask application!"}), 400
-
-
-if __name__ == "__main__":
-    app.run(port=8000)
