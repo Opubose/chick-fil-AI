@@ -72,7 +72,7 @@ class Order:
             return random_list[index]
 
         item_descriptions = [item.to_string().capitalize() for item in self.items]
-        items_str = "\n".join(item_descriptions)
+        items_str = ", ".join(item_descriptions) + "."
         total_str = f"Total Price: ${self.total_price:.2f}"
 
         return f"\n\n{items_str}\n\n{total_str}"

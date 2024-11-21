@@ -185,7 +185,7 @@ def place_order(entities):
                 order.add_item(food_item, price, quantity)
 
     index = random.randint(0, 50) % 3
-    return f"{modify_place_order_strings[index]}\n{order.to_string()}"
+    return f"{modify_place_order_strings[index]}{order.to_string()}"
 
 
 def cancel_order():
