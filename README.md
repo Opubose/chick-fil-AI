@@ -69,7 +69,7 @@ The frontend is a React application that provides the user interface for interac
 
 ## Data Storage
 
-The restaurant menu is stored in an Amazon DynamoDB table, which is queried by the backend during the runtime of the application.
+The restaurant menu is stored in a MongoDB table, which is queried by the backend during the runtime of the application.
 
 ## Contributing
 
