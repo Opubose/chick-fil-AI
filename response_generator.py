@@ -15,26 +15,58 @@ order = Order()
 
 
 units = {
-            "Calories": "",
-            "Fat": "G",
-            "Sat. Fat": "G",
-            "Trans Fat": "G",
-            "Cholesterol": "MG",
-            "Sodium": "MG",
-            "Carbohydrates": "G",
-            "Fiber": "G",
-            "Sugar": "G",
-            "Protein": "G"
-        }
+    "Calories": "",
+    "Fat": "G",
+    "Sat. Fat": "G",
+    "Trans Fat": "G",
+    "Cholesterol": "MG",
+    "Sodium": "MG",
+    "Carbohydrates": "G",
+    "Fiber": "G",
+    "Sugar": "G",
+    "Protein": "G",
+}
 
-modify_place_order_strings = ["Of course! I've updated your order accordingly, which now includes the following: ", "Great choice. Your order has been updated successfully, and it contains: ", "All set! I've updated your order accordingly: "]
-order_nutrition_strings = ["Here's a full breakdown of your order's nutritional value:\n", "Here's everything you need to know about the nutrition in your order:\n", "Here's the nutritional info for everything in your order:\n"]
-cancel_order_strings = ["Got it! Your order has been cleared. Please let me know if you need anything else.", "Done! Your order is now empty. I'm happy to help with a new order whenever you're ready.", "Understood - I've emptied your order. If you need anything else, please let me know!"]
-order_menu_strings = ["Absolutely! Here's our current menu:\n", "Sure thing! Here's what we have on the menu today:\n", "Here's a full view of our menu:\n"]
-menu_restriction_strings = ["Of course. Here are some of our menu items that are", "No problem! Here's what we can offer that's", "Understood. Here's a selection of items that are"]
-menu_ingredient_strings = ["Of course! Here's what's in our", "Here's a quick look at what goes into our", "We use the following ingredients in our"]
-menu_nutrition_strings = ["Here's all the nutritional information you requested for the", "Here's the nutritional profile requested for the", "Got it! Here's the nutritional information requested for the"]
-order_status_strings = ["Of course. Your current order is:", "Here's your current order:", "This is your order as of now:"]
+modify_place_order_strings = [
+    "Of course! I've updated your order accordingly, which now includes the following: ",
+    "Great choice. Your order has been updated successfully, and it contains: ",
+    "All set! I've updated your order accordingly: ",
+]
+order_nutrition_strings = [
+    "Here's a full breakdown of your order's nutritional value:\n",
+    "Here's everything you need to know about the nutrition in your order:\n",
+    "Here's the nutritional info for everything in your order:\n",
+]
+cancel_order_strings = [
+    "Got it! Your order has been cleared. Please let me know if you need anything else.",
+    "Done! Your order is now empty. I'm happy to help with a new order whenever you're ready.",
+    "Understood - I've emptied your order. If you need anything else, please let me know!",
+]
+order_menu_strings = [
+    "Absolutely! Here's our current menu:\n",
+    "Sure thing! Here's what we have on the menu today:\n",
+    "Here's a full view of our menu:\n",
+]
+menu_restriction_strings = [
+    "Of course. Here are some of our menu items that are",
+    "No problem! Here's what we can offer that's",
+    "Understood. Here's a selection of items that are",
+]
+menu_ingredient_strings = [
+    "Of course! Here's what's in our",
+    "Here's a quick look at what goes into our",
+    "We use the following ingredients in our",
+]
+menu_nutrition_strings = [
+    "Here's all the nutritional information you requested for the",
+    "Here's the nutritional profile requested for the",
+    "Got it! Here's the nutritional information requested for the",
+]
+order_status_strings = [
+    "Of course. Your current order is:",
+    "Here's your current order:",
+    "This is your order as of now:",
+]
 
 
 def modify_order(entities):
@@ -49,7 +81,9 @@ def modify_order(entities):
         modifier = item.get("modifiers")
         quantity = int(item.get("quantities", 0))
         item_discriminator = item.get("discriminator")
-        discriminator = discriminators[i] if i < len(discriminators) else discriminators[-1]
+        discriminator = (
+            discriminators[i] if i < len(discriminators) else discriminators[-1]
+        )
 
         matched_item = menu.find_one({"Item": food_item})
         if not matched_item:
@@ -58,12 +92,16 @@ def modify_order(entities):
         price = float(matched_item["Price"])
         if discriminator == "Add":
             if modifier and item_discriminator:
-                order.add_item(food_item, price, quantity, f"{item_discriminator} {modifier}")
+                order.add_item(
+                    food_item, price, quantity, f"{item_discriminator} {modifier}"
+                )
             else:
                 order.add_item(food_item, price, quantity)
         elif discriminator == "Remove":
             if modifier and item_discriminator:
-                order.remove_item(food_item, quantity, f"{item_discriminator} {modifier}")
+                order.remove_item(
+                    food_item, quantity, f"{item_discriminator} {modifier}"
+                )
             else:
                 order.remove_item(food_item, quantity)
 
@@ -87,13 +125,13 @@ def get_order_nutrition(entities):
             "Carbohydrates",
             "Fiber",
             "Sugar",
-            "Protein"
+            "Protein",
         ]
     elif properties:
         requested_nutrients = properties
     else:
         return "Invalid properties. Please specify 'nutrition' or a list of specific nutritional properties."
-    
+
     total_nutrition = {nutrient: 0 for nutrient in requested_nutrients}
     nutritional_info_list = []
 
@@ -140,12 +178,14 @@ def place_order(entities):
             price = float(matched_item["Price"])
 
             if modifier and discriminator:
-                order.add_item(food_item, price, quantity, f"{discriminator} {modifier}")
+                order.add_item(
+                    food_item, price, quantity, f"{discriminator} {modifier}"
+                )
             else:
                 order.add_item(food_item, price, quantity)
 
     index = random.randint(0, 50) % 3
-    return f"{modify_place_order_strings[index]}{order.to_string()}"
+    return f"{modify_place_order_strings[index]}\n{order.to_string()}"
 
 
 def cancel_order():
@@ -300,7 +340,7 @@ def get_ingredients(entities):
         if not item:
             return f"No item found with the name: {food_item}."
         ingredients = item.get("Ingredients", "No ingredients found for this item.")
-        
+
         index = random.randint(0, 50) % 3
         return f"{menu_ingredient_strings[index]} {food_item}: {ingredients}."
 
@@ -336,14 +376,14 @@ def get_nutritional_info(entities):
                 "Carbohydrates",
                 "Fiber",
                 "Sugar",
-                "Protein"
+                "Protein",
             ]
         else:
             # Gather only the specific properties requested
             requested_nutrients = properties
     else:
         return "Invalid properties. Please specify 'nutrition' or a list of specific nutritional properties."
-    
+
     try:
         # Query MongoDB to get the item's details
         item = menu.find_one({"Item": food_item})
@@ -420,7 +460,7 @@ def get_item_description(entities):
         str2 = f"This is everything you need to know about our {item['Item']}:"
         str3 = f"Sure! Our {item['Item']} is described as:"
         item_description_strings = [str1, str2, str3]
-        
+
         return f"{item_description_strings[index]} {description}"
 
     return f"Error retrieving description for {food_item}"
@@ -454,7 +494,9 @@ def get_item_price(entities):
 
 
 def out_of_scope():
-    return "Sorry, I can only help with queries related to the restaurant ordering system."
+    return (
+        "Sorry, I can only help with queries related to the restaurant ordering system."
+    )
 
 
 def get_help():
