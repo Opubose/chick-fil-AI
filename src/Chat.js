@@ -17,6 +17,41 @@ function Chat({ messages, isBotThinking }) {
   return (
     <div className="chat-container">
       <div className="chat" ref={chatRef}>
+        {messages.map((message) => {
+          // Log message content
+          console.log("Message content:", message.content);
+
+          return (
+            <div key={message.id} className={`message ${message.sender}`}>
+              <img
+                src={message.sender === "user" ? userIcon : botIcon}
+                alt={`${message.sender} Icon`}
+                className="icon"
+              />
+              <div className="response" style={{ whiteSpace: "pre-line" }}>
+                {message.content}
+              </div>
+            </div>
+          );
+        })}
+        {isBotThinking && (
+          <div className="message bot">
+            <img src={botIcon} alt="Bot Icon" className="icon" />
+            <div className="typing-indicator">
+              <div className="typing-indicator-dot"></div>
+              <div className="typing-indicator-dot"></div>
+              <div className="typing-indicator-dot"></div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+  /* return (
+    <div className="chat-container">
+      <div className="chat" ref={chatRef}>
         {messages.map((message) => (
           <div key={message.id} className={`message ${message.sender}`}>
             <img
@@ -40,6 +75,6 @@ function Chat({ messages, isBotThinking }) {
       </div>
     </div>
   );
-}
+} */
 
 export default Chat;
