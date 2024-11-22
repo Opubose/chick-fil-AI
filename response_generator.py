@@ -145,7 +145,8 @@ def get_order_nutrition(entities):
                 nutritional_info[nutrient] = nutrient_value
                 total_nutrition[nutrient] += float(nutrient_value)
 
-            nutrient_details = ", ".join(
+            nutrient_details = '
+'.join(
                 [f"{nutritional_info[n]}{units[n]} {n}" for n in requested_nutrients]
             )
             nutritional_info_list.append(f"{food_item}: {nutrient_details}")
@@ -199,7 +200,8 @@ def list_entire_menu():
         items = menu.find()
         menu_items = [item["Item"] for item in items]
         index = random.randint(0, 50) % 3
-        return f"{order_menu_strings[index]}" + ", ".join(menu_items) + "."
+        return f"{order_menu_strings[index]}" + '
+'.join(menu_items)
     except Exception as e:
         return f"Exception {e}"
 
@@ -395,7 +397,8 @@ def get_nutritional_info(entities):
         }
 
         # Format the nutritional information
-        nutrient_details = ", ".join(
+        nutrient_details = '
+'.join(
             [
                 (
                     f"{nutrient}: {nutritional_info[nutrient]:.2f}{units[nutrient]}"
