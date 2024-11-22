@@ -18,9 +18,6 @@ function Chat({ messages, isBotThinking }) {
     <div className="chat-container">
       <div className="chat" ref={chatRef}>
         {messages.map((message) => {
-          // Log message content
-          console.log("Message content:", message.content);
-
           return (
             <div key={message.id} className={`message ${message.sender}`}>
               <img
