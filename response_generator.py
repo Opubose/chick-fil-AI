@@ -323,7 +323,7 @@ def get_items_by_dietary_restriction(entities):
             if not matching_items:
                 return f"No items found for dietary restriction: {restriction}."
             index = random.randint(0, 50) % 3
-            return f"{menu_restriction_strings[index]} {restriction}-free: {', '.join(matching_items)}."
+            return f"{menu_restriction_strings[index]} {restriction}-free: {', '.join(matching_items)}"
     except Exception as e:
         return f"Error retrieving for items with restriction {restriction}: {str(e)}"
 
@@ -342,7 +342,7 @@ def get_ingredients(entities):
         ingredients = item.get("Ingredients", "No ingredients found for this item.")
 
         index = random.randint(0, 50) % 3
-        return f"{menu_ingredient_strings[index]} {food_item}: {ingredients}."
+        return f"{menu_ingredient_strings[index]} {food_item}: {ingredients}"
 
     except Exception as e:
         return f"Error retrieving ingredients for '{food_item}': {str(e)}"
@@ -407,7 +407,7 @@ def get_nutritional_info(entities):
         )
 
         index = random.randint(0, 50) % 3
-        return f"{menu_nutrition_strings[index]} {food_item.title().lower()}:\n{nutrient_details}."
+        return f"{menu_nutrition_strings[index]} {food_item.title().lower()}:\n{nutrient_details}"
 
     except Exception as e:
         return f"Error retrieving nutritional information for '{food_item}': {str(e)}"
@@ -441,7 +441,7 @@ def get_type_list(entities):
         str3 = f"Of course! Take a look at the {item_type}s we have for you:"
         type_list_strings = [str1, str2, str3]
 
-        return f"{type_list_strings[index]} {', '.join(item_names)}."
+        return f"{type_list_strings[index]} {', '.join(item_names)}"
 
     except Exception as e:
         return f"Error retrieving items for type '{item_type}': {str(e)}"
@@ -487,7 +487,7 @@ def get_item_price(entities):
         str3 = f"You can get our {food_item} for $"
         food_item_strings = [str1, str2, str3]
 
-        return f"{food_item_strings[index]}{cost:.2f}."
+        return f"{food_item_strings[index]}{cost:.2f}"
 
     except Exception as e:
         return f"Error retrieving cost for '{food_item}': {str(e)}"
